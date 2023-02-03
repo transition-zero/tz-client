@@ -29,7 +29,11 @@ def login(config=None):
         logger.info(f"Writing token directory {token_dir}")
         os.makedirs(token_dir)
 
-    device_code_payload = {"client_id": AUTH0_CLIENT_ID, "scope": "openid profile"}
+    device_code_payload = {
+        "client_id": AUTH0_CLIENT_ID,
+        "scope": "openid profile offline_access",
+        "audience": AUTH0_AUDIENCE,
+    }
 
     device_code_response = requests.post(
         f"https://{AUTH0_DOMAIN}/oauth/device/code", data=device_code_payload
@@ -50,6 +54,7 @@ def login(config=None):
         "grant_type": "urn:ietf:params:oauth:grant-type:device_code",
         "device_code": device_code_data["device_code"],
         "client_id": AUTH0_CLIENT_ID,
+        "audience": AUTH0_AUDIENCE,
     }
 
     authenticated = False
