@@ -1,9 +1,5 @@
-import os
 from datetime import date
 from typing import List, Optional, Union
-from typing import List
-import requests
-
 
 import httpx
 
@@ -80,16 +76,9 @@ class Units(Base):
             "limit": limit,
             "page": page,
         }
-        params = {k: v for k, v in params.items() if not v is None}
-
-        r = self.client.get("v1/units/", params=params)
+        params = {k: v for k, v in params.items() if v is not None}
+        r = self.client.get("latest/units", params=params)
 
         self.catch_errors(r)
 
         return r.json()
-
-
-if __name__ == "__main__":
-    client = Units()
-    r = client.search_units(unit_id="PWRCOAARGA1U0")
-    breakpoint()
