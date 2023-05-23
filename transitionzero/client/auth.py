@@ -12,9 +12,9 @@ logger.add(
 )
 
 
-AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID", "bjzlyhLEClss31537pW3lu3Fkg97TzZ8")
-AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "dev-feo-tz.eu.auth0.com")
-AUTH0_AUDIENCE = "https://auth.feo.transitionzero.org/"
+AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID", "HhT6aGS8u3Pg4PkVQ8sKUtnrtg0x7nUk")
+AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "prod-feo-tz.eu.auth0.com")
+AUTH0_AUDIENCE = "https://api.feo.transitionzero.org"
 ALGORITHMS = ["RS256"]
 
 
