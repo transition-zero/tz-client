@@ -1,6 +1,8 @@
 import json
 import os
 
+import httpx
+
 from transitionzero.client.auth import login
 
 
@@ -19,6 +21,12 @@ class Base:
             token = json.load(open(token_path))
 
         self.headers = {"Authorization": "Bearer {}".format(token["access_token"])}
+        self.client = httpx.Client(
+            base_url=os.environ.get(
+                "FEO_API_URL", "https://api.feo.transitionzero.org"
+            ),
+            headers=self.headers,
+        )
 
     def catch_errors(self, r):
         r.raise_for_status()
