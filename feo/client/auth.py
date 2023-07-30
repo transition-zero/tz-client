@@ -14,7 +14,7 @@ logger.add(
 
 AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID", "HhT6aGS8u3Pg4PkVQ8sKUtnrtg0x7nUk")
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "prod-feo-tz.eu.auth0.com")
-AUTH0_AUDIENCE = "https://api.feo.transitionzero.org"
+AUTH0_AUDIENCE = os.environ.get("AUTH0_AUDIENCE", "https://api.feo.transitionzero.org")
 ALGORITHMS = ["RS256"]
 
 
@@ -36,8 +36,9 @@ def login(config=None):
     }
 
     device_code_response = requests.post(
-        f"https://{AUTH0_DOMAIN}/oauth/device/code", data=device_code_payload
+        f"https://{AUTH0_DOMAIN}/oauth/device/code", json=device_code_payload
     )
+    device_code_response.raise_for_status()
 
     if device_code_response.status_code != 200:
         logger.error("Error generating the device code")

@@ -1,4 +1,4 @@
-from transitionzero.client.cli import auth, cli
+from feo.client.cli import auth, cli
 
 __all__ = ["auth", "cli"]
 
