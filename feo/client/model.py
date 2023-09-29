@@ -1,7 +1,7 @@
 from typing import List, Optional, TypeVar
 
-from feo.client import Node
 from feo.client.base import Base
+from feo.client.node import Node
 
 Cls = TypeVar("Cls", bound="Model")
 
