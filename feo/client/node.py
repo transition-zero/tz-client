@@ -1,42 +1,61 @@
 from typing import List, Optional, TypeVar
 
-from pydantic import BaseModel
+from pydantic import root_validator
 
-from feo.client import AssetCollection
-from feo.client.base import Base
+# from feo.client.base import Base
+from feo.client import api, schemas
+from feo.client.asset import AssetCollection
 
 # use property decorator to facilitate getting and setting property
 
 Cls = TypeVar("Cls", bound="Node")
 
 
-class Alias(BaseModel):
-    node_id: str
-    alias: str
-    node_level: str
+class Node(schemas.Node):
+    geography: Optional[str] = None
+    _assets: Optional[schemas.AssetCollection] = None
 
-    def node(self):
-        return Node(id=self.node_id)
+    @classmethod
+    def search(
+        cls, alias: str, threshold: int = 0.5, node_type: str = None
+    ) -> List["Node"]:
+        search_results = api.aliases.get(
+            alias=alias, threshold=threshold, node_type=node_type, includes="node"
+        )
 
+        return [cls(alias["node"]) for alias in search_results["aliases"]]
 
-class Node(Base):
-    def __init__(self, id, sectors, geometry, technologies):
-        self.id = id
-        self.sectors = sectors
-        self.geometry
-        self.technologies
+    @root_validator(pre=True)
+    def maybe_initialise_from_api(cls, values):
+        id = values.get("id")
+        node_type = values.get("node_type")
+        type_alias = values.get("type_alias")
+        geography = values.get("geography")
 
-        # Lazy populate assets
-        self._assets: Optional[AssetCollection] = None
+        if id is not None and any([(node_type is None), (type_alias is None)]):
+            # call from API
+            node = api.nodes.get(id=id)
+
+            for key, val in node.items():
+                values[key] = val
+
+            return values
+
+        elif id is None and geography is not None:
+            node = api.aliases.get(alias=geography, includes="node")
+
+            for key, val in node.items():
+                values[key] = val
+
+            return values
 
     @property
     def assets(self) -> AssetCollection:
-        # assets getter to lazily retrieve assets
+        # lazily retrieve assets
         if self._assets is None:
-            # get asset collection
-            self._assets = AssetCollection(node_id=self.node_id, sector=self.sector)
+            self._assets = AssetCollection.from_parent_node(node_id=self.id)
         else:
-            return self._assets
+            return self.assets
 
     def json(self):
         return dict(
@@ -54,37 +73,5 @@ class Node(Base):
         pass
 
     @classmethod
-    def _get(cls, node_ids):
-        # TODO
-        pass
-
-    @classmethod
-    def search(cls, alias: str, threshold=0.95, node_level=None) -> List[Alias]:
-        # call alias API
-        pass
-
-    @classmethod
-    def from_alias(cls, alias) -> Cls:
-        node_codes = cls.search(alias, threshold=1.0)
-        if len(node_codes) == 0:
-            node_codes = cls.search(cls, alias)
-            raise ValueError(
-                f"Node with alias '{alias}' not found! Did you mean any of {node_codes}?"
-            )
-        return node_codes[0].node()
-
-    @classmethod
     def from_list(cls, list_of_ids):
         pass
-
-    @classmethod
-    def from_json(cls, obj):
-        return [cls(**item) for item in obj["nodes"]]
-
-    def __repr__(self):
-        # information rich
-        return f"Node(node_id={self.node_id},sector={self.sector})"
-
-    def __str__(self):
-        # human-readable
-        return f"Node(node_id={self.node_id},sector={self.sector})"
