@@ -12,6 +12,24 @@ Cls = TypeVar("Cls", bound="Node")
 
 
 class Node(schemas.Node):
+
+    """
+    The Node class enables access to geospatially-referenced data of a given node.
+    Nodes are the fundamental building blocks of systems models, and can represent
+    administrative areas like countries or continents, or physical assets like power stations or substations.
+    TransitionZero indexes all data to nodes so it can easily be used to design and validate systems models.
+
+    Nodes can be loaded directly with their id:
+    ```python
+    germany = Node("DEU")
+    ```
+
+    Nodes can also be retrieved by calling a well-known alias:
+    ```python
+    germany = None("germany")
+    ```
+    """
+
     geography: Optional[str] = None
     _assets: Optional[schemas.AssetCollection] = None
 
@@ -19,6 +37,18 @@ class Node(schemas.Node):
     def search(
         cls, alias: str, threshold: int = 0.5, node_type: str = None
     ) -> List["Node"]:
+        """
+        Search for nodes using an alias.
+
+        Args:
+            alias (str): The target alias to search.
+            threshold (float): The desired confidence in the search result.
+            node_type (str): filter search to a specific node type.
+
+        Returns:
+            List[Node]: A list of Node objects.
+        """
+
         search_results = api.aliases.get(
             alias=alias, threshold=threshold, node_type=node_type, includes="node"
         )
@@ -51,27 +81,14 @@ class Node(schemas.Node):
 
     @property
     def assets(self) -> AssetCollection:
-        # lazily retrieve assets
+        """An collection of assets located in (or connected to) this node."""
         if self._assets is None:
             self._assets = AssetCollection.from_parent_node(node_id=self.id)
         else:
             return self.assets
 
-    def json(self):
-        return dict(
-            node_id=self.node_id,
-            sectors={k: s.json() for k, s in self.sectors.items()},
-            # metadata
-        )
-
     def children(self, node_level=None):
-        # get heirarchical children for node
-        pass
+        """A set of nodes which are the heirarchical children of this node."""
 
     def parents(self, node_level=None):
-        # get heirarchical parents for node
-        pass
-
-    @classmethod
-    def from_list(cls, list_of_ids):
-        pass
+        """A set of nodes which are the heirarchical ancestors of this node."""
