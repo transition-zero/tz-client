@@ -22,7 +22,10 @@
     my_model = api.models.get("my-model")
     ```
 """
-
 from feo.client.api.aliases import AliasAPI
+from feo.client.api.assets import AssetAPI
+from feo.client.api.nodes import NodeAPI
 
 aliases = AliasAPI()
+nodes = NodeAPI()
+assets = AssetAPI()
