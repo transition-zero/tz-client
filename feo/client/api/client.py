@@ -20,6 +20,7 @@ class Client:
         token = json.load(open(token_path))
 
     headers = {"Authorization": "Bearer {}".format(token["access_token"])}
+
     base_url = (
         os.environ.get("FEO_API_URL", "https://api.feo.transitionzero.org")
         + "/"

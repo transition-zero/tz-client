@@ -1,9 +1,10 @@
-from typing import List, Optional, TypeVar
+from typing import Dict, List, Optional, TypeVar
 
 from pydantic import root_validator
 
 # from feo.client.base import Base
-from feo.client import api, schemas
+from feo.client import api
+from feo.client.api import schemas
 from feo.client.asset import AssetCollection
 
 # use property decorator to facilitate getting and setting property
@@ -20,18 +21,27 @@ class Node(schemas.Node):
     TransitionZero indexes all data to nodes so it can easily be used to design and validate systems models.
 
     Nodes can be loaded directly with their id:
+
     ```python
     germany = Node("DEU")
     ```
 
     Nodes can also be retrieved by calling a well-known alias:
+
     ```python
-    germany = None("germany")
+    germany = Node("germany")
     ```
     """
 
     geography: Optional[str] = None
-    _assets: Optional[schemas.AssetCollection] = None
+    _assets: Optional[AssetCollection] = None
+    _children: Optional[List["Node"]] = None
+    _parents: Optional[List["Node"]] = None
+    _gross_capacity: Optional[Dict[str, Dict[str, Dict[str, float]]]] = None
+
+    def __init__(self, id: str, **kwargs) -> None:
+        """Initialise Node from `id` as a positional argument"""
+        super(self.__class__, self).__init__(id=id, **kwargs)
 
     @classmethod
     def search(
@@ -53,7 +63,7 @@ class Node(schemas.Node):
             alias=alias, threshold=threshold, node_type=node_type, includes="node"
         )
 
-        return [cls(alias["node"]) for alias in search_results["aliases"]]
+        return [cls(**alias["node"]) for alias in search_results["aliases"]]
 
     @root_validator(pre=True)
     def maybe_initialise_from_api(cls, values):
@@ -64,7 +74,7 @@ class Node(schemas.Node):
 
         if id is not None and any([(node_type is None), (type_alias is None)]):
             # call from API
-            node = api.nodes.get(id=id)
+            node = api.nodes.get(ids=id)["nodes"][0]
 
             for key, val in node.items():
                 values[key] = val
@@ -79,6 +89,8 @@ class Node(schemas.Node):
 
             return values
 
+        return values
+
     @property
     def assets(self) -> AssetCollection:
         """An collection of assets located in (or connected to) this node."""
@@ -87,8 +99,30 @@ class Node(schemas.Node):
         else:
             return self.assets
 
-    def children(self, node_level=None):
-        """A set of nodes which are the heirarchical children of this node."""
+    @classmethod
+    def _get_children(cls, ids):
+        node_data = api.nodes.get(ids=ids, includes="node.children")
+        return [cls(**node) for node in node_data["nodes"][0]["children"]]
 
-    def parents(self, node_level=None):
+    @classmethod
+    def _get_parents(cls, ids):
+        node_data = api.nodes.get(ids=ids, includes="node.parents")
+        return [cls(**node) for node in node_data["nodes"][0]["parents"]]
+
+    @property
+    def children(self) -> List["Node"]:
+        """A set of nodes which are the heirarchical children of this node."""
+        if self._children is None:
+            self._children = self._get_children(self.id)
+            return self._children
+        else:
+            return self._children
+
+    @property
+    def parents(self) -> List["Node"]:
         """A set of nodes which are the heirarchical ancestors of this node."""
+        if self._parents is None:
+            self._parents = self._get_parents(self.id)
+            return self._parents
+        else:
+            return self._parents
