@@ -6,8 +6,8 @@ import click
 import requests
 from loguru import logger
 
-from transitionzero.client.auth import login as auth_login
-from transitionzero.client.cli.cli import root
+from feo.client.auth import login as auth_login
+from feo.client.cli.cli import root
 
 logger.remove()
 logger.add(
