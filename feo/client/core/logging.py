@@ -1,5 +1,5 @@
+import logging
 import sys
-from logging import logger
 
-logger.remove()
-logger.add(sys.stdout, colorize=False, format="{time:YYYYMMDDHHmmss}|{level}| {message}")
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logger = logging.getLogger(__name__)
