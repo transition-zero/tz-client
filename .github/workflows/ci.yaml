@@ -59,16 +59,16 @@ jobs:
       id: curlToken
       uses: satak/webrequest-action@master
       with:
-        url: "https://${{AUTH0_DOMAIN}}/oauth/token"
+        url: "https://${{vars.AUTH0_DOMAIN}}/oauth/token"
         method: POST
         payload: '{
-          "client_id": "${{CLIENT_ID}}",
-          "username": "${{TEST_USER}}",
-          "password": "${{TEST_PW}}",
+          "client_id": "${{vars.CLIENT_ID}}",
+          "username": "${{vars.TEST_USER}}",
+          "password": "${{vars.TEST_PW}}",
           "realm": "Username-Password-Authentication",
           "client_secret": "${{secrets.CLIENT_SECRET}}",
           "scope": "openid permissions",
-          "audience": "${{AUTH0_AUDIENCE}}",
+          "audience": "${{vars.AUTH0_AUDIENCE}}",
           "grant_type": "http://auth0.com/oauth/grant-type/password-realm"
         }'
 
@@ -102,7 +102,7 @@ jobs:
       uses: schneegans/dynamic-badges-action@v1.7.0
       with:
         auth: ${{ secrets.GIST_SECRET }}
-        gistID: ${{GIST_ID}}
+        gistID: ${{vars.GIST_ID}}
         filename: coverage_badge.json
         label: Coverage
         message: "%${{ steps.extract_coverage_val }}"
