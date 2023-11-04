@@ -72,6 +72,24 @@ feo = "feo.client.cli:main"
 [tool.setuptools.packages]
 find = {}
 
+
+[tool.pytest.ini_options]
+python_files = [
+    "test_*.py",
+    "*_test.py",
+    "tests.py",
+]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--doctest-modules",
+    "--doctest-glob=\\*.rst",
+    "--import-mode=importlib"
+]
+testpaths = [
+    "tests"
+]
+
 [build-system]
 # These are the assumed default build requirements from pip:
 # https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
