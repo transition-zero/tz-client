@@ -59,7 +59,7 @@ jobs:
       id: curlToken
       uses: satak/webrequest-action@master
       with:
-        url: https://${{AUTH0_DOMAIN}}/oauth/token
+        url: "https://${{AUTH0_DOMAIN}}/oauth/token"
         method: POST
         payload: '{
           "client_id": "${{CLIENT_ID}}",
