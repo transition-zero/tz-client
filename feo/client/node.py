@@ -17,8 +17,9 @@ class Node(schemas.Node):
     """
     The Node class enables access to geospatially-referenced data of a given node.
     Nodes are the fundamental building blocks of systems models, and can represent
-    administrative areas like countries or continents, or physical assets like power stations or substations.
-    TransitionZero indexes all data to nodes so it can easily be used to design and validate systems models.
+    administrative areas like countries or continents, or physical assets like
+    power stations or substations. TransitionZero indexes all data to nodes so
+    it can easily be used to design and validate systems models.
 
     Nodes can be loaded directly with their id:
 
@@ -44,9 +45,7 @@ class Node(schemas.Node):
         super(self.__class__, self).__init__(id=id, **kwargs)
 
     @classmethod
-    def search(
-        cls, alias: str, threshold: int = 0.5, node_type: str = None
-    ) -> List["Node"]:
+    def search(cls, alias: str, threshold: int = 0.5, node_type: str = None) -> List["Node"]:
         """
         Search for nodes using an alias.
 
