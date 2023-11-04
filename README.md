@@ -22,9 +22,10 @@ This Python Client gives programmatic access to all the functionality of the FEO
 
 * **Open Data**: Asset-level and historical data free to access, forever.
 * **No-barriers Systems Modelling**: Begin asking your energy transition research questions with a simple UI or a few lines of code.
-* **Transparent and Reproduceable**: Built with open-source systems modelling frameworks, with transparent or user-defined assumptions.
-* **Social and Shareable**: Share systems models reports publicly and star your favs.
-* **Analysis-Ready outputs**: Download analysis-ready excel workbooks.
+* **Transparent Data Provenance**: Trace all data back to its origin.
+* **Reproduceable**: Built with open-source systems modelling frameworks, with transparent or user-defined assumptions.
+* **Social and Shareable**: Share systems models reports publicly and star your favourites.
+* **Analysis-Ready outputs**: Download analysis-ready spreadsheets.
 * **Flagship Analysis**: Access premier research outputs prepared by TransitionZero researchers.
 
 
