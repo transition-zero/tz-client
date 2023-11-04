@@ -11,7 +11,7 @@
 
 **Documentation**: <a href="https://docs.feo.transitionzero.org" target="_blank">https://docs.feo.transitionzero.org</a>
 
-**API Reference**: <a href="https://api.feo.transitionzero.org/latest/docs", target="_blank">https://api.feo.transitionzero.org/latest/docs</a>
+**API Reference**: <a href="https://api.feo.transitionzero.org/latest/docs" target="_blank">https://api.feo.transitionzero.org/latest/docs</a>
 
 **Future Energy Outlook**: <a href="https://feo.transitionzero.org" target="_blank">https://feo.transitionzero.org</a>
 
@@ -40,7 +40,7 @@ The latest release of the FEO Python Client can be installed via `pip`.
 
 The client can also be installed from this repo, for any features not yet available via the Python Package Index:
 
-    pip install git+https
+    pip install git+https://github.com/transition-zero/feo-client.git@main
 
 ## Authentication
 
@@ -60,13 +60,20 @@ The feo login can also be called directly (for example via a Jupyter notebook):
 
 ## Quickstart
 
-The FEO client is provided with two interface levels: a base-level `api` interface and object-level interface.
+The FEO client provides object-level interfaces to the main FEO building blocks. Users may also use the underlying API wrapper.
+
+### Accessing asset-level data
+
+### Accessing historical data
+
+### Accessing systems models and reports
 
 ### Simple API calls
 
 
-
 ## Documentation
+
+The full documentation for FEO can be found here: <a href="https://docs.feo.transitionzero.org" target="_blank">https://docs.feo.transitionzero.org</a>
 
 ## Contributing
 
