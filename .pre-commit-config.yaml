@@ -41,6 +41,8 @@ repos:
   hooks:
   - id: black
     language_version: python3.9
+    args:
+    - --line-length=100
 
 - repo: https://github.com/asottile/blacken-docs
   rev: 1.15.0
@@ -53,6 +55,9 @@ repos:
   hooks:
   - id: flake8
     additional_dependencies: [flake8-bugbear]
+    args:
+      - --ignore=B008
+      - --max-line-length=100
 
 - repo: https://github.com/nbQA-dev/nbQA
   rev: 1.7.0
