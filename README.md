@@ -18,8 +18,7 @@
 ---
 
 The _Future Energy Outlook_ is TransitionZero's open-access energy transition research platform.
-
-The key features are:
+This Python Client gives programmatic access to all the functionality of the FEO platform:
 
 * **Open Data**: Asset-level and historical data free to access, forever.
 * **No-barriers Systems Modelling**: Begin asking your energy transition research questions with a simple UI or a few lines of code.
@@ -28,7 +27,6 @@ The key features are:
 * **Analysis-Ready outputs**: Download analysis-ready excel workbooks.
 * **Flagship Analysis**: Access premier research outputs prepared by TransitionZero researchers.
 
-This Python Client gives programmatic access to all the functionality of the FEO platform.
 
 ---
 
