@@ -23,7 +23,7 @@ jobs:
       TEST_USER: ${{ vars.TEST_USER}}
       TEST_PW: ${{ vars.TEST_PW}}
       GIST_ID: ${{ vars.GIST_ID}}
-      FEO_API_URL: ${{ var.FEO_API_URL}}
+      FEO_API_URL: ${{ vars.FEO_API_URL}}
 
 
     steps:
@@ -43,7 +43,7 @@ jobs:
         echo "TEST_USER: ${{ vars.TEST_USER }}"
         echo "TEST_PW: ${{ vars.TEST_PW}}"
         echo "GIST_ID: ${{ vars.GIST_ID}}"
-        echo "FEO_API_URL: ${{ var.FEO_API_URL}}""
+        echo "FEO_API_URL: ${{ vars.FEO_API_URL}}""
         echo "HOME: $HOME"
 
     - name: mkdir token
