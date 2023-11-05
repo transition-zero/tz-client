@@ -46,6 +46,7 @@ dev = [
   "pytest",
   "pytest-order",
   "pytest-asyncio",
+  "pytest-cov",
   "mypy",
   "tox",
   "coverage",
