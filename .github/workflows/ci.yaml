@@ -75,7 +75,7 @@ jobs:
 
     - name: response echo
       run: |
-        ${{steps.curlToken.outputs.output}} > tmp.json
+        '${{steps.curlToken.outputs.output}}' > tmp.json
 
     - name: parse token from curl request
       run: |
