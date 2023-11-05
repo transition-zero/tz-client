@@ -1,2 +1,98 @@
+[project]
+name = "feo-client"
+version = "0.0.1"
+description = "An Python Client for programmatic interactions with the Future Energy Outlook platform by TransitionZero"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE.txt"}
+keywords = ["energy", "systems"]
+authors = [
+  {name = "Lucas Kruitwagen", email = "lucas.kruitwagen@gmail.com" },
+]
+
+#maintainers = [
+#  {name = "A. Great Maintainer", email = "maintainer@example.com" } # Optional
+#]
+
+# For a list of valid classifiers, see https://pypi.org/classifiers/
+classifiers = [  # Optional
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Analysts",
+  "Topic :: Energy Transition :: Systems Modelling",
+  "Topic :: Energy Transition :: Open Data",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.9"
+]
+
+dependencies = [
+  "pandas",
+  "python-jose",
+  "pydantic>2",
+  "requests",
+  "httpx",
+  "click",
+]
+
+[project.optional-dependencies] # Optional
+dev = [
+  "pre-commit",
+  "black",
+  "pytest",
+  "pytest-order",
+  "pytest-asyncio",
+  "pytest-cov",
+  "mypy",
+  "tox",
+  "coverage",
+]
+
+[project.urls]  # Optional
+"Homepage" = "https://github.com/transitionzero/feo-client"
+"Bug Reports" = "https://github.com/transitionzero/feo-client/issues"
+"Funding" = "https://transitionzero.org"
+"Source" = "https://github.com/transitionzero/feo-client"
+
+# The following would provide a command line executable called `sample`
+# which executes the function `main` from this package when invoked.
+[project.scripts]  # Optional
+feo = "feo.client.cli:main"
+
+# This is configuration specific to the `setuptools` build backend.
+# If you are using a different build backend, you will need to change this.
+[tool.setuptools]
+# If there are data files included in your packages that need to be
+# installed, specify them here.
+# package-data = {"sample" = ["*.dat"]}
+
+[tool.setuptools.packages]
+find = {}
+
+
+[tool.pytest.ini_options]
+python_files = [
+    "test_*.py",
+    "*_test.py",
+    "tests.py",
+]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--doctest-modules",
+    "--doctest-glob=\\*.rst",
+    "--import-mode=importlib"
+]
+testpaths = [
+    "tests"
+]
+
 [build-system]
-requires = ["setuptools", "wheel"]
+# These are the assumed default build requirements from pip:
+# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"

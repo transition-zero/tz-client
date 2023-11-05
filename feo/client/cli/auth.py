@@ -1,18 +1,11 @@
 import json
 import os
-import sys
 
 import click
 import requests
-from loguru import logger
 
 from feo.client.auth import login as auth_login
 from feo.client.cli.cli import root
-
-logger.remove()
-logger.add(
-    sys.stdout, colorize=False, format="{time:YYYYMMDDHHmmss}|{level}| {message}"
-)
 
 
 @root.group()
@@ -25,7 +18,8 @@ def auth(config):
 @click.pass_obj
 def login(config):
     """
-    Runs the device authorization flow, writes a long-expirey JWT to a new hidden folder in the $HOME directory
+    Runs the device authorization flow, writes a long-expirey
+    JWT to a new hidden folder in the $HOME directory
     """
 
     auth_login()
@@ -35,9 +29,7 @@ def login(config):
 @click.pass_obj
 def test(config):
     URL = "https://power-legacy.feo.transitionzero.org"
-    token = json.load(
-        open(os.path.join(os.path.expanduser("~"), ".tz-feo", "token.json"))
-    )
+    token = json.load(open(os.path.join(os.path.expanduser("~"), ".tz-feo", "token.json")))
 
     headers = {"Authorization": "Bearer {}".format(token["access_token"])}
 

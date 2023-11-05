@@ -1,7 +1,8 @@
 """
     `feo` stands for the Future Energy Outlook, by TransitionZero.
     The Future Energy Outlook
-    This package, `feo-client`, allows users to interact with the platform via both a low-level api wrapper,
+    This package, `feo-client`, allows users to interact with the
+    platform via both a low-level api wrapper,
     and a set of higher-order class objects.
 
     First authenticate via the command line

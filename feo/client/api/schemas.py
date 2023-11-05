@@ -1,5 +1,5 @@
 from datetime import date
-from typing import ForwardRef, Optional, Union
+from typing import ForwardRef, List, Optional, Union
 
 from pydantic import BaseModel
 
@@ -8,6 +8,11 @@ class Alias(BaseModel):
     node_id: str
     alias: str
     node: Union[ForwardRef("Node"), None]
+
+
+class AliasResponse(BaseModel):
+    aliases: List[Alias]
+    next_page: Optional[int]
 
 
 class Asset(BaseModel):

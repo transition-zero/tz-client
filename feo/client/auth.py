@@ -1,16 +1,10 @@
 import json
 import os
-import sys
 import time
 
 import requests
-from loguru import logger
 
-logger.remove()
-logger.add(
-    sys.stdout, colorize=False, format="{time:YYYYMMDDHHmmss}|{level}| {message}"
-)
-
+from feo.client.core import logger
 
 AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID", "HhT6aGS8u3Pg4PkVQ8sKUtnrtg0x7nUk")
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "prod-feo-tz.eu.auth0.com")
@@ -20,7 +14,8 @@ ALGORITHMS = ["RS256"]
 
 def login(config=None):
     """
-    Runs the device authorization flow, writes a long-expiry JWT to a new hidden folder in the $HOME directory
+    Runs the device authorization flow, writes a long-expiry JWT
+    to a new hidden folder in the $HOME directory
     """
 
     token_dir = os.path.join(os.path.expanduser("~"), ".tz-feo")
@@ -46,9 +41,7 @@ def login(config=None):
 
     logger.info("Device code successful")
     device_code_data = device_code_response.json()
-    print(
-        "1. In a browser navigate to: ", device_code_data["verification_uri_complete"]
-    )
+    print("1. In a browser navigate to: ", device_code_data["verification_uri_complete"])
     print("2. Enter the following code: ", device_code_data["user_code"])
 
     token_payload = {
@@ -61,9 +54,7 @@ def login(config=None):
     authenticated = False
     print("Checking for authentication", end="")
     while not authenticated:
-        token_response = requests.post(
-            f"https://{AUTH0_DOMAIN}/oauth/token", data=token_payload
-        )
+        token_response = requests.post(f"https://{AUTH0_DOMAIN}/oauth/token", data=token_payload)
 
         token_data = token_response.json()
         if token_response.status_code == 200:
