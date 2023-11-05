@@ -113,7 +113,7 @@ jobs:
         gistID: ${{vars.GIST_ID}}
         filename: coverage_badge.json
         label: coverage
-        message: "%${{ env.COVERAGE }}"
+        message: echo "%$(printf '%.0f' ${{ env.COVERAGE }})"
         valColorRange: ${{ env.COVERAGE }}
         maxColorRange: 100
         minColorRange: 50
