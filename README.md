@@ -6,7 +6,7 @@
 
 # Future Energy Outlook Python Client
 
-<img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/feffb38d46c750cad5402dca5dd54bf9/raw/713dc1d51bcfb95d520aa72a19e5029b387b8e3c/tests_passing.json" alt="Tests Passing"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/d2b6ec23e3c6e8309236216689d91782/raw/b80661f67fab37c343ed74cf2818f720e8186d01/coverage_badge.json" alt="Test Coverage"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/bd1e357c1bce5fc2c0808bcdb569157c/raw/3fb7a23af07abaf2fbdf55944545bc97f46f1070/python_version_badge.json" alt="Supported Python versions"><img src="https://img.shields.io/badge/under%20construction-ffae00" alt="Supported Python versions">
+<img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/feffb38d46c750cad5402dca5dd54bf9/raw/713dc1d51bcfb95d520aa72a19e5029b387b8e3c/tests_passing.json" alt="Tests Passing"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/d2b6ec23e3c6e8309236216689d91782/raw/456f94a2a084bfffa07db241b4c82bbcc668bdf4/coverage_badge.json" alt="Test Coverage"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/bd1e357c1bce5fc2c0808bcdb569157c/raw/3fb7a23af07abaf2fbdf55944545bc97f46f1070/python_version_badge.json" alt="Supported Python versions"><img src="https://img.shields.io/badge/under%20construction-ffae00" alt="Supported Python versions">
 
 
 **Documentation**: <a href="https://docs.feo.transitionzero.org" target="_blank">https://docs.feo.transitionzero.org</a>
@@ -68,6 +68,7 @@ The FEO client provides object-level interfaces to the main FEO building blocks.
 ### Accessing systems models and reports
 
 ### Simple API calls
+
 
 
 ## Documentation
