@@ -44,7 +44,6 @@ jobs:
         echo "TEST_PW: ${{ vars.TEST_PW}}"
         echo "GIST_ID: ${{ vars.GIST_ID}}"
         echo "FEO_API_URL: ${{ vars.FEO_API_URL}}""
-        echo "HOME: $HOME"
 
     - name: mkdir token
       run: |
@@ -108,7 +107,7 @@ jobs:
         gistID: ${{vars.GIST_ID}}
         filename: coverage_badge.json
         label: Coverage
-        message: "%${{ steps.extract_coverage_val }}"
-        valColorRange: ${{ steps.extract_coverage_val }}
+        message: "%${{ steps.extract_coverage_val.outputs }}"
+        valColorRange: ${{ steps.extract_coverage_val.outputs }}
         maxColorRange: 100
         minColorRange: 50
