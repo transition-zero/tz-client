@@ -79,7 +79,7 @@ jobs:
 
     - name: parse token from curl request
       run: |
-        echo "$(jq '.data' 'tmp.json')" > $HOME/.tz-feo/token.json
+        echo "$(jq '.data' '$HOME/tmp.json')" > $HOME/.tz-feo/token.json
 
     - name: Lint with precommit
       run: |
