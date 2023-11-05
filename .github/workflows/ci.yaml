@@ -76,11 +76,11 @@ jobs:
     - name: response echo
       run: |
         echo "${{steps.curlToken.outputs.output}}"
-        echo "${{fromJson(steps.curlToken.outputs.output).data}}"
 
     - name: parse token from curl request
       run: |
-        ${{fromJson(steps.curlToken.outputs.output).data}} >> $HOME/.tz-feo/token.json
+        echo "$(jq '.data' ${{steps.curlToken.outputs.output}})"
+        "${{fromJson(steps.curlToken.outputs.output).data}}" >> $HOME/.tz-feo/token.json
 
     - name: Lint with precommit
       run: |
