@@ -77,7 +77,6 @@ jobs:
       run: |
         echo "${{steps.curlToken.outputs.output}}"
         $output = '${{ steps.curlToken.outputs.output }}' | ConvertFrom-Json
-        echo "data $output.data"
 
     - name: parse token from curl request
       run: |
