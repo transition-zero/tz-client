@@ -77,11 +77,11 @@ jobs:
       run: |
         echo "${{steps.curlToken.outputs.output}}"
         $output = '${{ steps.curlToken.outputs.output }}' | ConvertFrom-Json
-        echo "data $($output.data)"
+        echo "data $output.data"
 
     - name: parse token from curl request
       run: |
-        ${{ steps.curlToken.outputs.data }} >> $HOME/.tz-feo/token.json
+        ${{ steps.curlToken.outputs.output.data }} >> $HOME/.tz-feo/token.json
 
     - name: Lint with precommit
       run: |
