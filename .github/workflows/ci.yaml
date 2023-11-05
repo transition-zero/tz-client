@@ -73,14 +73,13 @@ jobs:
           "grant_type": "http://auth0.com/oauth/grant-type/password-realm"
         }'
 
-    #- name: response echo
-    #  run: |
-    #    echo "${{steps.curlToken.outputs.output}}"
+    - name: response echo
+      run: |
+        echo "${{steps.curlToken.outputs.output}}" > tmp.json
 
     - name: parse token from curl request
       run: |
-        echo "$(jq '.data' '${{steps.curlToken.outputs.output}}')"
-        "${{fromJson(steps.curlToken.outputs.output).data}}" >> $HOME/.tz-feo/token.json
+        echo "$(jq '.data' 'tmp.json')" > $HOME/.tz-feo/token.json
 
     - name: Lint with precommit
       run: |
