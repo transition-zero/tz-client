@@ -42,6 +42,7 @@ jobs:
         echo "TEST_USER: ${{ vars.TEST_USER }}"
         echo "TEST_PW: ${{ vars.TEST_PW}}"
         echo "GIST_ID: ${{ vars.GIST_ID}}"
+        echo "HOME: $HOME"
 
     - name: Install dependencies
       run: |
@@ -74,7 +75,9 @@ jobs:
 
     - name: response echo
       run: |
-        echo "${{steps.curlToken.outputs.data}}"
+        echo "${{steps.curlToken.outputs.output}}"
+        $output = '${{ steps.curlToken.outputs.output }}' | ConvertFrom-Json
+        echo "data $($output.data)"
 
     - name: parse token from curl request
       run: |
