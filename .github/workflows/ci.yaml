@@ -106,6 +106,12 @@ jobs:
       run: |
         echo "COVERAGE=$(jq '.totals.percent_covered' coverage.json)" >> $GITHUB_ENV
 
+    - name: substring coverage
+      id: substring_coverage
+      run: |
+        coverage_int=$(echo "${{ env.COVERAGE }}" | cut -c 1-2)
+        echo "coverage_int=$coverage_int" >> $GITHUB_OUTPUT
+
     - name: Create the Badge
       uses: schneegans/dynamic-badges-action@v1.7.0
       with:
@@ -113,7 +119,7 @@ jobs:
         gistID: ${{vars.GIST_ID}}
         filename: coverage_badge.json
         label: coverage
-        message: echo "%$(printf '%.0f' ${{ env.COVERAGE }})"
+        message: "%${{ steps.substring_coverage.outputs.coverage_int }}"
         valColorRange: ${{ env.COVERAGE }}
         maxColorRange: 100
         minColorRange: 50
