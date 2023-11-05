@@ -73,9 +73,9 @@ jobs:
           "grant_type": "http://auth0.com/oauth/grant-type/password-realm"
         }'
 
-    - name: response echo
-      run: |
-        echo "${{steps.curlToken.outputs.output}}"
+    #- name: response echo
+    #  run: |
+    #    echo "${{steps.curlToken.outputs.output}}"
 
     - name: parse token from curl request
       run: |
