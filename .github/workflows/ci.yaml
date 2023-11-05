@@ -97,9 +97,14 @@ jobs:
         pytest --cov=feo --cov-report=json:coverage.json
 
     - name: parse coverage report
-      id: extract_coverage_val
+      id: show_coverage_val
       run: |
         jq '.totals.percent_covered' coverage.json
+
+    - name: parse coverage report
+      id: extract_coverage_val
+      run: |
+        echo "COVERAGE=$(jq '.totals.percent_covered' coverage.json)" >> $GITHUB_ENV
 
     - name: Create the Badge
       uses: schneegans/dynamic-badges-action@v1.7.0
@@ -107,8 +112,8 @@ jobs:
         auth: ${{ secrets.GIST_SECRET }}
         gistID: ${{vars.GIST_ID}}
         filename: coverage_badge.json
-        label: Coverage
-        message: "%${{ steps.extract_coverage_val.outputs }}"
-        valColorRange: ${{ steps.extract_coverage_val.outputs }}
+        label: coverage
+        message: "%${{ env.COVERAGE }}"
+        valColorRange: ${{ env.COVERAGE }}
         maxColorRange: 100
         minColorRange: 50
