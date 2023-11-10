@@ -33,6 +33,5 @@ body:
       description: >
         Please describe how the new feature would be implemented, using pseudocode if relevant.
       placeholder: >
-       
     validations:
       required: true
