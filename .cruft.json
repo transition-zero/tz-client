@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/transition-zero/tz-cookiecutter",
-  "commit": "42c037541da4bb46922b001e5828998026561aaf",
+  "commit": "ad5cf2c66469690aec9125a55883a3755305f302",
   "checkout": null,
   "context": {
     "cookiecutter": {
