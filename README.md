@@ -4,11 +4,14 @@
   <a href="https://www.transitionzero.org/">
 </picture>
 
+
 # Future Energy Outlook Python Client
 
-<img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/feffb38d46c750cad5402dca5dd54bf9/raw/713dc1d51bcfb95d520aa72a19e5029b387b8e3c/tests_passing.json" alt="Tests Passing"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/d2b6ec23e3c6e8309236216689d91782/raw/456f94a2a084bfffa07db241b4c82bbcc668bdf4/coverage_badge.json" alt="Test Coverage"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/bd1e357c1bce5fc2c0808bcdb569157c/raw/3fb7a23af07abaf2fbdf55944545bc97f46f1070/python_version_badge.json" alt="Supported Python versions"><img src="https://img.shields.io/badge/under%20construction-ffae00" alt="Supported Python versions">
+<!-- badges-begin -->
 
+<img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License" href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/feffb38d46c750cad5402dca5dd54bf9/raw/713dc1d51bcfb95d520aa72a19e5029b387b8e3c/tests_passing.json" alt="Tests Passing"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/d2b6ec23e3c6e8309236216689d91782/raw/456f94a2a084bfffa07db241b4c82bbcc668bdf4/coverage_badge.json" alt="Test Coverage"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/bd1e357c1bce5fc2c0808bcdb569157c/raw/3fb7a23af07abaf2fbdf55944545bc97f46f1070/python_version_badge.json" alt="Supported Python versions"><img src="https://img.shields.io/badge/under%20construction-ffae00" alt="Under Construction">
 
+<!-- badges-end -->
 **Documentation**: <a href="https://docs.feo.transitionzero.org" target="_blank">https://docs.feo.transitionzero.org</a>
 
 **API Reference**: <a href="https://api.feo.transitionzero.org/latest/docs" target="_blank">https://api.feo.transitionzero.org/latest/docs</a>
