@@ -31,7 +31,7 @@ def login(config=None):
     }
 
     device_code_response = requests.post(
-        f"https://{AUTH0_DOMAIN}/oauth/device/code", json=device_code_payload
+        f"https://{AUTH0_DOMAIN}/oauth/device/code", json=device_code_payload, timeout=30
     )
     device_code_response.raise_for_status()
 
@@ -54,7 +54,9 @@ def login(config=None):
     authenticated = False
     print("Checking for authentication", end="")
     while not authenticated:
-        token_response = requests.post(f"https://{AUTH0_DOMAIN}/oauth/token", data=token_payload)
+        token_response = requests.post(
+            f"https://{AUTH0_DOMAIN}/oauth/token", data=token_payload, timeout=30
+        )
 
         token_data = token_response.json()
         if token_response.status_code == 200:
