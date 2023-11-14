@@ -1,0 +1,17 @@
+{
+  "template": "https://github.com/transition-zero/tz-cookiecutter",
+  "commit": "5a8eb4f496fbe44e2f33e1e2e38994015328771b",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_slug": "feo-client",
+      "project_name": "Future Energy Outlook Python Client",
+      "author_name": "Lucas Kruitwagen",
+      "author_email": "lucas@transitionzero.org",
+      "year": "2023",
+      "description": "Placeholder",
+      "_template": "https://github.com/transition-zero/tz-cookiecutter"
+    }
+  },
+  "directory": null
+}
