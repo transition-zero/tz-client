@@ -35,7 +35,7 @@ def test(config):
 
     params = {"admin_0": "ID", "page": 3, "limit": 5}
 
-    r = requests.get(URL + "/units/", params=params, headers=headers)
+    r = requests.get(URL + "/units/", params=params, headers=headers, timeout=30)
 
     print(r.status_code)
     units = json.loads(r.text)["units"]
