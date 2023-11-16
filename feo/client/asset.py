@@ -1,14 +1,12 @@
-# from abc import classmethod
 from typing import List
 
 import pandas as pd
 from pydantic import root_validator
 
-from feo.client import api
-from feo.client.api import schemas
+from feo.client import api, schemas
 
 
-class Asset(schemas.Asset):
+class Asset(schemas.Node):
     def __init__(self, id: str, **kwargs):
         """Initialise Asset from `id` as a positional argument"""
         super(self.__class__, self).__init__(id=id, **kwargs)
@@ -34,7 +32,7 @@ class Asset(schemas.Asset):
             alias=alias, threshold=threshold, node_type=node_type, includes="power_unit"
         )
 
-        return [cls(**alias["node"]) for alias in search_results["aliases"]]
+        return [cls(**alias.node.model_dump()) for alias in search_results.aliases]
 
     @root_validator(pre=True)
     def maybe_initialise_from_api(cls, values):

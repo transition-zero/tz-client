@@ -1,7 +1,7 @@
 from typing import List, Union
 
 from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Node
+from feo.client.api.schemas import Node, NodeResponse
 
 
 class NodeAPI(BaseAPI):
@@ -20,4 +20,4 @@ class NodeAPI(BaseAPI):
         resp = self.client.get(f"/nodes/{ids}", params=params)
         resp.raise_for_status()
 
-        return resp.json()
+        return NodeResponse(**resp.json()).nodes
