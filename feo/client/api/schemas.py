@@ -52,6 +52,11 @@ class AliasResponse(BaseModel):
     next_page: Optional[int]
 
 
+class AssetResponse(BaseModel):
+    assets: List[Node]
+    next_page: Optional[int]
+
+
 class NodeResponse(BaseModel):
     nodes: list[Node]
     representative_node_ids: list[str] | None = None

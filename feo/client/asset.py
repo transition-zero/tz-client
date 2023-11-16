@@ -3,10 +3,11 @@ from typing import List
 import pandas as pd
 from pydantic import root_validator
 
-from feo.client import api, schemas
+from feo.client import api
+from feo.client.api import schemas
 
 
-class Asset(schemas.Node):
+class Asset(schemas.NodeBase):
     def __init__(self, id: str, **kwargs):
         """Initialise Asset from `id` as a positional argument"""
         super(self.__class__, self).__init__(id=id, **kwargs)
@@ -42,9 +43,9 @@ class Asset(schemas.Node):
 
         if id is not None and any([(node_type is None), (type_alias is None)]):
             # call from API
-            node = api.assets.get(ids=id)["assets"][0]
+            node = api.assets.get(ids=id)[0]
 
-            for key, val in node.items():
+            for key, val in node.model_dump().items():
                 values[key] = val
 
             return values
