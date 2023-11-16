@@ -16,11 +16,11 @@ classifiers = [
 ]
 
 dependencies = [
-  "pandas",
+  "pandas>2",
   "pydantic>2",
-  "requests",
-  "httpx",
-  "click",
+  "requests>=2.31",
+  "httpx>0.25",
+  "click>8.1",
 ]
 
 [project.optional-dependencies] # Optional
