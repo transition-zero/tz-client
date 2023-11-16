@@ -1,38 +1,22 @@
 [project]
 name = "feo-client"
-version = "0.0.1"
-description = "An Python Client for programmatic interactions with the Future Energy Outlook platform by TransitionZero"
+dynamic = ["version"]
+description = "A Python Client for programmatic interactions with the Future Energy Outlook platform by TransitionZero"
 readme = "README.md"
-requires-python = ">=3.9"
-license = {file = "LICENSE.txt"}
+requires-python = ">=3.9"  # hardcoding this for now
+license = {file = "LICENSE"}
 keywords = ["energy", "systems"]
 authors = [
   {name = "Lucas Kruitwagen", email = "lucas.kruitwagen@gmail.com" },
 ]
 
-#maintainers = [
-#  {name = "A. Great Maintainer", email = "maintainer@example.com" } # Optional
-#]
-
 # For a list of valid classifiers, see https://pypi.org/classifiers/
-classifiers = [  # Optional
-  # How mature is this project? Common values are
-  #   3 - Alpha
-  #   4 - Beta
-  #   5 - Production/Stable
+classifiers = [
   "Development Status :: 3 - Alpha",
-  "Intended Audience :: Analysts",
-  "Topic :: Energy Transition :: Systems Modelling",
-  "Topic :: Energy Transition :: Open Data",
-  "License :: OSI Approved :: MIT License",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.9"
 ]
 
 dependencies = [
   "pandas",
-  "python-jose",
   "pydantic>2",
   "requests",
   "httpx",
@@ -95,7 +79,7 @@ testpaths = [
 exclude_dirs = ["tests"]
 
 [build-system]
-# These are the assumed default build requirements from pip:
-# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
-requires = ["setuptools>=43.0.0", "wheel"]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]

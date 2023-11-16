@@ -31,4 +31,3 @@ from feo.client.asset import Asset, AssetCollection
 from feo.client.node import Node
 
 __all__ = ["Node", "Asset", "AssetCollection"]
-__version__ = "0.0.1"

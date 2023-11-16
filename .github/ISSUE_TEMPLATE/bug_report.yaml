@@ -40,5 +40,4 @@ body:
         Please describe or show a code example of the expected behavior.
     validations:
       required: true
-  - type: textarea
-    id: version
+
