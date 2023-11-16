@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/transition-zero/tz-cookiecutter-pypackage.git",
-  "commit": "2cf78cfbb9fd3d4ab0d319efe46be1e41217df87",
+  "commit": "5797e80433ed575d61cd36dfce6b4e3de038e1de",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -11,8 +11,6 @@
       "year": "2023",
       "description": "A Python Client for programmatic interactions with the Future Energy Outlook platform by TransitionZero",
       "development_status": "Development Status :: 3 - Alpha",
-      "push_to_pypi": false,
-      "push_to_test_pypi": true,
       "_template": "https://github.com/transition-zero/tz-cookiecutter-pypackage.git"
     }
   },
