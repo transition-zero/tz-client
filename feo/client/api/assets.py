@@ -1,7 +1,7 @@
 from typing import List, Union
 
 from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Node, NodeResponse
+from feo.client.api.schemas import AssetResponse, Node
 
 
 class AssetAPI(BaseAPI):
@@ -25,6 +25,6 @@ class AssetAPI(BaseAPI):
         )
 
         resp = self.client.get("/assets", params=params)
-        resp.raise_for_status
+        resp.raise_for_status()
 
-        return NodeResponse(**resp.json()).nodes
+        return AssetResponse(**resp.json()).assets
