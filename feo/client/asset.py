@@ -1,4 +1,3 @@
-# from abc import classmethod
 from typing import List
 
 import pandas as pd
@@ -8,7 +7,7 @@ from feo.client import api
 from feo.client.api import schemas
 
 
-class Asset(schemas.Asset):
+class Asset(schemas.NodeBase):
     def __init__(self, id: str, **kwargs):
         """Initialise Asset from `id` as a positional argument"""
         super(self.__class__, self).__init__(id=id, **kwargs)
@@ -34,7 +33,7 @@ class Asset(schemas.Asset):
             alias=alias, threshold=threshold, node_type=node_type, includes="power_unit"
         )
 
-        return [cls(**alias["node"]) for alias in search_results["aliases"]]
+        return [cls(**alias.node.model_dump()) for alias in search_results.aliases]
 
     @root_validator(pre=True)
     def maybe_initialise_from_api(cls, values):
@@ -44,9 +43,9 @@ class Asset(schemas.Asset):
 
         if id is not None and any([(node_type is None), (type_alias is None)]):
             # call from API
-            node = api.assets.get(ids=id)["assets"][0]
+            node = api.assets.get(ids=id)[0]
 
-            for key, val in node.items():
+            for key, val in node.model_dump().items():
                 values[key] = val
 
             return values

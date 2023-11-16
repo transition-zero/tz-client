@@ -1,7 +1,7 @@
 from typing import List, Union
 
 from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Asset
+from feo.client.api.schemas import AssetResponse, Node
 
 
 class AssetAPI(BaseAPI):
@@ -12,7 +12,7 @@ class AssetAPI(BaseAPI):
         limit: Union[int, None] = None,
         page: Union[int, None] = None,
         includes: Union[str, None] = None,
-    ) -> List[Asset]:
+    ) -> List[Node]:
         if isinstance(ids, list):
             ids = ",".join(ids)
 
@@ -27,4 +27,4 @@ class AssetAPI(BaseAPI):
         resp = self.client.get("/assets", params=params)
         resp.raise_for_status()
 
-        return resp.json()
+        return AssetResponse(**resp.json()).assets

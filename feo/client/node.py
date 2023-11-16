@@ -12,7 +12,7 @@ from feo.client.asset import AssetCollection
 Cls = TypeVar("Cls", bound="Node")
 
 
-class Node(schemas.Node):
+class Node(schemas.NodeBase):
 
     """
     The Node class enables access to geospatially-referenced data of a given node.
@@ -34,7 +34,7 @@ class Node(schemas.Node):
     ```
     """
 
-    geography: Optional[str] = None
+    _geometry: Optional[str] = None
     _assets: Optional[AssetCollection] = None
     _children: Optional[List["Node"]] = None
     _parents: Optional[List["Node"]] = None
@@ -62,7 +62,7 @@ class Node(schemas.Node):
             alias=alias, threshold=threshold, node_type=node_type, includes="node"
         )
 
-        return [cls(**alias["node"]) for alias in search_results["aliases"]]
+        return [cls(**alias.node.model_dump()) for alias in search_results.aliases]
 
     @root_validator(pre=True)
     def maybe_initialise_from_api(cls, values):
@@ -73,9 +73,10 @@ class Node(schemas.Node):
 
         if id is not None and any([(node_type is None), (type_alias is None)]):
             # call from API
-            node = api.nodes.get(ids=id)["nodes"][0]
 
-            for key, val in node.items():
+            node = api.nodes.get(ids=id)[0]
+
+            for key, val in node.model_dump().items():
                 values[key] = val
 
             return values
@@ -101,12 +102,12 @@ class Node(schemas.Node):
     @classmethod
     def _get_children(cls, ids):
         node_data = api.nodes.get(ids=ids, includes="node.children")
-        return [cls(**node) for node in node_data["nodes"][0]["children"]]
+        return node_data[0].children
 
     @classmethod
     def _get_parents(cls, ids):
         node_data = api.nodes.get(ids=ids, includes="node.parents")
-        return [cls(**node) for node in node_data["nodes"][0]["parents"]]
+        return node_data[0].parents
 
     @property
     def children(self) -> List["Node"]:
@@ -125,3 +126,16 @@ class Node(schemas.Node):
             return self._parents
         else:
             return self._parents
+
+    @classmethod
+    def _get_geometry(cls, ids):
+        raise NotImplementedError
+
+    @property
+    def geometry(self) -> dict:
+        """The WGS84 GeoJSON for this node's geometry"""
+        if self._geometry is None:
+            self._geometry = self._get_geometry(self.id)
+            return self._geometry
+        else:
+            return self._geometry
