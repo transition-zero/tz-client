@@ -107,16 +107,7 @@ class Node(schemas.NodeBase):
     @classmethod
     def _get_parents(cls, ids):
         node_data = api.nodes.get(ids=ids, includes="node.parents")
-        return [cls(**node) for node in node_data[0]["parents"]]
-
-    @property
-    def children(self) -> List["Node"]:
-        """A set of nodes which are the heirarchical children of this node."""
-
-    @classmethod
-    def _get_parents(cls, ids):
-        node_data = api.nodes.get(ids=ids, includes="node.parents")
-        return [cls(**node) for node in node_data["nodes"][0]["parents"]]
+        return node_data[0].parents
 
     @property
     def children(self) -> List["Node"]:
