@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/transition-zero/tz-cookiecutter-pypackage.git",
-  "commit": "983720606d6d93b994b6a739665ce9d4386ff9bc",
+  "commit": "42006dec40089d3d34e11df9cbd93ee2712de224",
   "checkout": null,
   "context": {
     "cookiecutter": {

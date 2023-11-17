@@ -1,5 +1,5 @@
 name: Feature Request
-description: Suggest an idea for Future Energy Outlook Python Client
+description: Suggest an idea for feo-client
 title: "ENH: "
 labels: [Enhancement, Needs Triage]
 
@@ -11,19 +11,19 @@ body:
       description: Please check what type of feature request you would like to propose.
       options:
         - label: >
-            Adding new functionality to Future Energy Outlook Python Client
+            Adding new functionality to feo-client
         - label: >
-            Changing existing functionality in Future Energy Outlook Python Client
+            Changing existing functionality in feo-client
         - label: >
-            Removing existing functionality in Future Energy Outlook Python Client
+            Removing existing functionality in feo-client
   - type: textarea
     id: description
     attributes:
       label: Problem Description
       description: >
-        Please describe what problem the feature would solve, e.g. "I wish I could use Future Energy Outlook Python Client to ..."
+        Please describe what problem the feature would solve, e.g. "I wish I could use feo-client to ..."
       placeholder: >
-        I wish I could use Future Energy Outlook Python Client to..
+        I wish I could use feo-client to..
     validations:
       required: true
   - type: textarea
