@@ -1,7 +1,7 @@
 from datetime import date
-from typing import ForwardRef, List, Optional, Union
+from typing import ForwardRef, List, Optional, Union, Tuple, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator, conlist
 
 
 class Alias(BaseModel):
@@ -70,3 +70,49 @@ class NodeResponse(BaseModel):
     residual_capacity: dict[
         str, dict[int, dict[str, float]]
     ] | None = None  # sector, year, unit_type, float
+
+
+Point = Tuple[float, float]
+LinearRing = conlist(Point, min_length=4)
+PolygonCoords = conlist(LinearRing, min_length=1)
+MultiPolygonCoords = conlist(PolygonCoords, min_length=1)
+BBox = Tuple[float, float, float, float]  # 2D bbox
+Props = TypeVar("Props", bound=dict)
+VALID_GEOM_TYPES = ["Polygon", "Point", "LineString"]
+
+
+class Geometry(BaseModel):
+    type: str
+    coordinates: Union[PolygonCoords, MultiPolygonCoords, Point]
+
+    @validator("type")
+    def validate_type(cls, geom_type):
+        assert (
+            geom_type in VALID_GEOM_TYPES
+        ), f"Must be one of {', '.join(VALID_GEOM_TYPES)}"
+        return geom_type
+
+
+class FeatureBase(BaseModel):
+    type: str = "Feature"
+    geometry: Geometry
+    properties: Optional[Props]
+
+    def to_geojson(self):
+        return {
+            "type": self.type,
+            "geometry": self.geometry.__dict__,
+            "properties": self.properties,
+            "id": self.id,
+        }
+
+
+class Feature(FeatureBase):
+    collection_slug: str
+    slug: str
+
+
+class GeometryResponse(BaseModel):
+    type: str = "FeatureCollection"
+    features: List[Feature]
+    next_page: Optional[int]
