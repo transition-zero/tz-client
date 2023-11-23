@@ -102,26 +102,28 @@ class Node(schemas.NodeBase):
     @classmethod
     def _get_children(cls, ids):
         node_data = api.nodes.get(ids=ids, includes="node.children")
-        return node_data[0].children
+        return [cls(**child.model_dump()) for child in node_data[0].children]
 
     @classmethod
     def _get_parents(cls, ids):
         node_data = api.nodes.get(ids=ids, includes="node.parents")
-        return node_data[0].parents
+        return [cls(**parent.model_dump()) for parent in node_data[0].parents]
 
     @property
     def children(self) -> List["Node"]:
         """A set of nodes which are the heirarchical children of this node."""
         if self._children is None:
             self._children = self._get_children(self.id)
-        return [Node(child.id) for child in self._children]
+            return self._children
+        return self._children
 
     @property
     def parents(self) -> List["Node"]:
         """A set of nodes which are the heirarchical ancestors of this node."""
         if self._parents is None:
             self._parents = self._get_parents(self.id)
-        return [Node(parent.id) for parent in self._parents]
+            return self._parents
+        return self._parents
 
     @classmethod
     def _get_geometry(cls, ids):
