@@ -5,7 +5,7 @@ from feo.client.api.schemas import Record, RecordResponse
 
 
 class RecordAPI(BaseAPI):
-    record_slug = "/records"
+    base_url = "/records"
 
     def get(
         self,
@@ -19,7 +19,7 @@ class RecordAPI(BaseAPI):
         if isinstance(ids, list):
             ids = ",".join(ids)
 
-        resp = self.client.get(f"{self.record_slug}/{ids}", params=params)
+        resp = self.client.get(f"{self.base_url}/{ids}", params=params)
         resp.raise_for_status()
 
         return RecordResponse(**resp.json()).records
@@ -51,10 +51,10 @@ class RecordAPI(BaseAPI):
             unit=unit,
             properties=properties,
         )
-        resp = self.client.post(self.record_slug, params=params)
+        resp = self.client.post(self.base_url, params=params)
         resp.raise_for_status()
         return RecordResponse(**resp.json()).assets
 
 
 class LanduseReductionsAPI(RecordAPI):
-    record_slug = "/records/landuse-reductions"
+    base_url = "/records/landuse-reductions"
