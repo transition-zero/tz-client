@@ -21,3 +21,34 @@ class RecordAPI(BaseAPI):
         resp.raise_for_status()
 
         return RedcordResponse(**resp.json()).records
+
+    def post(
+        self,
+        node_id: str,
+        public: bool,
+        source_id: int,
+        timestamp: str,
+        valid_timestamp_start: str,
+        valid_timestamp_end: str,
+        datum_type: str,
+        datum_detail: str,
+        value: float,
+        unit: str,
+        properties: dict,
+    ) -> dict:
+        params = dict(
+            node_id=node_id,
+            public=public,
+            source_id=source_id,
+            timestamp=timestamp,
+            valid_timestamp_start=valid_timestamp_start,
+            valid_timestamp_end=valid_timestamp_end,
+            datum_type=datum_type,
+            datum_detail=datum_detail,
+            value=value,
+            unit=unit,
+            properties=properties,
+        )
+        resp = self.client.post(self.record_slug, params=params)
+        resp.raise_for_status()
+        return RedcordResponse(**resp.json()).assets
