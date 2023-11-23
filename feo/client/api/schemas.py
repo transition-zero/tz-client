@@ -88,7 +88,11 @@ class NodeResponse(BaseModel):
     ] | None = None  # sector, year, unit_type, float
 
 
-class Record(BaseModel):
+class RecordID(BaseModel):
+    id: int = Field(..., title="Id")
+
+
+class RecordBase(BaseModel):
     node_id: str | None = Field(None, title="Node Id")
     public: bool | None = Field(None, title="Public")
     source_id: int = Field(..., title="Source Id")
@@ -102,7 +106,11 @@ class Record(BaseModel):
     value: float | None = Field(..., title="Value")
     unit: str = Field(..., title="Unit")
     properties: dict[str, Any] | None = Field(None, title="Properties")
-    id: int = Field(..., title="Id")
+
+
+class Record(RecordID, RecordBase):
+    class Config:
+        orm_mode: bool = True
 
 
 class RecordResponse(BaseModel):
