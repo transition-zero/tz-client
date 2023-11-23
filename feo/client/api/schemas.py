@@ -228,3 +228,9 @@ class RunQueryResult(BaseModel):
     runs: list[Run] = Field(..., title="Runs")
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
+
+
+class ModelQueryResult(BaseModel):
+    models: list[Model] = Field(..., title="Models")
+    page: int | None = Field(None, title="Page")
+    total_pages: int | None = Field(None, title="Total Pages")

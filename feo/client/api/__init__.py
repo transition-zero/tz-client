@@ -25,6 +25,7 @@
 """
 from feo.client.api.aliases import AliasAPI
 from feo.client.api.assets import AssetAPI
+from feo.client.api.models import ModelAPI
 from feo.client.api.nodes import NodeAPI
 from feo.client.api.runs import RunAPI
 
@@ -32,3 +33,4 @@ aliases = AliasAPI()
 nodes = NodeAPI()
 assets = AssetAPI()
 runs = RunAPI()
+models = ModelAPI()
