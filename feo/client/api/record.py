@@ -54,3 +54,7 @@ class RecordAPI(BaseAPI):
         resp = self.client.post(self.record_slug, params=params)
         resp.raise_for_status()
         return RedcordResponse(**resp.json()).assets
+
+
+class LanduseReductionsAPI(RecordAPI):
+    record_slug = "/records/landuse-reductions"
