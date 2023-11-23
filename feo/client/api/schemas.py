@@ -47,6 +47,23 @@ class Node(NodeBase):
     children: list[Union[str, "Node"]] | None = None
 
 
+class RecordBase(BaseModel):  # TODO: correct schema
+    id: str
+    node_type: str
+    type_alias: str
+    name_primary_en: str | None = None
+    public: bool = True
+    is_asset: bool | None = None
+    properties: dict | None = None
+    sector: str | None = None
+    asset_properties: Optional[PowerUnit] = None
+
+
+class Record(RecordBase):  # TODO: correct schema
+    parents: list[Union[str, "Node"]] | None = None
+    children: list[Union[str, "Node"]] | None = None
+
+
 class AliasResponse(BaseModel):
     aliases: List[Alias]
     next_page: Optional[int]
