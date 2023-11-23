@@ -1,7 +1,7 @@
 from typing import List, Union
 
 from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Record, RedcordResponse
+from feo.client.api.schemas import Record, RecordResponse
 
 
 class RecordAPI(BaseAPI):
@@ -22,7 +22,7 @@ class RecordAPI(BaseAPI):
         resp = self.client.get(f"{self.record_slug}/{ids}", params=params)
         resp.raise_for_status()
 
-        return RedcordResponse(**resp.json()).records
+        return RecordResponse(**resp.json()).records
 
     def post(
         self,
@@ -53,7 +53,7 @@ class RecordAPI(BaseAPI):
         )
         resp = self.client.post(self.record_slug, params=params)
         resp.raise_for_status()
-        return RedcordResponse(**resp.json()).assets
+        return RecordResponse(**resp.json()).assets
 
 
 class LanduseReductionsAPI(RecordAPI):
