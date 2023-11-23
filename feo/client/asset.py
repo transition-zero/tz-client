@@ -56,7 +56,7 @@ class Asset(schemas.NodeBase):
 class AssetCollection(pd.DataFrame):
     @classmethod
     def from_parent_node(cls, node_id: str):
-        pass
+        raise NotImplementedError
 
     def next_page(self):
-        pass
+        raise NotImplementedError
