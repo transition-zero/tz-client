@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 from pydantic import root_validator
@@ -53,10 +53,63 @@ class Asset(schemas.NodeBase):
         return values
 
 
+class AssetCollectionRow(pd.Series):
+    @property
+    def _constructor(self):
+        return AssetCollectionRow
+
+    @property
+    def _constructor_expanddim(self):
+        return AssetCollection
+
+    def to_assets(self):
+        return Asset(
+            asset_properties=schemas.asset_sector_lookup[self.sector](**self.to_dict()),
+            **self.to_dict(),
+        )
+
+
 class AssetCollection(pd.DataFrame):
+    _scope: Optional[schemas.AssetCollectionScope] = None
+    _page: Optional[int] = None
+
+    @property
+    def _constructor(self):
+        return AssetCollection
+
+    @property
+    def _constructor_sliced(self):
+        return AssetCollectionRow
+
     @classmethod
-    def from_parent_node(cls, node_id: str):
-        raise NotImplementedError
+    def from_parent_node(cls, node_id: str, sector: str = "power"):
+        obj = cls._from_assets(api.assets.get(parent_node_id=node_id, sector=sector))
+        obj._scope = schemas.AssetCollectionScope(parent_node_id=node_id, sector=sector)
+        obj._page = 0
+        return obj
+
+    @classmethod
+    def _from_assets(cls, assets: List[Asset]):
+        return cls.from_records([asset.unpack() for asset in assets])
 
     def next_page(self):
-        raise NotImplementedError
+        if not self._scope:
+            raise ValueError("Cant iterate an unscoped AssetCollection")
+        if self._scope.parent_node_id is None:
+            raise ValueError("Cant iterate an AssetCollection without a parent id")
+        new_collection = self.__class__._from_assets(
+            api.assets.get(parent_node_id=self._scope.parent_node_id, page=self._page + 1)
+        )
+        self._page += 1
+
+        self.__dict__.update(pd.concat([self, new_collection], ignore_index=True).__dict__)
+        return len(new_collection)
+
+    def to_assets(self):
+        return [
+            Asset(
+                asset_properties=schemas.asset_sector_lookup[row["sector"]](**row),
+                **row,
+            )
+            for idx, row in self.iterrows()
+        ]
