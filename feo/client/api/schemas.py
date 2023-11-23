@@ -1,6 +1,5 @@
-from datetime import date
-from typing import ForwardRef, List, Optional, Union, Any
-from datetime import datetime
+from datetime import date, datetime
+from typing import Any, ForwardRef, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -88,22 +87,6 @@ class Record(BaseModel):
     unit: str = Field(..., title="Unit")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     id: int = Field(..., title="Id")
-
-
-class RecordBase(BaseModel):
-    node_id: str | None = Field(None, title="Node Id")
-    public: bool | None = Field(None, title="Public")
-    source_id: int = Field(..., title="Source Id")
-    source_node_id: str | None = Field(None, title="Source Node Id")
-    target_node_id: str | None = Field(None, title="Target Node Id")
-    timestamp: datetime = Field(..., title="Timestamp")
-    valid_timestamp_start: datetime = Field(..., title="Valid Timestamp Start")
-    valid_timestamp_end: datetime = Field(..., title="Valid Timestamp End")
-    datum_type: str = Field(..., title="Datum Type")
-    datum_detail: str = Field(..., title="Datum Detail")
-    value: float | None = Field(..., title="Value")
-    unit: str = Field(..., title="Unit")
-    properties: dict[str, Any] | None = Field(None, title="Properties")
 
 
 class RecordResponse(BaseModel):
