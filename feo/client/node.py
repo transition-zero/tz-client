@@ -45,7 +45,9 @@ class Node(schemas.NodeBase):
         super(self.__class__, self).__init__(id=id, **kwargs)
 
     @classmethod
-    def search(cls, alias: str, threshold: int = 0.5, node_type: str = None) -> List["Node"]:
+    def search(
+        cls, alias: str, threshold: int = 0.5, node_type: str = None
+    ) -> List["Node"]:
         """
         Search for nodes using an alias.
 
@@ -96,8 +98,7 @@ class Node(schemas.NodeBase):
         """An collection of assets located in (or connected to) this node."""
         if self._assets is None:
             self._assets = AssetCollection.from_parent_node(node_id=self.id)
-        else:
-            return self.assets
+        return self.assets
 
     @classmethod
     def _get_children(cls, ids):
