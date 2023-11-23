@@ -18,12 +18,12 @@ pip install ".[dev]"
 
 Running our test suite first requires authentication
 
-```
+```console
 feo auth login
 ```
 
 ## Running tests
 
-```
+```console
 pytest
 ```
