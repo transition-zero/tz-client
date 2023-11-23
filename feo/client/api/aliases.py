@@ -1,7 +1,7 @@
 from typing import List, Union
 
 from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Alias, AliasResponse
+from feo.client.api.schemas import Alias, AliasQueryResponse
 
 
 class AliasAPI(BaseAPI):
@@ -28,4 +28,4 @@ class AliasAPI(BaseAPI):
         resp = self.client.get("/aliases", params=params)
         resp.raise_for_status()
 
-        return AliasResponse(**resp.json())
+        return AliasQueryResponse(**resp.json())

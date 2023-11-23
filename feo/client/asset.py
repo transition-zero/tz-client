@@ -7,7 +7,7 @@ from feo.client import api
 from feo.client.api import schemas
 
 
-class Asset(schemas.NodeBase):
+class Asset(schemas.NodeOutput):
     def __init__(self, id: str, **kwargs):
         """Initialise Asset from `id` as a positional argument"""
         super(self.__class__, self).__init__(id=id, **kwargs)

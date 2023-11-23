@@ -177,18 +177,6 @@ class PublisherQueryResponse(BaseModel):
     next_page: int | None = Field(..., title="Next Page")
 
 
-class RasterMeta(BaseModel):
-    collection_slug: str = Field(..., title="Collection Slug")
-    slug: str = Field(..., title="Slug")
-    datetime: datetime = Field(..., title="Datetime")
-    is_categorical: bool = Field(..., title="Is Categorical")
-    filename: str = Field(..., title="Filename")
-    valid_datetime: datetime | None = Field(None, title="Valid Datetime")
-    variable: str | None = Field(None, title="Variable")
-    member: int | None = Field(None, title="Member")
-    properties: dict[str, Any] | None = Field(None, title="Properties")
-
-
 class Record(BaseModel):
     node_id: str | None = Field(None, title="Node Id")
     public: bool | None = Field(None, title="Public")

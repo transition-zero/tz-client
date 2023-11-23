@@ -12,7 +12,7 @@ from feo.client.asset import AssetCollection
 Cls = TypeVar("Cls", bound="Node")
 
 
-class Node(schemas.NodeBase):
+class Node(schemas.NodeOutput):
 
     """
     The Node class enables access to geospatially-referenced data of a given node.
