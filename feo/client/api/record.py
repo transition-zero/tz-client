@@ -23,7 +23,3 @@ class RecordAPI(BaseAPI):
         resp.raise_for_status()
 
         return RecordResponse(**resp.json()).records
-
-
-class LanduseReductionsAPI(RecordAPI):
-    base_url = "/records/landuse-reductions"
