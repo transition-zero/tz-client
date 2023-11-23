@@ -1,7 +1,7 @@
 from datetime import date
 from typing import ForwardRef, List, Optional, Union
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Alias(BaseModel):
@@ -88,16 +88,39 @@ class NodeResponse(BaseModel):
     ] | None = None  # sector, year, unit_type, float
 
 
-class RecordResponse(BaseModel):  # TODO correct
-    nodes: list[Node]
-    representative_node_ids: list[str] | None = None
-    node_type_summary: list[dict] | None = None
-    gross_capacity: dict[
-        str, dict[str, dict[str, float]]
-    ] | None = None  # sector, operating_status, unit_type, float
-    retiring_capacity: dict[
-        str, dict[int, dict[str, float]]
-    ] | None = None  # sector, year, unit_type, float
-    residual_capacity: dict[
-        str, dict[int, dict[str, float]]
-    ] | None = None  # sector, year, unit_type, float
+class Record(BaseModel):
+    node_id: str | None = Field(None, title="Node Id")
+    public: bool | None = Field(None, title="Public")
+    source_id: int = Field(..., title="Source Id")
+    source_node_id: str | None = Field(None, title="Source Node Id")
+    target_node_id: str | None = Field(None, title="Target Node Id")
+    timestamp: datetime = Field(..., title="Timestamp")
+    valid_timestamp_start: datetime = Field(..., title="Valid Timestamp Start")
+    valid_timestamp_end: datetime = Field(..., title="Valid Timestamp End")
+    datum_type: str = Field(..., title="Datum Type")
+    datum_detail: str = Field(..., title="Datum Detail")
+    value: float | None = Field(..., title="Value")
+    unit: str = Field(..., title="Unit")
+    properties: dict[str, Any] | None = Field(None, title="Properties")
+    id: int = Field(..., title="Id")
+
+
+class RecordBase(BaseModel):
+    node_id: str | None = Field(None, title="Node Id")
+    public: bool | None = Field(None, title="Public")
+    source_id: int = Field(..., title="Source Id")
+    source_node_id: str | None = Field(None, title="Source Node Id")
+    target_node_id: str | None = Field(None, title="Target Node Id")
+    timestamp: datetime = Field(..., title="Timestamp")
+    valid_timestamp_start: datetime = Field(..., title="Valid Timestamp Start")
+    valid_timestamp_end: datetime = Field(..., title="Valid Timestamp End")
+    datum_type: str = Field(..., title="Datum Type")
+    datum_detail: str = Field(..., title="Datum Detail")
+    value: float | None = Field(..., title="Value")
+    unit: str = Field(..., title="Unit")
+    properties: dict[str, Any] | None = Field(None, title="Properties")
+
+
+class RecordResponse(BaseModel):
+    records: list[Record] = Field(..., title="Records")
+    next_page: int | None = Field(..., title="Next Page")
