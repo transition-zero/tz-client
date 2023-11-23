@@ -87,3 +87,18 @@ class NodeResponse(BaseModel):
     residual_capacity: dict[
         str, dict[int, dict[str, float]]
     ] | None = None  # sector, year, unit_type, float
+
+
+class RecordResponse(BaseModel):  # TODO correct
+    nodes: list[Node]
+    representative_node_ids: list[str] | None = None
+    node_type_summary: list[dict] | None = None
+    gross_capacity: dict[
+        str, dict[str, dict[str, float]]
+    ] | None = None  # sector, operating_status, unit_type, float
+    retiring_capacity: dict[
+        str, dict[int, dict[str, float]]
+    ] | None = None  # sector, year, unit_type, float
+    residual_capacity: dict[
+        str, dict[int, dict[str, float]]
+    ] | None = None  # sector, year, unit_type, float
