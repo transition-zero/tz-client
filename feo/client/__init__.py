@@ -30,9 +30,11 @@
 from feo.client.asset import Asset, AssetCollection
 from feo.client.model import Model
 from feo.client.node import Node
+from feo.client.publisher import Publisher
 from feo.client.record import Record, RecordCollection
 from feo.client.run import Run
 from feo.client.scenario import Scenario
+from feo.client.source import Source
 
 __all__ = [
     "Node",
@@ -43,4 +45,6 @@ __all__ = [
     "Run",
     "Record",
     "RecordCollection",
+    "Publisher",
+    "Source",
 ]

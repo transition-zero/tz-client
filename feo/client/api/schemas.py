@@ -287,3 +287,52 @@ class ScenarioQueryResult(BaseModel):
     scenarios: list[Scenario] = Field(..., title="Scenarios")
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
+
+
+class Publisher(BaseModel):
+    name: str
+    short_name: str
+    url: str | None = None
+    public: bool = True
+    organisation_type: str
+    slug: str | None = None
+
+
+class PublisherQueryResponse(BaseModel):
+    publishers: list[Publisher]
+    next_page: int | None
+
+
+class License(BaseModel):
+    abbreviation: str
+    name: str
+    full_text: str
+    public: bool = True
+
+
+class Link(BaseModel):
+    url: str
+    url_type: str
+    source_id: int
+    public: bool = True
+
+
+class Source(BaseModel):
+    name: str
+    short_name: str
+    public: bool
+    year: int | None = None
+    month: int | None = None
+    day: int | None = None
+    quarter: int | None = None
+    description: str
+    license_abbrv: str | None = None
+    publisher_id: int | None = None
+    slug: str | None = None
+    license: License | None = None
+    links: List[Link] | None = None
+
+
+class SourceQueryResponse(BaseModel):
+    next_page: int | None
+    sources: list[Source]
