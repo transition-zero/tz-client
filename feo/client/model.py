@@ -8,7 +8,7 @@ from feo.client.api import schemas
 
 class Model(schemas.Model):
     def __init__(self, slug: str, **kwargs):
-        """Initialise Model from `id` as a positional argument"""
+        """Initialise Model from `slug` as a positional argument"""
         super(self.__class__, self).__init__(slug=slug, **kwargs)
 
     @classmethod
