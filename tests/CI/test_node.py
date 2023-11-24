@@ -5,7 +5,7 @@ from feo.client import AssetCollection, Node
 
 @pytest.fixture
 def node():
-    return Node("DEU")
+    return Node.from_id("DEU")
 
 
 def test_node_initialization(node):
