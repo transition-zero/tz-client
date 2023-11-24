@@ -1,6 +1,6 @@
 from feo.client import api
 
-EXAMPLE_MODEL = "TODO"
+EXAMPLE_MODEL = "feo-global-indonesia"
 
 
 def test_model_search():

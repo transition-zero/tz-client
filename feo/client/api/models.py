@@ -9,7 +9,7 @@ class ModelAPI(BaseAPI):
         resp = self.client.get(f"/models/{slug}")
         resp.raise_for_status()
 
-        return Model(**resp.json()).models
+        return Model(**resp.json())
 
     def search(
         self,
