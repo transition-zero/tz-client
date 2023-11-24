@@ -4,27 +4,28 @@ import pytest
 
 from feo.client import api
 
+FULLSLUG = "feo-global-indonesia:feo-indonesia-current-policies:demo"
 EXAMPLE_PARAMS = [
     dict(
-        fullslug="feo-global-indonesia:coal-retirement:main",
+        fullslug=FULLSLUG,
         includes=None,
         start_datetime=None,
         end_datetime=None,
     ),
     dict(
-        fullslug="feo-global-indonesia:coal-retirement:main",
+        fullslug=FULLSLUG,
         includes=None,
         start_datetime=datetime(2010, 1, 1),
         end_datetime=None,
     ),
     dict(
-        fullslug="feo-global-indonesia:coal-retirement:main",
+        fullslug=FULLSLUG,
         includes=None,
         start_datetime=None,
         end_datetime=datetime(2020, 1, 1),
     ),
     dict(
-        fullslug="feo-global-indonesia:coal-retirement:main",
+        fullslug=FULLSLUG,
         includes=None,
         start_datetime=datetime(2010, 1, 1),
         end_datetime=datetime(2020, 1, 1),
