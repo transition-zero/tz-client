@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 import pandas as pd
 from pydantic import root_validator
 
@@ -14,8 +12,12 @@ class Asset(schemas.NodeBase):
 
     @classmethod
     def search(
-        cls, alias: str, threshold: int = 0.5, node_type: str = None, sector: str = None
-    ) -> List["schemas.Node"]:
+        cls,
+        alias: str,
+        threshold: float = 0.5,
+        node_type: str | None = None,
+        sector: str | None = None,
+    ) -> list["schemas.Node"]:
         """
         Search for nodes using an alias.
 
@@ -26,14 +28,17 @@ class Asset(schemas.NodeBase):
             sector (str): the industrial sector to filter assets for
 
         Returns:
-            List[Asset]: A list of Asset objects.
+            list[schemas.Node]: A list of Node objects.
         """
 
         search_results = api.aliases.get(
             alias=alias, threshold=threshold, node_type=node_type, includes="power_unit"
         )
 
-        return [cls(**alias.node.model_dump()) for alias in search_results.aliases]
+        return [
+            cls(**alias.node.model_dump())  # type: ignore[union-attr, misc]
+            for alias in search_results.aliases
+        ]
 
     @root_validator(pre=True)
     def maybe_initialise_from_api(cls, values):
@@ -93,7 +98,7 @@ class AssetCollection(pd.DataFrame):
         return obj
 
     @classmethod
-    def from_assets(cls, assets: List[Asset]):
+    def from_assets(cls, assets: list[Asset]):
         """Instiate an AssetCollection from a list of Assets.
         Unpacks `AssetProperties` to dataframe columns.
         """

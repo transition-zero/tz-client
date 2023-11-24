@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, TypeVar
+from typing import Any, Dict, Optional, TypeVar
 
 from pydantic import root_validator
 
@@ -36,8 +36,8 @@ class Node(schemas.NodeBase):
 
     _geometry: Optional[str] = None
     _assets: Optional[AssetCollection] = None
-    _children: Optional[List["Node"]] = None
-    _parents: Optional[List["Node"]] = None
+    _children: Optional[list["Node"]] = None
+    _parents: Optional[list["Node"]] = None
     _gross_capacity: Optional[Dict[str, Dict[str, Dict[str, float]]]] = None
 
     def __init__(self, id: str, **kwargs) -> None:
@@ -45,7 +45,9 @@ class Node(schemas.NodeBase):
         super(self.__class__, self).__init__(id=id, **kwargs)
 
     @classmethod
-    def search(cls, alias: str, threshold: int = 0.5, node_type: str = None) -> List["Node"]:
+    def search(
+        cls, alias: str, threshold: float = 0.5, node_type: str | None = None
+    ) -> list["Node"]:
         """
         Search for nodes using an alias.
 
@@ -62,7 +64,10 @@ class Node(schemas.NodeBase):
             alias=alias, threshold=threshold, node_type=node_type, includes="node"
         )
 
-        return [cls(**alias.node.model_dump()) for alias in search_results.aliases]
+        return [
+            cls(**alias.node.model_dump())  # type: ignore[union-attr]
+            for alias in search_results.aliases
+        ]
 
     @root_validator(pre=True)
     def maybe_initialise_from_api(cls, values):
@@ -109,7 +114,7 @@ class Node(schemas.NodeBase):
         return [cls(**parent.model_dump()) for parent in node_data[0].parents]
 
     @property
-    def children(self) -> List["Node"]:
+    def children(self) -> list["Node"]:
         """A set of nodes which are the heirarchical children of this node."""
         if self._children is None:
             self._children = self._get_children(self.id)
@@ -117,7 +122,7 @@ class Node(schemas.NodeBase):
         return self._children
 
     @property
-    def parents(self) -> List["Node"]:
+    def parents(self) -> list["Node"]:
         """A set of nodes which are the heirarchical ancestors of this node."""
         if self._parents is None:
             self._parents = self._get_parents(self.id)
@@ -129,7 +134,7 @@ class Node(schemas.NodeBase):
         raise NotImplementedError
 
     @property
-    def geometry(self) -> dict:
+    def geometry(self) -> str | Any:
         """The WGS84 GeoJSON for this node's geometry"""
         if self._geometry is None:
             self._geometry = self._get_geometry(self.id)
