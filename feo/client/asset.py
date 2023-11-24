@@ -1,13 +1,18 @@
 from typing import List
 
 import pandas as pd
-from pydantic import root_validator
 
 from feo.client import api
 from feo.client.api import schemas
 
 
 class Asset(schemas.NodeBase):
+    @classmethod
+    def from_id(cls, id: str):
+        """Initialise Asset from `id` as a positional argument"""
+        node = api.assets.get(ids=id)[0]
+        return cls(**node.model_dump())
+
     def __init__(self, id: str, **kwargs):
         """Initialise Asset from `id` as a positional argument"""
         super(self.__class__, self).__init__(id=id, **kwargs)
@@ -34,23 +39,6 @@ class Asset(schemas.NodeBase):
         )
 
         return [cls(**alias.node.model_dump()) for alias in search_results.aliases]
-
-    @root_validator(pre=True)
-    def maybe_initialise_from_api(cls, values):
-        id = values.get("id")
-        node_type = values.get("node_type")
-        type_alias = values.get("type_alias")
-
-        if id is not None and any([(node_type is None), (type_alias is None)]):
-            # call from API
-            node = api.assets.get(ids=id)[0]
-
-            for key, val in node.model_dump().items():
-                values[key] = val
-
-            return values
-
-        return values
 
 
 class AssetCollection(pd.DataFrame):
