@@ -1,4 +1,4 @@
-from typing import Dict, Optional, TypeVar
+from typing import Any, Dict, Optional, TypeVar
 
 from pydantic import root_validator
 
@@ -64,7 +64,9 @@ class Node(schemas.NodeBase):
             alias=alias, threshold=threshold, node_type=node_type, includes="node"
         )
 
-        return [cls(**alias.node.model_dump()) for alias in search_results.aliases]
+        return [
+            cls(**alias.node.model_dump()) for alias in search_results.aliases
+        ]  # type: ignore[union-attr]
 
     @root_validator(pre=True)
     def maybe_initialise_from_api(cls, values):
@@ -98,6 +100,7 @@ class Node(schemas.NodeBase):
         """An collection of assets located in (or connected to) this node."""
         if self._assets is None:
             self._assets = AssetCollection.from_parent_node(node_id=self.id)
+            return self._assets
         else:
             return self.assets
 
@@ -134,7 +137,7 @@ class Node(schemas.NodeBase):
         raise NotImplementedError
 
     @property
-    def geometry(self) -> dict:
+    def geometry(self) -> str | Any:
         """The WGS84 GeoJSON for this node's geometry"""
         if self._geometry is None:
             self._geometry = self._get_geometry(self.id)
