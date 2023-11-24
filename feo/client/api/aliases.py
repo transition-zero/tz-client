@@ -1,7 +1,7 @@
-from typing import List, Union
+from typing import Union
 
 from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Alias, AliasResponse
+from feo.client.api.schemas import AliasResponse
 
 
 class AliasAPI(BaseAPI):
@@ -14,7 +14,7 @@ class AliasAPI(BaseAPI):
         limit: Union[int, None] = None,
         page: Union[int, None] = None,
         includes: Union[str, None] = None,
-    ) -> List[Alias]:
+    ) -> AliasResponse:
         params = dict(
             alias=alias,
             threshold=threshold,
