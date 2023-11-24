@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 class Alias(BaseModel):
     node_id: str
     alias: str
-    node: Union[ForwardRef("Node"), None]
+    node: Union[ForwardRef("Node"), None]  # type: ignore[valid-type]
 
 
 class PowerUnit(BaseModel):
