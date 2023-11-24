@@ -1,7 +1,5 @@
 from typing import Any, Dict, Optional, TypeVar
 
-from pydantic import root_validator
-
 # from feo.client.base import Base
 from feo.client import api
 from feo.client.api import schemas
@@ -40,9 +38,11 @@ class Node(schemas.NodeBase):
     _parents: Optional[list["Node"]] = None
     _gross_capacity: Optional[Dict[str, Dict[str, Dict[str, float]]]] = None
 
-    def __init__(self, id: str, **kwargs) -> None:
+    @classmethod
+    def from_id(cls: Cls, id: str) -> Cls:
         """Initialise Node from `id` as a positional argument"""
-        super(self.__class__, self).__init__(id=id, **kwargs)
+        node = api.aliases.get(ids=id)[0]
+        return cls(**node.model_dump())
 
     @classmethod
     def search(
@@ -68,33 +68,6 @@ class Node(schemas.NodeBase):
             cls(**alias.node.model_dump())  # type: ignore[union-attr]
             for alias in search_results.aliases
         ]
-
-    @root_validator(pre=True)
-    def maybe_initialise_from_api(cls, values):
-        id = values.get("id")
-        node_type = values.get("node_type")
-        type_alias = values.get("type_alias")
-        geography = values.get("geography")
-
-        if id is not None and any([(node_type is None), (type_alias is None)]):
-            # call from API
-
-            node = api.nodes.get(ids=id)[0]
-
-            for key, val in node.model_dump().items():
-                values[key] = val
-
-            return values
-
-        elif id is None and geography is not None:
-            node = api.aliases.get(alias=geography, includes="node")
-
-            for key, val in node.items():
-                values[key] = val
-
-            return values
-
-        return values
 
     @property
     def assets(self) -> AssetCollection:
