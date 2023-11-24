@@ -101,9 +101,7 @@ class Node(schemas.NodeBase):
         """An collection of assets located in (or connected to) this node."""
         if self._assets is None:
             self._assets = AssetCollection.from_parent_node(node_id=self.id)
-            return self._assets
-        else:
-            return self.assets
+        return self._assets
 
     @classmethod
     def _get_children(cls, ids):
