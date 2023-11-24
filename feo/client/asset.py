@@ -36,8 +36,9 @@ class Asset(schemas.NodeBase):
         )
 
         return [
-            cls(**alias.node.model_dump()) for alias in search_results.aliases
-        ]  # type: ignore[union-attr, misc]
+            cls(**alias.node.model_dump())  # type: ignore[union-attr, misc]
+            for alias in search_results.aliases
+        ]
 
     @root_validator(pre=True)
     def maybe_initialise_from_api(cls, values):
