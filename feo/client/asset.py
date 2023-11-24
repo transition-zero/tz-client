@@ -17,8 +17,8 @@ class Asset(schemas.NodeBase):
         cls,
         alias: str,
         threshold: float = 0.5,
-        node_type: str = None,
-        sector: str = None,
+        node_type: Optional[str] = None,
+        sector: Optional[str] = None,
     ) -> List["schemas.Node"]:
         """
         Search for nodes using an alias.
