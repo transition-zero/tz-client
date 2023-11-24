@@ -8,7 +8,8 @@ class AssetAPI(BaseAPI):
     def get(
         self,
         ids: Union[str, List[str], None] = None,
-        parent_id: Union[str, None] = None,
+        parent_node_id: Union[str, None] = None,
+        sector: Union[str, None] = None,
         limit: Union[int, None] = None,
         page: Union[int, None] = None,
         includes: Union[str, None] = None,
@@ -18,7 +19,8 @@ class AssetAPI(BaseAPI):
 
         params = dict(
             id=ids,
-            parent_id=parent_id,
+            parent_node_id=parent_node_id,
+            sector=sector,
             limit=limit,
             page=page,
             includes=includes,
