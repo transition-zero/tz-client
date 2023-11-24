@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, TypeVar
+from typing import Any, Dict, Optional
 
 # from feo.client.base import Base
 from feo.client import api
@@ -6,8 +6,6 @@ from feo.client.api import schemas
 from feo.client.asset import AssetCollection
 
 # use property decorator to facilitate getting and setting property
-
-Cls = TypeVar("Cls", bound="Node")
 
 
 class Node(schemas.NodeBase):
@@ -39,7 +37,7 @@ class Node(schemas.NodeBase):
     _gross_capacity: Optional[Dict[str, Dict[str, Dict[str, float]]]] = None
 
     @classmethod
-    def from_id(cls: Cls, id: str) -> Cls:
+    def from_id(cls, id: str) -> "Node":
         """Initialise Node from `id` as a positional argument"""
         node = api.nodes.get(ids=id)[0]
         return cls(**node.model_dump())
