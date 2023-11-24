@@ -108,6 +108,9 @@ jobs:
         coverage_int=$(echo "${{ env.COVERAGE }}" | cut -c 1-2)
         echo "coverage_int=$coverage_int" >> $GITHUB_OUTPUT
 
+    - run: |
+        echo "%${{ steps.substring_coverage.outputs.coverage_int }}"
+
     - name: Create the Badge
       uses: schneegans/dynamic-badges-action@v1.7.0
       with:
