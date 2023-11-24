@@ -7,7 +7,7 @@ def test_asset_collection():
     collection = AssetCollection.from_parent_node("IDN")
 
     # check datatype
-    assert isinstance(collection)
+    assert isinstance(collection, AssetCollection)
 
     collection_copy = deepcopy(collection)
 
