@@ -29,5 +29,6 @@
 
 from feo.client.asset import Asset, AssetCollection
 from feo.client.node import Node
+from feo.client.technology import Technology
 
-__all__ = ["Node", "Asset", "AssetCollection", "Model", "Scenario", "Run", "Technology"]
+__all__ = ["Node", "Asset", "AssetCollection", "Technology"]
