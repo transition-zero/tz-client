@@ -4,6 +4,8 @@
 name: ci-tests
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
@@ -119,3 +121,4 @@ jobs:
         valColorRange: ${{ env.COVERAGE }}
         maxColorRange: 100
         minColorRange: 50
+        forceUpdate: true
