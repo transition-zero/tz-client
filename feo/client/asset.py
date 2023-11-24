@@ -35,7 +35,10 @@ class Asset(schemas.NodeBase):
             alias=alias, threshold=threshold, node_type=node_type, includes="power_unit"
         )
 
-        return [cls(**alias.node.model_dump()) for alias in search_results.aliases]
+        return [
+            cls(**alias.node.model_dump())  # type: ignore[union-attr, misc]
+            for alias in search_results.aliases
+        ]
 
     @root_validator(pre=True)
     def maybe_initialise_from_api(cls, values):
