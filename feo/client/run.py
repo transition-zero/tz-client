@@ -37,12 +37,12 @@ class Run(schemas.Run):
 
         Args:
             slug (str, optional): The slug of the run.
-            model_slug (str, optional): The slug of the model.
-            scenario_slug (str, optional): The slug of the scenario.
+            model_slug (str, optional): The slug of the model to filter by.
+            scenario_slug (str, optional): The slug of the scenario to filter by.
             owner_id (str, optional): The ID of the owner.
-            featured (bool, optional): Whether the run is featured.
+            featured (bool, optional): Filter by whether the run is featured.
             includes (str, optional): Additional fields to include in the search results.
-            public (bool, optional): Whether the run is public.
+            public (bool, optional): Filter by whether the run is public.
             limit (int, optional): The maximum number of runs to return. Default is 5.
             page (int, optional): The page number of the results. Default is 0.
 

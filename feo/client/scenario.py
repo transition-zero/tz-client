@@ -36,8 +36,8 @@ class Scenario(schemas.Scenario):
 
         Args:
             scenario_slug (str | None): The slug of the scenario to search for.
-            model_slug (str | None): The slug of the model to search for.
-            includes (str | None): The fields to include in the search results.
+            model_slug (str | None): The slug of the model to filter scenarios by.
+            includes (str | None): Related resources to be included in the search result.
             owner_id (str | None): The ID of the owner to filter scenarios by.
             featured (bool | None): Whether to filter scenarios by featured status.
             public (bool | None): Whether to filter scenarios by public status.

@@ -36,7 +36,7 @@ class Model(schemas.Model):
 
         Args:
             model_slug (str | None): The target model slug to search.
-            includes (str | None): The included fields in the search result.
+            includes (str | None): Related resources to be included in the search result.
             owner (str | None): The owner of the models to filter.
             sort (str | None): The sorting criteria for the search result.
             featured (bool | None): Filter models by featured status.
