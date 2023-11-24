@@ -8,7 +8,14 @@ from feo.client.api import schemas
 
 class Scenario(schemas.Scenario):
     def __init__(self, fullslug: str, **kwargs):
-        """Initialise Scenario from `fullslug` as a positional argument"""
+        """
+        Initialise the Scenario object
+
+        Args:
+            fullslug (str): a combination of the model slug and scenario slug, separated
+                by a colon, e.g. `model-slug:scenario-slug`
+            **kwargs: Additional keyword arguments to be passed to the parent class.
+        """
         super(self.__class__, self).__init__(fullslug=fullslug, **kwargs)
 
     @classmethod
@@ -24,16 +31,20 @@ class Scenario(schemas.Scenario):
         page: int = 0,
     ) -> List["Scenario"]:
         """
-        Search for nodes using an alias.
+        Search for scenarios based on various filters.
 
         Args:
-            alias (str): The target alias to search.
-            threshold (float): The desired confidence in the search result.
-            node_type (str): filter search to a specific node type.
-            sector (str): the industrial sector to filter scenarios for
+            scenario_slug (str | None): The slug of the scenario to search for.
+            model_slug (str | None): The slug of the model to search for.
+            includes (str | None): The fields to include in the search results.
+            owner_id (str | None): The ID of the owner to filter scenarios by.
+            featured (bool | None): Whether to filter scenarios by featured status.
+            public (bool | None): Whether to filter scenarios by public status.
+            limit (int): The maximum number of scenarios to return (default is 5).
+            page (int): The page number of the search results (default is 0).
 
         Returns:
-            List[Scenario]: A list of Scenario objects.
+            List[Scenario]: A list of Scenario objects matching the search criteria.
         """
 
         search_results = api.scenarios.search(

@@ -8,7 +8,14 @@ from feo.client.api import schemas
 
 class Run(schemas.Run):
     def __init__(self, fullslug: str, **kwargs):
-        """Initialise Run from `fullslug` as a positional argument"""
+        """
+        Initialize the Run object.
+
+        Args:
+            fullslug (str): A combination of the model slug, scenario slug and run slug
+                separated by a colon, e.g. `model-slug:scenario-slug:run-slug`.
+            **kwargs: Additional keyword arguments to be passed to the parent class.
+        """
         super(self.__class__, self).__init__(fullslug=fullslug, **kwargs)
 
     @classmethod

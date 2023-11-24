@@ -8,7 +8,13 @@ from feo.client.api import schemas
 
 class Model(schemas.Model):
     def __init__(self, slug: str, **kwargs):
-        """Initialise Model from `slug` as a positional argument"""
+        """
+        Initialize the Model object.
+
+        Args:
+            slug (str): A model ID slug, e.g. `feo-global-indonesia`.
+            **kwargs: Additional keyword arguments to be passed to the parent class.
+        """
         super(self.__class__, self).__init__(slug=slug, **kwargs)
 
     @classmethod
