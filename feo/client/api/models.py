@@ -5,7 +5,13 @@ from feo.client.api.schemas import Model, ModelQueryResult
 
 
 class ModelAPI(BaseAPI):
-    def get(
+    def get(self, slug: str) -> Model:
+        resp = self.client.get(f"/models/{slug}")
+        resp.raise_for_status()
+
+        return Model(**resp.json()).models
+
+    def search(
         self,
         model_slug: str | None = None,
         includes: str | None = None,
