@@ -36,7 +36,7 @@ class RecordCollection(pd.DataFrame):
     @classmethod
     def search(
         cls,
-        node_id: list[str] | None = None,
+        node_id: str | None = None,
         public: bool = True,
         valid_timestamp_start: datetime | None = None,
         valid_timestamp_end: datetime | None = None,
@@ -65,7 +65,7 @@ class RecordCollection(pd.DataFrame):
             node_type=node_type,
         )
 
-        obj = cls.from_feo_records(records)
+        obj = cls.from_feo_records(records)  # type: ignore[arg-type]
         obj._scope = schemas.CollectionScope(node_id=node_id)
         obj._page = 0
         return obj
