@@ -13,12 +13,20 @@ class TechnologyAPI(BaseAPI):
 
     def search(
         self,
+        uuid: str | None = None,
         slug: str | None = None,
+        name: str | None = None,
+        owner_id: str | None = None,
+        public: bool | None = None,
         limit: int = 10,
         page: int = 0,
     ) -> List[Technology]:
         params = {
+            "uuid": uuid,
             "slug": slug,
+            "name": name,
+            "owner_id": owner_id,
+            "public": public,
             "limit": limit,
             "page": page,
         }
