@@ -1,5 +1,7 @@
 from copy import deepcopy
 
+import pandas as pd
+
 from feo.client import AssetCollection
 
 
@@ -7,7 +9,7 @@ def test_asset_collection():
     collection = AssetCollection.from_parent_node("IDN")
 
     # check datatype
-    assert isinstance(collection)
+    assert isinstance(collection, pd.DataFrame)
 
     collection_copy = deepcopy(collection)
 
@@ -16,7 +18,7 @@ def test_asset_collection():
         AssetCollection.from_assets(collection_copy.to_assets())
     )
 
-    collection.next()
+    collection.next_page()
 
     # check our iteration
-    assert len(collection) / collection_copy == 2.0
+    assert len(collection) / len(collection_copy) == 2.0
