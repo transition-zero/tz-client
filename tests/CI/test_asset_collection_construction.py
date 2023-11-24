@@ -13,7 +13,7 @@ def test_asset_collection():
 
     # roundtrip the asset conversion and back
     assert collection_copy.drop(columns=["children", "parents"]).equals(
-        AssetCollection._from_assets(collection_copy.to_assets())
+        AssetCollection.from_assets(collection_copy.to_assets())
     )
 
     collection.next()

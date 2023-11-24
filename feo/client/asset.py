@@ -87,7 +87,7 @@ class AssetCollection(pd.DataFrame):
             AssetCollection: A pandas-dataframe extension for FEO assets.
         """
 
-        obj = cls._from_assets(api.assets.get(parent_node_id=node_id, sector=sector))
+        obj = cls.from_assets(api.assets.get(parent_node_id=node_id, sector=sector))
         obj._scope = schemas.AssetCollectionScope(parent_node_id=node_id, sector=sector)
         obj._page = 0
         return obj
