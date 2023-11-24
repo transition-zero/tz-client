@@ -7,6 +7,20 @@ from feo.client.api.schemas import Scenario, ScenarioQueryResult
 class ScenarioAPI(BaseAPI):
     def get(
         self,
+        fullslug: str,
+        includes: str | None = None,
+    ) -> Scenario:
+        params = {
+            "includes": includes,
+        }
+
+        resp = self.client.get(f"/scenarios/{fullslug}", params=params)
+        resp.raise_for_status()
+
+        return Scenario(**resp.json())
+
+    def search(
+        self,
         scenario_slug: str | None = None,
         model_slug: str | None = None,
         includes: str | None = None,
