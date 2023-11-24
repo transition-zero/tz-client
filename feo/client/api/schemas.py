@@ -62,7 +62,8 @@ class AliasResponse(BaseModel):
     next_page: Optional[int]
 
 
-class AssetCollectionScope(BaseModel):
+class CollectionScope(BaseModel):
+    node_id: Optional[str] = None
     parent_node_id: Optional[str] = None
     sector: Optional[str] = None
     includes: Optional[str] = None
@@ -113,6 +114,6 @@ class Record(RecordID, RecordBase):
         orm_mode: bool = True
 
 
-class RecordResponse(BaseModel):
+class RecordsResponse(BaseModel):
     records: list[Record] = Field(..., title="Records")
     next_page: int | None = Field(..., title="Next Page")
