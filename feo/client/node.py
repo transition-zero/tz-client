@@ -106,12 +106,12 @@ class Node(schemas.NodeBase):
     @classmethod
     def _get_children(cls, ids):
         node_data = api.nodes.get(ids=ids, includes="node.children")
-        return node_data[0].children
+        return [cls(**child.model_dump()) for child in node_data[0].children]
 
     @classmethod
     def _get_parents(cls, ids):
         node_data = api.nodes.get(ids=ids, includes="node.parents")
-        return node_data[0].parents
+        return [cls(**parent.model_dump()) for parent in node_data[0].parents]
 
     @property
     def children(self) -> list["Node"]:
@@ -119,8 +119,7 @@ class Node(schemas.NodeBase):
         if self._children is None:
             self._children = self._get_children(self.id)
             return self._children
-        else:
-            return self._children
+        return self._children
 
     @property
     def parents(self) -> list["Node"]:
@@ -128,8 +127,7 @@ class Node(schemas.NodeBase):
         if self._parents is None:
             self._parents = self._get_parents(self.id)
             return self._parents
-        else:
-            return self._parents
+        return self._parents
 
     @classmethod
     def _get_geometry(cls, ids):
