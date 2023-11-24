@@ -5,7 +5,7 @@ from feo.client import Asset
 
 @pytest.fixture
 def asset():
-    return Asset("PWRURNBGDA0U0")
+    return Asset.from_id("PWRURNBGDA0U0")
 
 
 class TestAsset:
