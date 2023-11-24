@@ -28,6 +28,7 @@
 """
 
 from feo.client.asset import Asset, AssetCollection
+from feo.client.model import Model
 from feo.client.node import Node
 
-__all__ = ["Node", "Asset", "AssetCollection"]
+__all__ = ["Node", "Asset", "AssetCollection", "Model"]
