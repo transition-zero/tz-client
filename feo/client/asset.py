@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 from pydantic import root_validator
@@ -14,7 +14,11 @@ class Asset(schemas.NodeBase):
 
     @classmethod
     def search(
-        cls, alias: str, threshold: int = 0.5, node_type: str = None, sector: str = None
+        cls,
+        alias: str,
+        threshold: int = 0.5,
+        node_type: Optional[str] = None,
+        sector: Optional[str] = None,
     ) -> List["schemas.Node"]:
         """
         Search for nodes using an alias.
