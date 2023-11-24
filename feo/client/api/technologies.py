@@ -34,4 +34,4 @@ class TechnologyAPI(BaseAPI):
         resp = self.client.get("/technologies", params=params)
         resp.raise_for_status()
 
-        return TechnologyQueryResponse(**resp.json()).models
+        return TechnologyQueryResponse(**resp.json()).technologies
