@@ -41,7 +41,7 @@ class Node(schemas.NodeBase):
     @classmethod
     def from_id(cls: Cls, id: str) -> Cls:
         """Initialise Node from `id` as a positional argument"""
-        node = api.aliases.get(ids=id)[0]
+        node = api.nodes.get(ids=id)[0]
         return cls(**node.model_dump())
 
     @classmethod
