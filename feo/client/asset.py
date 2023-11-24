@@ -28,7 +28,7 @@ class Asset(schemas.NodeBase):
             sector (str): the industrial sector to filter assets for
 
         Returns:
-            list["schemas.Node"]: A list of Asset objects.
+            list[schemas.Node]: A list of Node objects.
         """
 
         search_results = api.aliases.get(
