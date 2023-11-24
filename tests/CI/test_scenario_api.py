@@ -1,6 +1,6 @@
 from feo.client import api
 
-EXAMPLE_SCENARIO = "feo-global-indonesia:coal-retirement"
+EXAMPLE_SCENARIO = "feo-global-indonesia:feo-indonesia-current-policies"
 
 
 def test_scenario_search():
