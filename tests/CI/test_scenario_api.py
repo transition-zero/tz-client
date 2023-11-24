@@ -10,6 +10,5 @@ def test_scenario_search():
 
 
 def test_scenario_get():
-    scenarios = api.scenarios.get(EXAMPLE_SCENARIO)
-    assert isinstance(scenarios, list)
-    assert isinstance(scenarios[0], api.schemas.Scenario)
+    scenario = api.scenarios.get(EXAMPLE_SCENARIO)
+    assert isinstance(scenario, api.schemas.Scenario)
