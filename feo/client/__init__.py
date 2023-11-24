@@ -32,5 +32,15 @@ from feo.client.model import Model
 from feo.client.node import Node
 from feo.client.run import Run
 from feo.client.scenario import Scenario
+from feo.client.record import Record, RecordCollection
 
-__all__ = ["Node", "Asset", "AssetCollection", "Model", "Scenario", "Run"]
+__all__ = [
+    "Node", 
+    "Asset", 
+    "AssetCollection", 
+    "Model", 
+    "Scenario", 
+    "Run", 
+    "Record", 
+    "RecordCollection"
+]
