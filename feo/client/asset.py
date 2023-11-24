@@ -1,3 +1,5 @@
+from typing import List
+
 import pandas as pd
 from pydantic import root_validator
 
@@ -69,8 +71,8 @@ class AssetCollection(pd.DataFrame):
         _page (int | None): if generated from an API query, the current page of the query.
     """
 
-    _scope: Optional[schemas.AssetCollectionScope] = None
-    _page: Optional[int] = None
+    _scope: schemas.CollectionScope | None = None
+    _page: int | None = None
 
     @property
     def _constructor(self):
@@ -93,15 +95,16 @@ class AssetCollection(pd.DataFrame):
         """
 
         obj = cls.from_assets(api.assets.get(parent_node_id=node_id, sector=sector))
-        obj._scope = schemas.AssetCollectionScope(parent_node_id=node_id, sector=sector)
+        obj._scope = schemas.CollectionScope(parent_node_id=node_id, sector=sector)
         obj._page = 0
         return obj
 
     @classmethod
-    def from_assets(cls, assets: list[Asset]):
+    def from_assets(cls, assets: List[Asset]):
         """Instiate an AssetCollection from a list of Assets.
         Unpacks `AssetProperties` to dataframe columns.
         """
+        # pd.DataFrame.from_records
         return cls.from_records([asset.unpack() for asset in assets])
 
     def next_page(self):
