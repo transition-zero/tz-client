@@ -2,7 +2,7 @@ from feo.client import Scenario
 
 
 def test_scenario_init():
-    scenarios = Scenario("feo-global-indonesia:feo-indonesia-current-policies")
+    scenarios = Scenario.from_id("feo-global-indonesia:feo-indonesia-current-policies")
     assert isinstance(scenarios, Scenario)
 
 

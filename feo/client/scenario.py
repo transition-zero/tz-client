@@ -1,22 +1,23 @@
 from typing import List
 
-from pydantic import root_validator
-
 from feo.client import api
 from feo.client.api import schemas
 
 
 class Scenario(schemas.Scenario):
-    def __init__(self, fullslug: str, **kwargs):
+    @classmethod
+    def from_id(cls, id: str) -> "Scenario":
         """
-        Initialise the Scenario object
+        Initialize the Scenario object from an ID.
 
         Args:
-            fullslug (str): a combination of the model slug and scenario slug, separated
-                by a colon, e.g. `model-slug:scenario-slug`
-            **kwargs: Additional keyword arguments to be passed to the parent class.
+            id (str): A scenario ID, e.g. `model-slug:scenario-slug`.
+
+        Returns:
+            Scenario: A Scenario object.
         """
-        super(self.__class__, self).__init__(fullslug=fullslug, **kwargs)
+        scenario = api.scenarios.get(fullslug=id)
+        return cls(**scenario.model_dump())
 
     @classmethod
     def search(
@@ -60,16 +61,9 @@ class Scenario(schemas.Scenario):
 
         return [cls(**scenario.model_dump()) for scenario in search_results]
 
-    @root_validator(pre=True)
-    def maybe_initialise_from_api(cls, values):
-        fullslug = values.get("fullslug")
-        if fullslug is not None:
-            # call from API
-            scenario = api.scenarios.get(fullslug)
-
-            for key, val in scenario.model_dump().items():
-                values[key] = val
-
-            return values
-
-        return values
+    @property
+    def id(self) -> str:
+        """
+        The ID of the scenario. A combination of the model slug and scenario slug.
+        """
+        return f"{self.model_slug}:{self.slug}"

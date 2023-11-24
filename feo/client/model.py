@@ -1,21 +1,23 @@
 from typing import List
 
-from pydantic import root_validator
-
 from feo.client import api
 from feo.client.api import schemas
 
 
 class Model(schemas.Model):
-    def __init__(self, slug: str, **kwargs):
+    @classmethod
+    def from_id(cls, id: str) -> "Model":
         """
-        Initialize the Model object.
+        Initialize the Model object from an ID.
 
         Args:
-            slug (str): A model ID slug, e.g. `feo-global-indonesia`.
-            **kwargs: Additional keyword arguments to be passed to the parent class.
+            id (str): A model ID, e.g. `feo-global-indonesia`.
+
+        Returns:
+            Model: A Model object.
         """
-        super(self.__class__, self).__init__(slug=slug, **kwargs)
+        model = api.models.get(slug=id)
+        return cls(**model.model_dump())
 
     @classmethod
     def search(
@@ -59,17 +61,7 @@ class Model(schemas.Model):
 
         return [cls(**model.model_dump()) for model in search_results]
 
-    @root_validator(pre=True)
-    def maybe_initialise_from_api(cls, values):
-        slug = values.get("slug")
-
-        if slug is not None:
-            # call from API
-            model = api.models.get(slug=slug)
-
-            for key, val in model.model_dump().items():
-                values[key] = val
-
-            return values
-
-        return values
+    @property
+    def id(self) -> str:
+        """The ID of the model."""
+        return self.slug

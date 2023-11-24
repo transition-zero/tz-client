@@ -1,22 +1,23 @@
 from typing import List
 
-from pydantic import root_validator
-
 from feo.client import api
 from feo.client.api import schemas
 
 
 class Run(schemas.Run):
-    def __init__(self, fullslug: str, **kwargs):
+    @classmethod
+    def from_id(cls, id: str) -> "Run":
         """
-        Initialize the Run object.
+        Initialize the Run object from an ID.
 
         Args:
-            fullslug (str): A combination of the model slug, scenario slug and run slug
-                separated by a colon, e.g. `model-slug:scenario-slug:run-slug`.
-            **kwargs: Additional keyword arguments to be passed to the parent class.
+            id (str): A run ID, e.g. `model-slug:scenario-slug:run-slug`.
+
+        Returns:
+            Run: A Run object.
         """
-        super(self.__class__, self).__init__(fullslug=fullslug, **kwargs)
+        run = api.runs.get(fullslug=id)
+        return cls(**run.model_dump())
 
     @classmethod
     def search(
@@ -63,16 +64,7 @@ class Run(schemas.Run):
 
         return [cls(**run.model_dump()) for run in search_results]
 
-    @root_validator(pre=True)
-    def maybe_initialise_from_api(cls, values):
-        slug = values.get("slug")
-        if slug is not None:
-            # call from API
-            run = api.runs.get(slug)
-
-            for key, val in run.model_dump().items():
-                values[key] = val
-
-            return values
-
-        return values
+    @property
+    def id(self) -> str:
+        """The ID of the run. A combination of the model, scenario, and run slugs."""
+        return f"{self.model_slug}:{self.scenario_slug}:{self.slug}"

@@ -2,7 +2,7 @@ from feo.client import Model
 
 
 def test_model_init():
-    models = Model("feo-global-indonesia")
+    models = Model.from_id("feo-global-indonesia")
     assert isinstance(models, Model)
 
 
