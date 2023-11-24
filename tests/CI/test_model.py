@@ -2,8 +2,9 @@ from feo.client import Model
 
 
 def test_model_init():
-    models = Model.from_id("feo-global-indonesia")
-    assert isinstance(models, Model)
+    model = Model.from_id("feo-global-indonesia")
+    assert isinstance(model, Model)
+    assert model.id == "feo-global-indonesia"
 
 
 def test_model_search():
