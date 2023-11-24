@@ -235,7 +235,7 @@ class ModelQueryResult(BaseModel):
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
 
-      
+
 class ScenarioQueryResult(BaseModel):
     scenarios: list[Scenario] = Field(..., title="Scenarios")
     page: int | None = Field(None, title="Page")
