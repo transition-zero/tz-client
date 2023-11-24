@@ -41,15 +41,31 @@ class NodeBase(BaseModel):
     sector: str | None = None
     asset_properties: Optional[PowerUnit] = None
 
+    def unpack(self):
+        return {
+            k: v
+            for k, v in {**self.model_dump(), **self.asset_properties.model_dump()}.items()
+            if k != "asset_properties"
+        }
+
 
 class Node(NodeBase):
     parents: list[Union[str, "Node"]] | None = None
     children: list[Union[str, "Node"]] | None = None
 
 
+asset_sector_lookup = {"power": PowerUnit}
+
+
 class AliasResponse(BaseModel):
     aliases: List[Alias]
     next_page: Optional[int]
+
+
+class AssetCollectionScope(BaseModel):
+    parent_node_id: Optional[str] = None
+    sector: Optional[str] = None
+    includes: Optional[str] = None
 
 
 class AssetResponse(BaseModel):
