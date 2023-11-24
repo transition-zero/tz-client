@@ -27,8 +27,10 @@ from feo.client.api.aliases import AliasAPI
 from feo.client.api.assets import AssetAPI
 from feo.client.api.nodes import NodeAPI
 from feo.client.api.runs import RunAPI
+from feo.client.api.scenarios import ScenarioAPI
 
 aliases = AliasAPI()
 nodes = NodeAPI()
 assets = AssetAPI()
 runs = RunAPI()
+scenarios = ScenarioAPI()
