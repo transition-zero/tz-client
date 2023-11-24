@@ -1,13 +1,7 @@
 from datetime import date, datetime
-from typing import Any, ForwardRef, List, Optional, Union
+from typing import Any, List, Optional, Union
 
 from pydantic import BaseModel, Field
-
-
-class Alias(BaseModel):
-    node_id: str
-    alias: str
-    node: Union[ForwardRef("Node"), None]
 
 
 class PowerUnit(BaseModel):
@@ -55,6 +49,12 @@ class Node(NodeBase):
 
 
 asset_sector_lookup = {"power": PowerUnit}
+
+
+class Alias(BaseModel):
+    node_id: str
+    alias: str
+    node: Node | None
 
 
 class AliasResponse(BaseModel):
