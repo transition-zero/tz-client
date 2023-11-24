@@ -240,3 +240,22 @@ class ScenarioQueryResult(BaseModel):
     scenarios: list[Scenario] = Field(..., title="Scenarios")
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
+
+
+class TechnologyBase(BaseModel):
+    slug: str
+    name: str
+    properties: dict | None = None
+    parents: list | None = None
+    children: list | None = None
+
+
+class Technology(TechnologyBase):
+    parents: list[Union[str, "Technology"]] | None = None
+    children: list[Union[str, "Technology"]] | None = None
+    
+
+class TechnologyQueryResponse(BaseModel):
+    technologies: list[Technology]
+    page: int | None
+    total_pages: int | None
