@@ -17,6 +17,8 @@ class Asset(schemas.NodeBase):
         threshold: float = 0.5,
         node_type: str | None = None,
         sector: str | None = None,
+        limit: int = 10,
+        page: int = 0,
     ) -> list["schemas.Node"]:
         """
         Search for nodes using an alias.
@@ -32,7 +34,13 @@ class Asset(schemas.NodeBase):
         """
 
         search_results = api.aliases.get(
-            alias=alias, threshold=threshold, node_type=node_type, includes="power_unit"
+            alias=alias,
+            threshold=threshold,
+            node_type=node_type,
+            sector=sector,
+            includes="power_unit",
+            page=page,
+            limit=limit,
         )
 
         return [
