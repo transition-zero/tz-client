@@ -14,8 +14,8 @@ nav:
       - Node: client/node.md
       - Asset: client/asset.md
       - 'Asset Collection': client/asset_collection.md
-      - Source: client/source.md
-      - Publisher: client/publisher.md
+      #- Source: client/source.md
+      #- Publisher: client/publisher.md
       - Model: client/model.md
       - Scenario: client/scenario.md
       - Run: client/run.md
