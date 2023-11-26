@@ -1,7 +1,11 @@
-from typing import List, Optional
+from typing import TYPE_CHECKING, ForwardRef, List, Optional
 
-from feo.client import Source, api
+from feo.client import api
 from feo.client.api import schemas
+from feo.client.source import factory as source_factory
+
+if TYPE_CHECKING:
+    from feo.client.source import Source
 
 
 class Publisher(schemas.Publisher):
@@ -12,7 +16,7 @@ class Publisher(schemas.Publisher):
 
     """
 
-    _sources: Optional[List[Source]] = None
+    _sources: Optional[List[ForwardRef("Source")]] = None
 
     @classmethod
     def from_id(cls, id: str) -> "Publisher":
@@ -37,23 +41,23 @@ class Publisher(schemas.Publisher):
             List[Publisher]: A list of Publisher objects.
         """
 
-        search_results = api.publishers.get(
+        search_results = api.publishers.search(
             name=name,
         )
 
-        return [cls(**publisher.model_dump()) for publisher in search_results.publishers]
+        return [cls(**publisher.model_dump()) for publisher in search_results]
 
     @classmethod
-    def _get_sources(cls, publisher_id: str):
+    def _get_sources(cls, publisher_slug: str):
         return [
-            Source(**source.model_dump())
-            for source in api.sources.get(publisher_id=publisher_id).sources
+            source_factory(**source.model_dump())
+            for source in api.sources.search(publisher_slug=publisher_slug)
         ]
 
     @property
     def sources(self) -> list["Source"]:
         """A list of sources made available by this publisher."""
         if self._sources is None:
-            self._sources = self._get_sources(self.id)
+            self._sources = self._get_sources(self.slug)
             return self._sources
         return self._sources

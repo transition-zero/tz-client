@@ -1,7 +1,11 @@
-from typing import Optional
+from typing import TYPE_CHECKING, ForwardRef, Optional
 
-from feo.client import Publisher, api
+from feo.client import api
 from feo.client.api import schemas
+from feo.client.utils import parse_slug
+
+if TYPE_CHECKING:
+    from feo.client.publisher import Publisher
 
 
 class Source(schemas.Source):
@@ -13,7 +17,7 @@ class Source(schemas.Source):
 
     """
 
-    _publisher: Optional[Publisher] = None
+    _publisher: Optional[ForwardRef("Publisher")] = None
 
     @classmethod
     def from_id(cls, id: str) -> "Source":
@@ -23,7 +27,8 @@ class Source(schemas.Source):
         source = Source.from_id("<publisher_id>:<source_id>")
         ```
         """
-        source = api.sources.get(ids=id)[0]
+        publisher_slug, source_slug = parse_slug(id, 2)
+        source = api.sources.get(slug=id)
         return cls(**source.model_dump())
 
     @classmethod
@@ -40,8 +45,38 @@ class Source(schemas.Source):
             List[Source]: A list of Source objects.
         """
 
-        search_results = api.sources.get(
+        search_results = api.sources.search(
             name=name, year=year, publisher_id=publisher_id, includes="publisher,links,license"
         )
 
         return [cls(**source.model_dump()) for source in search_results.sources]
+
+    def _get_links(self):
+        links = api.sources.get(
+            slug=f"{self.publisher_slug}:{self.slug}", includes="links"
+        ).base_links
+        return links
+
+    def _get_license(self):
+        return api.sources.get(
+            slug=f"{self.publisher_slug}:{self.slug}", includes="license"
+        ).base_license
+
+    @property
+    def links(self):
+        """A list of sources made available by this publisher."""
+        if self.base_links is None:
+            self.base_links = self._get_links()
+            return self.base_links
+        return self.base_links
+
+    @property
+    def license(self):
+        if self.base_license is None:
+            self.base_license = self._get_license()
+            return self.base_license
+        return self.base_license
+
+
+def factory(**kwargs):
+    return Source(**kwargs)
