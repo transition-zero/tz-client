@@ -1,7 +1,7 @@
 from typing import List
 
 from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Publisher, PublisherQueryResult
+from feo.client.api.schemas import Publisher, PublisherQueryResponse
 
 
 class PublisherAPI(BaseAPI):
@@ -34,4 +34,4 @@ class PublisherAPI(BaseAPI):
         resp = self.client.get("/publishers", params=params)
         resp.raise_for_status()
 
-        return PublisherQueryResult(**resp.json()).publishers
+        return PublisherQueryResponse(**resp.json()).publishers

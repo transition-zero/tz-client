@@ -36,6 +36,9 @@ from feo.client.run import Run
 from feo.client.scenario import Scenario
 from feo.client.source import Source
 
+Publisher.model_rebuild()
+Source.model_rebuild()
+
 __all__ = [
     "Node",
     "Asset",

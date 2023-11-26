@@ -1,12 +1,12 @@
 from typing import List
 
 from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Source, SourceQueryResult
+from feo.client.api.schemas import Source, SourceQueryResponse
 
 
 class SourceAPI(BaseAPI):
-    def get(self, slug: str) -> Source:
-        resp = self.client.get(f"/sources/{slug}")
+    def get(self, slug: str, includes: str = "") -> Source:
+        resp = self.client.get(f"/sources/{slug}", params=dict(includes=includes))
         resp.raise_for_status()
 
         return Source(**resp.json())
@@ -21,7 +21,7 @@ class SourceAPI(BaseAPI):
         day: int | None = None,
         quarter: int | None = None,
         license: str | None = None,
-        publisher_id: int | None = None,
+        publisher_slug: str | None = None,
         publisher_name: str | None = None,
         limit: int | None = None,
         page: int | None = None,
@@ -43,4 +43,4 @@ class SourceAPI(BaseAPI):
         resp = self.client.get("/sources", params=params)
         resp.raise_for_status()
 
-        return SourceQueryResult(**resp.json()).sources
+        return SourceQueryResponse(**resp.json()).sources
