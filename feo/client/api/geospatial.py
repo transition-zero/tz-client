@@ -23,6 +23,9 @@ class VectorAPI(BaseAPI):
         if isinstance(feature_ids, list):
             feature_ids = ",".join(feature_ids)
 
+        if geometry is not None:
+            geometry = geometry.to_geojson()
+
         params = dict(
             feature_ids=feature_ids,
             geometry=geometry,
@@ -34,8 +37,6 @@ class VectorAPI(BaseAPI):
         )
 
         params = {k: v for k, v in params.items() if v is not None}
-        if search_geom := params.get("geometry"):
-            params.update({"geometry": search_geom.to_geojson()})
 
         resp = self.client.get(f"/collections/{collection_id}/items", params=params)
         resp.raise_for_status()
