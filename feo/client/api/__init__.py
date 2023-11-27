@@ -25,8 +25,10 @@
 """
 from feo.client.api.aliases import AliasAPI
 from feo.client.api.assets import AssetAPI
+from feo.client.api.geometry import GeometryAPI
 from feo.client.api.nodes import NodeAPI
 
 aliases = AliasAPI()
 nodes = NodeAPI()
 assets = AssetAPI()
+geometries = GeometryAPI()

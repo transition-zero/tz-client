@@ -1,7 +1,7 @@
 from datetime import date
-from typing import ForwardRef, List, Optional, Union, Tuple, TypeVar
+from typing import ForwardRef, List, Literal, Optional, Tuple, TypeVar, Union
 
-from pydantic import BaseModel, validator, conlist
+from pydantic import BaseModel, conlist, validator
 
 
 class Alias(BaseModel):
@@ -78,7 +78,14 @@ PolygonCoords = conlist(LinearRing, min_length=1)
 MultiPolygonCoords = conlist(PolygonCoords, min_length=1)
 BBox = Tuple[float, float, float, float]  # 2D bbox
 Props = TypeVar("Props", bound=dict)
-VALID_GEOM_TYPES = ["Polygon", "Point", "LineString"]
+VALID_GEOM_TYPES = [
+    "Polygon",
+    "Point",
+    "LineString",
+    "MultiPolygon",
+    "MultiPoint",
+    "MultiLineString",
+]
 
 
 class Geometry(BaseModel):
@@ -87,16 +94,16 @@ class Geometry(BaseModel):
 
     @validator("type")
     def validate_type(cls, geom_type):
-        assert (
-            geom_type in VALID_GEOM_TYPES
-        ), f"Must be one of {', '.join(VALID_GEOM_TYPES)}"
-        return geom_type
+        if geom_type in VALID_GEOM_TYPES:
+            return geom_type
+        else:
+            raise ValueError(f"Must be one of {', '.join(VALID_GEOM_TYPES)}")
 
 
 class FeatureBase(BaseModel):
-    type: str = "Feature"
+    type: Literal["Feature"] = "Feature"
     geometry: Geometry
-    properties: Optional[Props]
+    properties: Optional[Props] = dict()
 
     def to_geojson(self):
         return {
@@ -113,6 +120,6 @@ class Feature(FeatureBase):
 
 
 class GeometryResponse(BaseModel):
-    type: str = "FeatureCollection"
+    type: Literal["FeatureCollection"] = "FeatureCollection"
     features: List[Feature]
-    next_page: Optional[int]
+    next_page: Optional[int] = None
