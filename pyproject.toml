@@ -34,7 +34,9 @@ dev = [
   "mypy",
   "tox",
   "coverage",
-]
+  "types-requests",
+  "pandas-stubs",
+  ]
 
 [project.urls]  # Optional
 "Homepage" = "https://github.com/transitionzero/feo-client"
