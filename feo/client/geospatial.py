@@ -33,7 +33,7 @@ class Features(schemas.FeatureCollection):
 
 class Geometry(schemas.Geometry):
     @classmethod
-    def get(cls, feature_id: str, collection_id: str = "admin-idn"):
+    def get(cls, feature_id: str, collection_id: str = "admin-gadm"):
         geom = api.vectors.get_geometry(collection_id=collection_id, feature_id=feature_id)
 
         return cls(**geom.model_dump())

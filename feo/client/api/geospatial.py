@@ -40,7 +40,7 @@ class VectorAPI(BaseAPI):
 
         return FeatureCollection(**resp.json())
 
-    def get_geometry(self, feature_id: str, collection_id: str = "admin-idn") -> Geometry:
+    def get_geometry(self, feature_id: str, collection_id: str = "admin-gadm") -> Geometry:
         resp = self.get_features(collection_id=collection_id, feature_ids=[feature_id])
 
         try:
