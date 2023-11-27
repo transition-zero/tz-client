@@ -49,7 +49,13 @@ class RecordCollection(pd.DataFrame):
 
         Args:
             node_id (str): the id of the parent node to retieve records for.
-            sector (str): the name of the sector to retireve records for.
+            public (bool): whether to include public records.
+            valid_timestamp_start (datetime): filter records by valid timestamp start.
+            valid_timestamp_end (datetime): filter records by valid timestamp end.
+            provenance_slug (list[str]): filter records by provenance slug.
+            datum_type (list[str]): filter records by datum type.
+            datum_detail (list[str]): filter records by datum detail.
+            node_type (list[str]): filter records by node type.
 
         Returns:
             RecordCollection: A pandas-dataframe extension for FEO records.
@@ -84,11 +90,15 @@ class RecordCollection(pd.DataFrame):
         if not self._scope:
             raise ValueError("Cant iterate an unscoped RecordCollection")
         new_collection = self.__class__.from_feo_records(
-            api.records.get(parent_node_id=self._scope.parent_node_id, page=self._page + 1)
+            api.records.get(
+                parent_node_id=self._scope.parent_node_id, page=self._page + 1
+            )
         )
         self._page += 1
 
-        self.__dict__.update(pd.concat([self, new_collection], ignore_index=True).__dict__)
+        self.__dict__.update(
+            pd.concat([self, new_collection], ignore_index=True).__dict__
+        )
         return len(new_collection)
 
     def to_feo_records(self):
