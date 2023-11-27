@@ -17,7 +17,7 @@ class Features(schemas.FeatureCollection):
         limit: Optional[int] = None,
         page: Optional[int] = None,
     ):
-        search_results = api.geometries.get_features(
+        search_results = api.vectors.get_features(
             collection_id,
             feature_ids,
             geometry,
@@ -28,7 +28,7 @@ class Features(schemas.FeatureCollection):
             page,
         )
 
-        return cls(**search_results)
+        return cls(**search_results.model_dump())
 
 
 class Geometry(schemas.Geometry):

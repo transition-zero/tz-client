@@ -53,5 +53,5 @@ class VectorAPI(BaseAPI):
 
 
 class RasterAPI(BaseAPI):
-    def get():
+    def get(self):
         raise NotImplementedError

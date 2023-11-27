@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from typing import Any, List, Literal, Optional, Tuple, TypeVar, Union
+from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field, conlist, validator
 
@@ -90,11 +90,10 @@ class NodeResponse(BaseModel):
 
 
 Point = Tuple[float, float]
-LinearRing = conlist(Point, min_length=4)
-PolygonCoords = conlist(LinearRing, min_length=1)
-MultiPolygonCoords = conlist(PolygonCoords, min_length=1)
+LinearRing = Annotated[List[Point], conlist(Point, min_length=4)]
+PolygonCoords = Annotated[List[LinearRing], conlist(LinearRing, min_length=1)]
+MultiPolygonCoords = Annotated[List[PolygonCoords], conlist(PolygonCoords, min_length=1)]
 BBox = Tuple[float, float, float, float]  # 2D bbox
-Props = TypeVar("Props", bound=dict)
 VALID_GEOM_TYPES = [
     "Polygon",
     "Point",
@@ -123,7 +122,7 @@ class Geometry(BaseModel):
 class FeatureBase(BaseModel):
     type: Literal["Feature"] = "Feature"
     geometry: Geometry
-    properties: Optional[Props] = dict()
+    properties: Optional[Dict] = dict()
 
     def to_geojson(self):
         return {

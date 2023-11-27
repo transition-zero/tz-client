@@ -31,7 +31,7 @@ class Node(schemas.NodeBase):
     ```
     """
 
-    _geometry: Optional[str] = None
+    _geometry: Optional[Dict[str, Any]] = None
     _assets: Optional[AssetCollection] = None
     _children: Optional[list["Node"]] = None
     _parents: Optional[list["Node"]] = None
@@ -102,14 +102,15 @@ class Node(schemas.NodeBase):
         return self._parents
 
     @classmethod
-    def _get_geometry(cls, ids):
+    def _get_geometry(cls, ids) -> Geometry:
         return Geometry.get(ids)
 
     @property
-    def geometry(self) -> str | Any:
+    def geometry(self) -> Dict[str, Any]:
         """The WGS84 GeoJSON for this node's geometry"""
         if self._geometry is None:
-            self._geometry = self._get_geometry(self.id)
-            return self._geometry.to_geojson()
+            geom = self._get_geometry(self.id)
+            self._geometry = geom.to_geojson()
+            return self._geometry
         else:
-            return self._geometry.to_geojson()
+            return self._geometry
