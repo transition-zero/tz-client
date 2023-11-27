@@ -6,6 +6,7 @@ from pydantic import root_validator
 from feo.client import api
 from feo.client.api import schemas
 from feo.client.asset import AssetCollection
+from feo.client.geospatial import Geometry
 
 # use property decorator to facilitate getting and setting property
 
@@ -129,13 +130,13 @@ class Node(schemas.NodeBase):
 
     @classmethod
     def _get_geometry(cls, ids):
-        raise NotImplementedError
+        return Geometry.get(ids)
 
     @property
     def geometry(self) -> dict:
         """The WGS84 GeoJSON for this node's geometry"""
         if self._geometry is None:
             self._geometry = self._get_geometry(self.id)
-            return self._geometry
+            return self._geometry.to_geojson()
         else:
-            return self._geometry
+            return self._geometry.to_geojson()

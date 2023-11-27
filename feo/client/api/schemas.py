@@ -99,6 +99,9 @@ class Geometry(BaseModel):
         else:
             raise ValueError(f"Must be one of {', '.join(VALID_GEOM_TYPES)}")
 
+    def to_geojson(self):
+        return {"type": self.type, "coordinates": self.coordinates}
+
 
 class FeatureBase(BaseModel):
     type: Literal["Feature"] = "Feature"
@@ -108,7 +111,7 @@ class FeatureBase(BaseModel):
     def to_geojson(self):
         return {
             "type": self.type,
-            "geometry": self.geometry.__dict__,
+            "geometry": self.geometry.to_geojson(),
             "properties": self.properties,
             "id": self.id,
         }
@@ -119,7 +122,7 @@ class Feature(FeatureBase):
     slug: str
 
 
-class GeometryResponse(BaseModel):
+class FeatureCollection(BaseModel):
     type: Literal["FeatureCollection"] = "FeatureCollection"
     features: List[Feature]
     next_page: Optional[int] = None
