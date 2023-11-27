@@ -38,7 +38,10 @@ class NodeBase(BaseModel):
     def unpack(self):
         return {
             k: v
-            for k, v in {**self.model_dump(), **self.asset_properties.model_dump()}.items()
+            for k, v in {
+                **self.model_dump(),
+                **self.asset_properties.model_dump(),
+            }.items()
             if k != "asset_properties"
         }
 
@@ -200,7 +203,7 @@ class Scenario(ScenarioBase):
     preview_image_url: str | None = Field(None, title="Preview Image Url")
 
 
-class Model(BaseModel):
+class ModelBase(BaseModel):
     name: str | None = Field(None, title="Name")
     slug: str = Field(..., title="Slug")
     description: str | None = Field(None, title="Description")
@@ -220,10 +223,13 @@ class Model(BaseModel):
     views: int | None = Field(None, title="Views")
     stars: int | None = Field(None, title="Stars")
     owner: UserNameplate | None = None
-    scenarios: list[Scenario] | None = Field(None, title="Scenarios")
     node_type_summary: list[NodeTypeSummaryElement] = Field(..., title="Node Type Summary")
-    featured_scenario: Scenario | None = None
     preview_image_url: str | None = Field(None, title="Preview Image Url")
+
+
+class Model(ModelBase):
+    scenarios: list[Scenario] | None = Field(None, title="Scenarios")
+    featured_scenario: Scenario | None = None
 
 
 class RunSingleExtrema(BaseModel):

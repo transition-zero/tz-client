@@ -5,8 +5,8 @@ from feo.client.api.schemas import Model, ModelQueryResult
 
 
 class ModelAPI(BaseAPI):
-    def get(self, slug: str) -> Model:
-        resp = self.client.get(f"/models/{slug}")
+    def get(self, slug: str, includes: str | None = None) -> Model:
+        resp = self.client.get(f"/models/{slug}", params={"includes": includes})
         resp.raise_for_status()
 
         return Model(**resp.json())
