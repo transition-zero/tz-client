@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 
-from pydantic import BaseModel, Field, conlist, validator
+from pydantic import BaseModel, Field, conlist, field_validator
 
 try:
     # Setting mypy to ignore due to missing stubs
@@ -116,7 +116,7 @@ class Geometry(BaseModel):
     type: str
     coordinates: Union[PolygonCoords, MultiPolygonCoords, Point]
 
-    @validator("type")
+    @field_validator("type", mode="before")
     def validate_type(cls, geom_type):
         if geom_type in VALID_GEOM_TYPES:
             return geom_type
@@ -159,6 +159,12 @@ class FeatureCollection(BaseModel):
     type: Literal["FeatureCollection"] = "FeatureCollection"
     features: List[Feature]
     next_page: Optional[int] = None
+
+    def to_dict(self):
+        return self.model_dump()
+
+    def to_geojson(self):
+        return self.model_dump_json()
 
     def to_geodataframe(self):
         if GEO_SUPPORT:
