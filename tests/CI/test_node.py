@@ -33,3 +33,8 @@ def test_node_parents(node):
     parents = node.parents
     assert isinstance(parents, list)
     assert all(isinstance(parent, Node) for parent in parents)
+
+
+def test_node_geometry(node):
+    geom = node.geometry
+    assert isinstance(geom, dict)
