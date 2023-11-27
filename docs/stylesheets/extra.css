@@ -1,3 +1,28 @@
+@font-face {
+  font-family: 'Good Sans';
+  src: url('./fonts/GoodSans-Regular.otf');
+  font-weight: normal;
+  style: normal;
+}
+@font-face {
+  font-family: 'Good Sans';
+  src: url('./fonts/GoodSans-RegularItalic.otf');
+  font-weight: normal;
+  style: italic;
+}
+@font-face {
+  font-family: 'Good Sans';
+  src: url('./fonts/GoodSans-Medium.otf');
+  font-weight: '500';
+  style: normal;
+}
+@font-face {
+  font-family: 'Good Sans';
+  src: url('./fonts/GoodSans-MediumItalic.otf');
+  font-weight: '500';
+  style: italic;
+}
+
 [data-md-color-scheme="transitionzero"] {
   --md-primary-fg-color:        #1F283D;
   --md-primary-fg-color--light: #ECB7B7;
@@ -5,4 +30,8 @@
 }
 [data-md-color-scheme="slate"] {
   --md-primary-fg-color: #FFB405;
+}
+
+:root {
+  --md-text-font: 'Good Sans', sans-serif;
 }
