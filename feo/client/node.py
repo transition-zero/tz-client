@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 
 # from feo.client.base import Base
 from feo.client import api
@@ -31,7 +31,7 @@ class Node(schemas.NodeBase):
     ```
     """
 
-    _geometry: Optional[Dict[str, Any]] = None
+    _geometry: Optional[Geometry] = None
     _assets: Optional[AssetCollection] = None
     _children: Optional[list["Node"]] = None
     _parents: Optional[list["Node"]] = None
@@ -106,11 +106,10 @@ class Node(schemas.NodeBase):
         return Geometry.get(ids)
 
     @property
-    def geometry(self) -> Dict[str, Any]:
+    def geometry(self) -> Geometry:
         """The WGS84 GeoJSON for this node's geometry"""
         if self._geometry is None:
-            geom = self._get_geometry(self.id)
-            self._geometry = geom.to_geojson()
+            self._geometry = self._get_geometry(self.id)
             return self._geometry
         else:
             return self._geometry

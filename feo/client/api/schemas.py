@@ -3,6 +3,13 @@ from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field, conlist, validator
 
+try:
+    from shapely import from_geojson
+
+    GEO_SUPPORT = True
+except ImportError:
+    GEO_SUPPORT = False
+
 
 class PowerUnit(BaseModel):
     # Union of all the params of the asset models
@@ -115,8 +122,17 @@ class Geometry(BaseModel):
         else:
             raise ValueError(f"Must be one of {', '.join(VALID_GEOM_TYPES)}")
 
+    def to_dict(self):
+        return self.model_dump()
+
     def to_geojson(self):
-        return {"type": self.type, "coordinates": self.coordinates}
+        return self.model_dump_json()
+
+    def to_shape(self):
+        if GEO_SUPPORT:
+            return from_geojson(self.to_geojson())
+        else:
+            raise NotImplementedError
 
 
 class FeatureBase(BaseModel):
@@ -142,6 +158,12 @@ class FeatureCollection(BaseModel):
     type: Literal["FeatureCollection"] = "FeatureCollection"
     features: List[Feature]
     next_page: Optional[int] = None
+
+    def to_geodataframe(self):
+        if GEO_SUPPORT:
+            pass
+        else:
+            raise NotImplementedError
 
 
 class RecordID(BaseModel):

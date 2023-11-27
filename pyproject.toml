@@ -38,6 +38,11 @@ dev = [
   "pandas-stubs",
   ]
 
+geo = [
+  "shapely",
+  "geopandas",
+  ]
+
 [project.urls]  # Optional
 "Homepage" = "https://github.com/transitionzero/feo-client"
 "Bug Reports" = "https://github.com/transitionzero/feo-client/issues"
