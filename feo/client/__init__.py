@@ -28,6 +28,7 @@
 """
 
 from feo.client.asset import Asset, AssetCollection
+from feo.client.geospatial import Features, Geometry
 from feo.client.model import Model
 from feo.client.node import Node
 from feo.client.record import Record, RecordCollection
@@ -43,4 +44,6 @@ __all__ = [
     "Run",
     "Record",
     "RecordCollection",
+    "Features",
+    "Geometry",
 ]

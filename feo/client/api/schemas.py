@@ -1,7 +1,7 @@
 from datetime import date, datetime
-from typing import Any, List, Optional, Union
+from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, conlist, validator
 
 
 class PowerUnit(BaseModel):
@@ -87,6 +87,61 @@ class NodeResponse(BaseModel):
     residual_capacity: dict[
         str, dict[int, dict[str, float]]
     ] | None = None  # sector, year, unit_type, float
+
+
+Point = Tuple[float, float]
+LinearRing = Annotated[List[Point], conlist(Point, min_length=4)]
+PolygonCoords = Annotated[List[LinearRing], conlist(LinearRing, min_length=1)]
+MultiPolygonCoords = Annotated[List[PolygonCoords], conlist(PolygonCoords, min_length=1)]
+BBox = Tuple[float, float, float, float]  # 2D bbox
+VALID_GEOM_TYPES = [
+    "Polygon",
+    "Point",
+    "LineString",
+    "MultiPolygon",
+    "MultiPoint",
+    "MultiLineString",
+]
+
+
+class Geometry(BaseModel):
+    type: str
+    coordinates: Union[PolygonCoords, MultiPolygonCoords, Point]
+
+    @validator("type")
+    def validate_type(cls, geom_type):
+        if geom_type in VALID_GEOM_TYPES:
+            return geom_type
+        else:
+            raise ValueError(f"Must be one of {', '.join(VALID_GEOM_TYPES)}")
+
+    def to_geojson(self):
+        return {"type": self.type, "coordinates": self.coordinates}
+
+
+class FeatureBase(BaseModel):
+    type: Literal["Feature"] = "Feature"
+    geometry: Geometry
+    properties: Optional[Dict] = dict()
+
+    def to_geojson(self):
+        return {
+            "type": self.type,
+            "geometry": self.geometry.to_geojson(),
+            "properties": self.properties,
+            "id": self.id,
+        }
+
+
+class Feature(FeatureBase):
+    collection_slug: str
+    slug: str
+
+
+class FeatureCollection(BaseModel):
+    type: Literal["FeatureCollection"] = "FeatureCollection"
+    features: List[Feature]
+    next_page: Optional[int] = None
 
 
 class RecordID(BaseModel):

@@ -50,3 +50,7 @@ def test_search_pagination():
     ids2 = {item.id for item in items2}
     # assert that items on different pages are all different
     assert ids1.intersection(ids2) == set()
+
+def test_node_geometry(node):
+    geom = node.geometry
+    assert isinstance(geom, dict)
