@@ -2,11 +2,10 @@ from typing import TYPE_CHECKING, List
 
 from feo.client import api
 from feo.client.api import schemas
-from feo.client.model import factory as model_factory
-from feo.client.run import Run
 
 if TYPE_CHECKING:
     from feo.client.model import Model
+    from feo.client.run import Run
 
 
 class Scenario(schemas.ScenarioBase):
@@ -75,23 +74,24 @@ class Scenario(schemas.ScenarioBase):
 
     @property
     def model(self) -> "Model":
-        """A list of models that contain this scenario."""
+        """The model associated with this scenario."""
+        from feo.client.model import Model
+
         scenario_data = api.models.get(slug=self.id, includes="model")
-        return model_factory(**scenario_data.model.model_dump())
+        return Model(**scenario_data.model.model_dump())
 
     @property
-    def featured_run(self) -> Run:
+    def featured_run(self) -> "Run":
         """The featured run associated with this scenario."""
+        from feo.client.run import Run
+
         scenario_data = api.models.get(slug=self.id, includes="featured_run")
         return Run(**scenario_data.featured_run.model_dump())
 
     @property
-    def runs(self) -> list[Run]:
+    def runs(self) -> list["Run"]:
         """The featured run associated with this scenario."""
+        from feo.client.run import Run
+
         scenario_data = api.models.get(slug=self.id, includes="runs")
         return [Run(**r.model_dump()) for r in scenario_data.runs]
-
-
-def factory(**kwargs) -> "Scenario":
-    """Factory function for creating a Scenario object."""
-    return Scenario(**kwargs)

@@ -1,10 +1,14 @@
-from typing import List
+from typing import TYPE_CHECKING, List
 
 from feo.client import api
 from feo.client.api import schemas
 
+if TYPE_CHECKING:
+    from feo.client.model import Model
+    from feo.client.scenario import Scenario
 
-class Run(schemas.Run):
+
+class Run(schemas.RunBase):
     @classmethod
     def from_id(cls, id: str) -> "Run":
         """
@@ -68,3 +72,19 @@ class Run(schemas.Run):
     def id(self) -> str:
         """The ID of the run. A combination of the model, scenario, and run slugs."""
         return f"{self.model_slug}:{self.scenario_slug}:{self.slug}"
+
+    @property
+    def model(self) -> "Model":
+        """The model associated with this run."""
+        from feo.client.model import Model
+
+        scenario_data = api.models.get(slug=self.id, includes="model")
+        return Model(**scenario_data.model.model_dump())
+
+    @property
+    def scenario(self) -> "Scenario":
+        """The scenario associated with this run."""
+        from feo.client.scenario import Scenario
+
+        scenario_data = api.scenarios.get(slug=self.id, includes="scenario")
+        return Scenario(**scenario_data.scenario.model_dump())

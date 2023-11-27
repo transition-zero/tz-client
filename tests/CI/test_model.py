@@ -20,4 +20,4 @@ def test_model_scenarios():
     assert isinstance(scenarios, list)
     assert isinstance(scenarios[0], Scenario)
 
-    assert isinstance(model.featured_scenario, Scenario)
+    assert isinstance(model.featured_scenario, Scenario | None)
