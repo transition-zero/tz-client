@@ -4,7 +4,8 @@ from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 from pydantic import BaseModel, Field, conlist, validator
 
 try:
-    from shapely import from_geojson
+    # Setting mypy to ignore due to missing stubs
+    from shapely import from_geojson  # type: ignore
 
     GEO_SUPPORT = True
 except ImportError:
