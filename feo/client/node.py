@@ -58,6 +58,8 @@ class Node(schemas.NodeBase):
             alias (str): The target alias to search.
             threshold (float): The desired confidence in the search result.
             node_type (str): filter search to a specific node type.
+            limit (int): The maximum number of search results to return per page.
+            page (int): The page number of search results to return.
 
         Returns:
             List[Node]: A list of Node objects.

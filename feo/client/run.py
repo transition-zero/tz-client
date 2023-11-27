@@ -43,8 +43,8 @@ class Run(schemas.Run):
             featured (bool, optional): Filter by whether the run is featured.
             includes (str, optional): Additional fields to include in the search results.
             public (bool, optional): Filter by whether the run is public.
-            limit (int, optional): The maximum number of runs to return. Default is 5.
-            page (int, optional): The page number of the results. Default is 0.
+            limit (int): The maximum number of search results to return per page.
+            page (int): The page number of search results to return.
 
         Returns:
             List[Run]: A list of Run objects.

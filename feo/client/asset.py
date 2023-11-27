@@ -35,6 +35,8 @@ class Asset(schemas.NodeBase):
             threshold (float): The desired confidence in the search result.
             node_type (str): filter search to a specific node type.
             sector (str): the industrial sector to filter assets for
+            limit (int): The maximum number of search results to return per page.
+            page (int): The page number of search results to return.
 
         Returns:
             list[schemas.Node]: A list of Node objects.
