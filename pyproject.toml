@@ -40,6 +40,8 @@ dev = [
 
 geo = [
   "shapely",
+  "geopandas",
+  "pyogrio",
   ]
 
 [project.urls]  # Optional

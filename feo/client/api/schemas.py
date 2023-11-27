@@ -1,15 +1,21 @@
 from datetime import date, datetime
 from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
+from warnings import warn
 
 from pydantic import BaseModel, Field, conlist, field_validator
 
 try:
     # Setting mypy to ignore due to missing stubs
+    import geopandas as gpd  # type: ignore
     from shapely import from_geojson  # type: ignore
 
     GEO_SUPPORT = True
 except ImportError:
     GEO_SUPPORT = False
+    warn(
+        "Failed to locate 'geo' dependencies. Geospatial functionality will be limited."
+        " For full geospatial support please install the 'geo' requirements"
+    )
 
 
 class PowerUnit(BaseModel):
@@ -133,7 +139,10 @@ class Geometry(BaseModel):
         if GEO_SUPPORT:
             return from_geojson(self.to_geojson())
         else:
-            raise NotImplementedError
+            raise NotImplementedError(
+                "Full geospatial support not available."
+                " Please install 'geo' depencencies to use this method."
+            )
 
 
 class FeatureBase(BaseModel):
@@ -168,9 +177,12 @@ class FeatureCollection(BaseModel):
 
     def to_geodataframe(self):
         if GEO_SUPPORT:
-            pass
+            return gpd.read_file(self.to_geojson(), driver="GeoJSON")
         else:
-            raise NotImplementedError
+            raise NotImplementedError(
+                "Full geospatial support not available."
+                " Please install 'geo' depencencies to use this method."
+            )
 
 
 class RecordID(BaseModel):
