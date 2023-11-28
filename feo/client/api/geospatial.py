@@ -14,7 +14,7 @@ class VectorAPI(BaseAPI):
         collection_id: str,
         feature_ids: Optional[Union[str, List[str]]] = None,
         geometry: Optional[Geometry] = None,
-        simplify: Optional[Union[float, str]] = 0.001,
+        simplify: Optional[Union[float, str]] = 0.002,
         clip: Optional[bool] = None,
         properties: Optional[dict] = None,
         limit: Optional[int] = None,
@@ -22,6 +22,9 @@ class VectorAPI(BaseAPI):
     ) -> FeatureCollection:
         if isinstance(feature_ids, list):
             feature_ids = ",".join(feature_ids)
+
+        if geometry is not None:
+            geometry = geometry.to_geojson()
 
         params = dict(
             feature_ids=feature_ids,
@@ -40,7 +43,7 @@ class VectorAPI(BaseAPI):
 
         return FeatureCollection(**resp.json())
 
-    def get_geometry(self, feature_id: str, collection_id: str = "admin-gadm") -> Geometry:
+    def get_geometry(self, feature_id: str, collection_id: str) -> Geometry:
         resp = self.get_features(collection_id=collection_id, feature_ids=[feature_id])
 
         try:

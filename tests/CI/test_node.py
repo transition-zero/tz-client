@@ -1,6 +1,6 @@
 import pytest
 
-from feo.client import AssetCollection, Node
+from feo.client import AssetCollection, Geometry, Node
 
 
 @pytest.fixture
@@ -54,4 +54,4 @@ def test_search_pagination():
 
 def test_node_geometry(node):
     geom = node.geometry
-    assert isinstance(geom, dict)
+    assert isinstance(geom, Geometry)
