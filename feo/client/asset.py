@@ -48,8 +48,8 @@ class Asset(schemas.NodeBase):
             node_type=node_type,
             sector=sector,
             includes="power_unit",
-            page=page,
             limit=limit,
+            page=page,
         )
 
         return [
