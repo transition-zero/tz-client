@@ -1,6 +1,6 @@
 import pytest
 
-from feo.client import AssetCollection, Node
+from feo.client import AssetCollection, Geometry, Node
 
 
 @pytest.fixture
@@ -33,3 +33,8 @@ def test_node_parents(node):
     parents = node.parents
     assert isinstance(parents, list)
     assert all(isinstance(parent, Node) for parent in parents)
+
+
+def test_node_geometry(node):
+    geom = node.geometry
+    assert isinstance(geom, Geometry)

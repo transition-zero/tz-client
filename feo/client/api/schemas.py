@@ -1,7 +1,22 @@
 from datetime import date, datetime
-from typing import Any, List, Optional, Union
+from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
+from warnings import warn
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field, conlist, field_validator, ConfigDict
+from shapely import from_geojson  # type: ignore
+
+try:
+    # Setting mypy to ignore due to missing stubs
+    import geopandas as gpd  # type: ignore
+
+    GPD_SUPPORT = True
+except ImportError:
+    GPD_SUPPORT = False
+    warn(
+        "Failed to locate 'geo' dependencies. Geospatial functionality will be limited."
+        " For full geospatial support please install the 'geo' requirements:"
+        " pip install feo-client[geo]"
+    )
 
 
 class PydanticBaseModel(BaseModel):
@@ -94,7 +109,84 @@ class NodeResponse(PydanticBaseModel):
     ] | None = None  # sector, year, unit_type, float
 
 
-class RecordID(PydanticBaseModel):
+Point = Tuple[float, float]
+LinearRing = Annotated[List[Point], conlist(Point, min_length=4)]
+PolygonCoords = Annotated[List[LinearRing], conlist(LinearRing, min_length=1)]
+MultiPolygonCoords = Annotated[List[PolygonCoords], conlist(PolygonCoords, min_length=1)]
+BBox = Tuple[float, float, float, float]  # 2D bbox
+VALID_GEOM_TYPES = [
+    "Polygon",
+    "Point",
+    "LineString",
+    "MultiPolygon",
+    "MultiPoint",
+    "MultiLineString",
+]
+
+
+class Geometry(BaseModel):
+    type: str
+    coordinates: Union[PolygonCoords, MultiPolygonCoords, Point]
+
+    @field_validator("type", mode="before")
+    def validate_type(cls, geom_type):
+        if geom_type in VALID_GEOM_TYPES:
+            return geom_type
+        else:
+            raise ValueError(f"Must be one of {', '.join(VALID_GEOM_TYPES)}")
+
+    def to_dict(self):
+        return self.model_dump()
+
+    def to_geojson(self):
+        return self.model_dump_json()
+
+    def to_shape(self):
+        return from_geojson(self.to_geojson())
+
+
+class FeatureBase(BaseModel):
+    type: Literal["Feature"] = "Feature"
+    geometry: Geometry
+    properties: Optional[Dict] = dict()
+
+    def to_geojson(self):
+        return {
+            "type": self.type,
+            "geometry": self.geometry.to_geojson(),
+            "properties": self.properties,
+            "id": self.id,
+        }
+
+
+class Feature(FeatureBase):
+    collection_slug: str
+    slug: str
+
+
+class FeatureCollection(BaseModel):
+    type: Literal["FeatureCollection"] = "FeatureCollection"
+    features: List[Feature]
+    next_page: Optional[int] = None
+
+    def to_dict(self):
+        return self.model_dump()
+
+    def to_geojson(self):
+        return self.model_dump_json()
+
+    def to_geodataframe(self):
+        if GPD_SUPPORT:
+            return gpd.read_file(self.to_geojson(), driver="GeoJSON")
+        else:
+            raise NotImplementedError(
+                "Full geospatial support not available."
+                " Please install 'geo' depencencies to use this method:"
+                " pip install feo-client[geo]"
+            )
+
+
+class RecordID(BaseModel):
     id: int = Field(..., title="Id")
 
 

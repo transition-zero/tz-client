@@ -28,6 +28,7 @@
 """
 
 from feo.client.asset import Asset, AssetCollection
+from feo.client.geospatial import Features, Geometry
 from feo.client.model import Model
 from feo.client.node import Node
 from feo.client.publisher import Publisher
@@ -50,4 +51,6 @@ __all__ = [
     "RecordCollection",
     "Publisher",
     "Source",
+    "Features",
+    "Geometry",
 ]
