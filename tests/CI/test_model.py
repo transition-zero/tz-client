@@ -1,4 +1,4 @@
-from feo.client import Model
+from feo.client import Model, Scenario
 
 
 def test_model_init():
@@ -28,3 +28,13 @@ def test_search_pagination():
     ids2 = {item.id for item in items2}
     # assert that items on different pages are all different
     assert ids1.intersection(ids2) == set()
+
+
+def test_model_scenarios():
+    model = Model.from_id("feo-global-indonesia")
+    scenarios = model.scenarios
+    print(scenarios[0])
+    assert isinstance(scenarios, list)
+    assert isinstance(scenarios[0], Scenario)
+
+    assert isinstance(model.featured_scenario, Scenario | None)
