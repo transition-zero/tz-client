@@ -1,9 +1,10 @@
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 
 # from feo.client.base import Base
 from feo.client import api
 from feo.client.api import schemas
 from feo.client.asset import AssetCollection
+from feo.client.geospatial import Geometry
 
 # use property decorator to facilitate getting and setting property
 
@@ -30,7 +31,7 @@ class Node(schemas.NodeBase):
     ```
     """
 
-    _geometry: Optional[str] = None
+    _geometry: Optional[Geometry] = None
     _assets: Optional[AssetCollection] = None
     _children: Optional[list["Node"]] = None
     _parents: Optional[list["Node"]] = None
@@ -101,11 +102,11 @@ class Node(schemas.NodeBase):
         return self._parents
 
     @classmethod
-    def _get_geometry(cls, ids):
-        raise NotImplementedError
+    def _get_geometry(cls, ids) -> Geometry:
+        return Geometry.get(ids)
 
     @property
-    def geometry(self) -> str | Any:
+    def geometry(self) -> Geometry:
         """The WGS84 GeoJSON for this node's geometry"""
         if self._geometry is None:
             self._geometry = self._get_geometry(self.id)
