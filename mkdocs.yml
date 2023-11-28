@@ -6,7 +6,7 @@ plugins:
     - multirepo:
           cleanup: true
     - mkdocs-jupyter:
-          include: ["*.ipynb"] 
+          include: ["*.ipynb"]
           include_source: True
 
 nav:
