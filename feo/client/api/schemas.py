@@ -2,7 +2,7 @@ from datetime import date, datetime
 from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 from warnings import warn
 
-from pydantic import BaseModel, Field, conlist, field_validator
+from pydantic import BaseModel, ConfigDict, Field, conlist, field_validator
 from shapely import from_geojson  # type: ignore
 
 try:
@@ -19,7 +19,12 @@ except ImportError:
     )
 
 
-class PowerUnit(BaseModel):
+class PydanticBaseModel(BaseModel):
+    # avoid protected 'model_' namespace
+    model_config = ConfigDict(protected_namespaces=())
+
+
+class PowerUnit(PydanticBaseModel):
     # Union of all the params of the asset models
     unit_type: str
     operating_status: str
@@ -39,7 +44,7 @@ class PowerUnit(BaseModel):
     ownership_details: dict | None
 
 
-class NodeBase(BaseModel):
+class NodeBase(PydanticBaseModel):
     id: str
     node_type: str
     type_alias: str
@@ -69,30 +74,30 @@ class Node(NodeBase):
 asset_sector_lookup = {"power": PowerUnit}
 
 
-class Alias(BaseModel):
+class Alias(PydanticBaseModel):
     node_id: str
     alias: str
     node: Node | None
 
 
-class AliasResponse(BaseModel):
+class AliasResponse(PydanticBaseModel):
     aliases: List[Alias]
     next_page: Optional[int]
 
 
-class CollectionScope(BaseModel):
+class CollectionScope(PydanticBaseModel):
     node_id: Optional[str] = None
     parent_node_id: Optional[str] = None
     sector: Optional[str] = None
     includes: Optional[str] = None
 
 
-class AssetResponse(BaseModel):
+class AssetResponse(PydanticBaseModel):
     assets: List[Node]
     next_page: Optional[int]
 
 
-class NodeResponse(BaseModel):
+class NodeResponse(PydanticBaseModel):
     nodes: list[Node]
     representative_node_ids: list[str] | None = None
     node_type_summary: list[dict] | None = None
@@ -122,7 +127,7 @@ VALID_GEOM_TYPES = [
 ]
 
 
-class Geometry(BaseModel):
+class Geometry(PydanticBaseModel):
     type: str
     coordinates: Union[PolygonCoords, MultiPolygonCoords, Point]
 
@@ -143,7 +148,7 @@ class Geometry(BaseModel):
         return from_geojson(self.to_geojson())
 
 
-class FeatureBase(BaseModel):
+class FeatureBase(PydanticBaseModel):
     type: Literal["Feature"] = "Feature"
     geometry: Geometry
     properties: Optional[Dict] = dict()
@@ -162,7 +167,7 @@ class Feature(FeatureBase):
     slug: str
 
 
-class FeatureCollection(BaseModel):
+class FeatureCollection(PydanticBaseModel):
     type: Literal["FeatureCollection"] = "FeatureCollection"
     features: List[Feature]
     next_page: Optional[int] = None
@@ -184,11 +189,11 @@ class FeatureCollection(BaseModel):
             )
 
 
-class RecordID(BaseModel):
+class RecordID(PydanticBaseModel):
     id: int = Field(..., title="Id")
 
 
-class RecordBase(BaseModel):
+class RecordBase(PydanticBaseModel):
     node_id: str | None = Field(None, title="Node Id")
     public: bool | None = Field(None, title="Public")
     source_id: int = Field(..., title="Source Id")
@@ -205,58 +210,57 @@ class RecordBase(BaseModel):
 
 
 class Record(RecordID, RecordBase):
-    class Config:
-        orm_mode: bool = True
+    pass
 
 
-class RecordsResponse(BaseModel):
+class RecordsResponse(PydanticBaseModel):
     records: list[Record] = Field(..., title="Records")
     next_page: int | None = Field(..., title="Next Page")
 
 
-class ModelScenarioRunLink(BaseModel):
+class ModelScenarioRunLink(PydanticBaseModel):
     url: str = Field(..., title="Url")
     title: str = Field(..., title="Title")
     properties: dict[str, Any] | None = Field(..., title="Properties")
     type: str = Field(..., title="Type")
 
 
-class TimeScopeContiguous(BaseModel):
+class TimeScopeContiguous(PydanticBaseModel):
     resolution_hourly: int = Field(..., title="Resolution Hourly")
 
 
-class TimeScopeSlicePart(BaseModel):
+class TimeScopeSlicePart(PydanticBaseModel):
     id: str = Field(..., title="Id")
     description: str = Field(..., title="Description")
 
 
-class TimeScopeSlices(BaseModel):
+class TimeScopeSlices(PydanticBaseModel):
     parts: list[TimeScopeSlicePart] | None = Field(None, title="Parts")
     dayparts: list[TimeScopeSlicePart] | None = Field(None, title="Dayparts")
     yearparts: list[TimeScopeSlicePart] | None = Field(None, title="Yearparts")
 
 
-class TimeScopeOutput(BaseModel):
+class TimeScopeOutput(PydanticBaseModel):
     contiguous: TimeScopeContiguous | None = None
     representative_slices: TimeScopeSlices | None = None
 
 
-class UserNameplate(BaseModel):
+class UserNameplate(PydanticBaseModel):
     id: str = Field(..., title="Id")
     email: str = Field(..., title="Email")
     username: str = Field(..., title="Username")
 
 
-class NodeSummary(BaseModel):
+class NodeSummary(PydanticBaseModel):
     capacity_summary: float | None = Field(None, title="Capacity Summary")
 
 
-class NodeTypeSummaryElement(BaseModel):
+class NodeTypeSummaryElement(PydanticBaseModel):
     type_alias: str = Field(..., title="Type Alias")
     node_count: int = Field(..., title="Node Count")
 
 
-class ScenarioBase(BaseModel):
+class ScenarioBase(PydanticBaseModel):
     name: str = Field(..., title="Name")
     version: str = Field(..., title="Version")
     slug: str | None = Field(None, title="Slug")
@@ -278,7 +282,7 @@ class Scenario(ScenarioBase):
     featured_run: "Run| None" = None
 
 
-class ModelBase(BaseModel):
+class ModelBase(PydanticBaseModel):
     name: str | None = Field(None, title="Name")
     slug: str = Field(..., title="Slug")
     description: str | None = Field(None, title="Description")
@@ -306,15 +310,14 @@ class Model(ModelBase):
     scenarios: list[Scenario] | None = Field(None, title="Scenarios")
     featured_scenario: Scenario | None = None
 
-
-class RunSingleExtrema(BaseModel):
+class RunSingleExtrema(PydanticBaseModel):
     max_value: float | None = Field(..., title="Max Value")
     min_value: float | None = Field(..., title="Min Value")
     max_datetime: datetime | None = Field(..., title="Max Datetime")
     min_datetime: datetime | None = Field(..., title="Min Datetime")
 
 
-class RunExtrema(BaseModel):
+class RunExtrema(PydanticBaseModel):
     capacity_node_gross: RunSingleExtrema | None = None
     capacity_node_new: RunSingleExtrema | None = None
     capacity_node_retirements: RunSingleExtrema | None = None
@@ -329,13 +332,13 @@ class RunExtrema(BaseModel):
     global_end_datetime: datetime | None = Field(..., title="Global End Datetime")
 
 
-class Metric(BaseModel):
+class Metric(PydanticBaseModel):
     metric: str = Field(..., title="Metric")
     unit: str = Field(..., title="Unit")
     value: float = Field(..., title="Value")
 
 
-class RunBase(BaseModel):
+class RunBase(PydanticBaseModel):
     name: str = Field(..., title="Name")
     slug: str | None = Field(None, title="Slug")
     description: str = Field(..., title="Description")
@@ -369,19 +372,90 @@ class Run(RunBase):
     scenario: Scenario | None = None
 
 
-class RunQueryResult(BaseModel):
+class RunQueryResult(PydanticBaseModel):
     runs: list[Run] = Field(..., title="Runs")
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
 
 
-class ModelQueryResult(BaseModel):
+class ModelQueryResult(PydanticBaseModel):
     models: list[Model] = Field(..., title="Models")
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
 
 
-class ScenarioQueryResult(BaseModel):
+class ScenarioQueryResult(PydanticBaseModel):
     scenarios: list[Scenario] = Field(..., title="Scenarios")
+    page: int | None = Field(None, title="Page")
+    total_pages: int | None = Field(None, title="Total Pages")
+
+
+class Publisher(PydanticBaseModel):
+    name: str
+    short_name: str
+    url: str | None = None
+    public: bool = True
+    organisation_type: str
+    slug: str
+
+
+class PublisherQueryResponse(PydanticBaseModel):
+    publishers: list[Publisher]
+    next_page: int | None
+
+
+class License(PydanticBaseModel):
+    abbreviation: str
+    name: str
+    full_text: str
+    public: bool = True
+
+
+class Link(PydanticBaseModel):
+    url: str
+    url_type: str
+    source_id: int
+    public: bool = True
+
+
+class Source(PydanticBaseModel):
+    name: str
+    short_name: str
+    public: bool
+    year: int | None = None
+    month: int | None = None
+    day: int | None = None
+    quarter: int | None = None
+    description: str
+    license_abbrv: str | None = None
+    publisher_slug: str | None = None
+    slug: str | None = None
+    base_license: License | None = Field(None, alias="license")
+    base_links: List[Link] | None = Field(None, alias="links")
+
+
+class SourceQueryResponse(PydanticBaseModel):
+    next_page: int | None
+    sources: list[Source]
+
+
+class TechnologyBase(PydanticBaseModel):
+    uuid: str = Field(..., title="UUID")
+    slug: str = Field(..., title="Slug")
+    name: str | None = Field(None, title="Name")
+    owner_id: str = Field(..., title="Owner Id")
+    public: bool = Field(..., title="Public")
+    properties: dict | None = Field(None, title="Technology Parameters")
+    parents: list | None = Field(None, title="Parent Technologies")
+    children: list | None = Field(None, title="Child Technologies")
+
+
+class Technology(TechnologyBase):
+    parents: list[Union[str, "Technology"]] | None = Field(None, title="Parent Technologies")
+    children: list[Union[str, "Technology"]] | None = Field(None, title="Child Technologies")
+
+
+class TechnologyQueryResponse(PydanticBaseModel):
+    technologies: list[Technology] = Field(..., title="Technologies")
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
