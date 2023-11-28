@@ -310,6 +310,7 @@ class Model(ModelBase):
     scenarios: list[Scenario] | None = Field(None, title="Scenarios")
     featured_scenario: Scenario | None = None
 
+
 class RunSingleExtrema(PydanticBaseModel):
     max_value: float | None = Field(..., title="Max Value")
     min_value: float | None = Field(..., title="Min Value")
