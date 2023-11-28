@@ -45,11 +45,17 @@ class RecordCollection(pd.DataFrame):
         datum_detail: list[str] | None = None,
         node_type: list[str] | None = None,
     ):
-        """Instantiate an RecordCollection from a parent node.
+        """Instantiate an RecordCollection from a node.
 
         Args:
-            node_id (str): the id of the parent node to retieve records for.
-            sector (str): the name of the sector to retireve records for.
+            node_id (str): The id of the node to retieve records for.
+            public (bool): Whether to include public records.
+            valid_timestamp_start (datetime): Start timestamp of record validity.
+            valid_timestamp_end (datetime): End timestamp of record validity.
+            provenance_slug (list[str]): Provenance of the record (e.g. 'Copernicus-Landuse').
+            datum_type (list[str]): Datum type of the record (e.g. 'Landuse').
+            datum_detail (list[str]): Datum detail of the record.
+            node_type (list[str]): Node type of the record (e.g. 'country').
 
         Returns:
             RecordCollection: A pandas-dataframe extension for FEO records.

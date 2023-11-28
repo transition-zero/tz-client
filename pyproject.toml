@@ -21,6 +21,7 @@ dependencies = [
   "requests>=2.31",
   "httpx>0.25",
   "click>8.1",
+  "shapely",
 ]
 
 [project.optional-dependencies] # Optional
@@ -36,6 +37,10 @@ dev = [
   "coverage",
   "types-requests",
   "pandas-stubs",
+  ]
+
+geo = [
+  "geopandas",
   ]
 
 [project.urls]  # Optional

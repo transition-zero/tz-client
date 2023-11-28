@@ -25,6 +25,7 @@
 """
 from feo.client.api.aliases import AliasAPI
 from feo.client.api.assets import AssetAPI
+from feo.client.api.geospatial import VectorAPI
 from feo.client.api.models import ModelAPI
 from feo.client.api.nodes import NodeAPI
 from feo.client.api.records import RecordsAPI
@@ -35,6 +36,7 @@ from feo.client.api.technologies import TechnologyAPI
 aliases = AliasAPI()
 nodes = NodeAPI()
 assets = AssetAPI()
+vectors = VectorAPI()
 records = RecordsAPI()
 runs = RunAPI()
 models = ModelAPI()
