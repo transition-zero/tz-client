@@ -31,6 +31,7 @@ from feo.client.api.nodes import NodeAPI
 from feo.client.api.records import RecordsAPI
 from feo.client.api.runs import RunAPI
 from feo.client.api.scenarios import ScenarioAPI
+from feo.client.api.technologies import TechnologyAPI
 
 aliases = AliasAPI()
 nodes = NodeAPI()
@@ -40,3 +41,4 @@ records = RecordsAPI()
 runs = RunAPI()
 models = ModelAPI()
 scenarios = ScenarioAPI()
+technologies = TechnologyAPI()

@@ -34,6 +34,7 @@ from feo.client.node import Node
 from feo.client.record import Record, RecordCollection
 from feo.client.run import Run
 from feo.client.scenario import Scenario
+from feo.client.technology import Technology
 
 __all__ = [
     "Node",
@@ -44,6 +45,7 @@ __all__ = [
     "Run",
     "Record",
     "RecordCollection",
+    "Technology",
     "Features",
     "Geometry",
 ]

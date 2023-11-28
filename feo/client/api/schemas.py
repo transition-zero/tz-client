@@ -379,3 +379,25 @@ class ScenarioQueryResult(BaseModel):
     scenarios: list[Scenario] = Field(..., title="Scenarios")
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
+
+
+class TechnologyBase(BaseModel):
+    uuid: str = Field(..., title="UUID")
+    slug: str = Field(..., title="Slug")
+    name: str | None = Field(None, title="Name")
+    owner_id: str = Field(..., title="Owner Id")
+    public: bool = Field(..., title="Public")
+    properties: dict | None = Field(None, title="Technology Parameters")
+    parents: list | None = Field(None, title="Parent Technologies")
+    children: list | None = Field(None, title="Child Technologies")
+
+
+class Technology(TechnologyBase):
+    parents: list[Union[str, "Technology"]] | None = Field(None, title="Parent Technologies")
+    children: list[Union[str, "Technology"]] | None = Field(None, title="Child Technologies")
+
+
+class TechnologyQueryResponse(BaseModel):
+    technologies: list[Technology] = Field(..., title="Technologies")
+    page: int | None = Field(None, title="Page")
+    total_pages: int | None = Field(None, title="Total Pages")

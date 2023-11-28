@@ -67,4 +67,4 @@ class Run(schemas.Run):
     @property
     def id(self) -> str:
         """The ID of the run. A combination of the model, scenario, and run slugs."""
-        return f"{self.model_slug}:{self.scenario_slug}:{self.slug}"
+        return f"{self.model_slug}:{self.scenario_slug}:{self.slug}"  # noqa
