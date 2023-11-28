@@ -14,7 +14,7 @@ class VectorAPI(BaseAPI):
         collection_id: str,
         feature_ids: Optional[Union[str, List[str]]] = None,
         geometry: Optional[Geometry] = None,
-        simplify: Optional[Union[float, str]] = 0.002,
+        simplify: Optional[Union[float, str]] = 0.01,
         clip: Optional[bool] = None,
         properties: Optional[dict] = None,
         limit: Optional[int] = None,
