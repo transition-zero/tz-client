@@ -17,7 +17,7 @@ class Technology(schemas.Technology):
             Technology: A Technology object.
         """
         technology = api.technologies.get(slug=id)
-        return cls(**technology.technology_dump())
+        return cls(**technology.model_dump())
 
     @classmethod
     def search(
