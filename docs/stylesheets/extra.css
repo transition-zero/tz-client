@@ -38,3 +38,20 @@
 :root {
   --md-text-font: 'Good Sans', sans-serif;
 }
+
+.md-header__topic {
+  font-weight: 500 !important; 
+}
+
+[dir=ltr] .md-header__title {
+  margin-left: 16px;
+}
+
+.md-header__button {
+  padding: 0 !important;
+}
+
+.md-header__button.md-logo img, .md-header__button.md-logo svg {
+    width: 40px;
+    height: 40px;
+}
