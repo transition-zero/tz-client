@@ -5,7 +5,7 @@ from feo.client.api import schemas
 
 
 class Technology(schemas.Technology):
-    _projections: Optional[ForwardRef("RecordCollection")] = None
+    _projections: Optional[ForwardRef("RecordCollection")] = None  # type: ignore[valid-type]
 
     @classmethod
     def from_id(cls, id: str) -> "Technology":
