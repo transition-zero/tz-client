@@ -7,7 +7,7 @@ from feo.client.api import schemas
 
 
 class Asset(schemas.NodeBase):
-    _source_objects: Optional[List[ForwardRef("Source")]] = None  #noqa
+    _source_objects: Optional[List[ForwardRef("Source")]] = None  # noqa
 
     @classmethod
     def from_id(cls, id: str):
