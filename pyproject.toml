@@ -36,6 +36,11 @@ dev = [
   "coverage",
   "types-requests",
   "pandas-stubs",
+  "shapely",
+  ]
+
+geo = [
+  "geopandas",
   ]
 
 [project.urls]  # Optional

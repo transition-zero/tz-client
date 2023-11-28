@@ -1,7 +1,22 @@
 from datetime import date, datetime
 from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
+from warnings import warn
 
-from pydantic import BaseModel, Field, conlist, validator
+from pydantic import BaseModel, Field, conlist, field_validator
+from shapely import from_geojson  # type: ignore
+
+try:
+    # Setting mypy to ignore due to missing stubs
+    import geopandas as gpd  # type: ignore
+
+    GPD_SUPPORT = True
+except ImportError:
+    GPD_SUPPORT = False
+    warn(
+        "Failed to locate 'geo' dependencies. Geospatial functionality will be limited."
+        " For full geospatial support please install the 'geo' requirements:"
+        " pip install feo-client[geo]"
+    )
 
 
 class PowerUnit(BaseModel):
@@ -108,15 +123,21 @@ class Geometry(BaseModel):
     type: str
     coordinates: Union[PolygonCoords, MultiPolygonCoords, Point]
 
-    @validator("type")
+    @field_validator("type", mode="before")
     def validate_type(cls, geom_type):
         if geom_type in VALID_GEOM_TYPES:
             return geom_type
         else:
             raise ValueError(f"Must be one of {', '.join(VALID_GEOM_TYPES)}")
 
+    def to_dict(self):
+        return self.model_dump()
+
     def to_geojson(self):
-        return {"type": self.type, "coordinates": self.coordinates}
+        return self.model_dump_json()
+
+    def to_shape(self):
+        return from_geojson(self.to_geojson())
 
 
 class FeatureBase(BaseModel):
@@ -142,6 +163,22 @@ class FeatureCollection(BaseModel):
     type: Literal["FeatureCollection"] = "FeatureCollection"
     features: List[Feature]
     next_page: Optional[int] = None
+
+    def to_dict(self):
+        return self.model_dump()
+
+    def to_geojson(self):
+        return self.model_dump_json()
+
+    def to_geodataframe(self):
+        if GPD_SUPPORT:
+            return gpd.read_file(self.to_geojson(), driver="GeoJSON")
+        else:
+            raise NotImplementedError(
+                "Full geospatial support not available."
+                " Please install 'geo' depencencies to use this method:"
+                " pip install feo-client[geo]"
+            )
 
 
 class RecordID(BaseModel):
