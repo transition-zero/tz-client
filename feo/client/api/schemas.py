@@ -3,18 +3,19 @@ from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 from warnings import warn
 
 from pydantic import BaseModel, Field, conlist, field_validator
+from shapely import from_geojson  # type: ignore
 
 try:
     # Setting mypy to ignore due to missing stubs
     import geopandas as gpd  # type: ignore
-    from shapely import from_geojson  # type: ignore
 
-    GEO_SUPPORT = True
+    GPD_SUPPORT = True
 except ImportError:
-    GEO_SUPPORT = False
+    GPD_SUPPORT = False
     warn(
         "Failed to locate 'geo' dependencies. Geospatial functionality will be limited."
-        " For full geospatial support please install the 'geo' requirements"
+        " For full geospatial support please install the 'geo' requirements:"
+        " pip install feo-client[geo]"
     )
 
 
@@ -136,13 +137,7 @@ class Geometry(BaseModel):
         return self.model_dump_json()
 
     def to_shape(self):
-        if GEO_SUPPORT:
-            return from_geojson(self.to_geojson())
-        else:
-            raise NotImplementedError(
-                "Full geospatial support not available."
-                " Please install 'geo' depencencies to use this method."
-            )
+        return from_geojson(self.to_geojson())
 
 
 class FeatureBase(BaseModel):
@@ -176,12 +171,13 @@ class FeatureCollection(BaseModel):
         return self.model_dump_json()
 
     def to_geodataframe(self):
-        if GEO_SUPPORT:
+        if GPD_SUPPORT:
             return gpd.read_file(self.to_geojson(), driver="GeoJSON")
         else:
             raise NotImplementedError(
                 "Full geospatial support not available."
-                " Please install 'geo' depencencies to use this method."
+                " Please install 'geo' depencencies to use this method:"
+                " pip install feo-client[geo]"
             )
 
 
