@@ -31,10 +31,10 @@ from feo.client.asset import Asset, AssetCollection
 from feo.client.geospatial import Features, Geometry
 from feo.client.model import Model
 from feo.client.node import Node
-from feo.client.technology import Technology
 from feo.client.record import Record, RecordCollection
 from feo.client.run import Run
 from feo.client.scenario import Scenario
+from feo.client.technology import Technology
 
 __all__ = [
     "Node",
