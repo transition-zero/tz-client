@@ -17,7 +17,7 @@ class Publisher(schemas.Publisher):
 
     """
 
-    _sources: Optional[List[ForwardRef("Source")]] = None
+    _sources: Optional[List[ForwardRef("Source")]] = None  # type: ignore[valid-type]
 
     @classmethod
     def from_id(cls, id: str) -> "Publisher":
@@ -27,7 +27,7 @@ class Publisher(schemas.Publisher):
         source = Source.from_id("<publisher_id>:<source_id>")
         ```
         """
-        publisher = api.publishers.get(ids=id)[0]
+        publisher = api.publishers.get(slug=id)
         return cls(**publisher.model_dump())
 
     @classmethod

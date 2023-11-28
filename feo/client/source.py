@@ -17,7 +17,7 @@ class Source(schemas.Source):
 
     """
 
-    _publisher: Optional[ForwardRef("Publisher")] = None
+    _publisher: Optional[ForwardRef("Publisher")] = None  # type: ignore[valid-type]
 
     @classmethod
     def from_id(cls, id: str) -> "Source":
@@ -46,10 +46,10 @@ class Source(schemas.Source):
         """
 
         search_results = api.sources.search(
-            name=name, year=year, publisher_id=publisher_id, includes="publisher,links,license"
+            name=name, year=year, publisher_slug=publisher_id, includes="publisher,links,license"
         )
 
-        return [cls(**source.model_dump()) for source in search_results.sources]
+        return [cls(**source.model_dump()) for source in search_results]
 
     def _get_links(self):
         links = api.sources.get(

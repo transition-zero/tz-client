@@ -23,6 +23,7 @@ class SourceAPI(BaseAPI):
         license: str | None = None,
         publisher_slug: str | None = None,
         publisher_name: str | None = None,
+        includes: str = "",
         limit: int | None = None,
         page: int | None = None,
     ) -> List[Source]:
@@ -38,6 +39,7 @@ class SourceAPI(BaseAPI):
             "publisher_name": publisher_name,
             "limit": limit,
             "page": page,
+            "includes": includes,
         }
 
         resp = self.client.get("/sources", params=params)

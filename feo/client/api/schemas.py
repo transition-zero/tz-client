@@ -391,7 +391,7 @@ class Publisher(PydanticBaseModel):
     url: str | None = None
     public: bool = True
     organisation_type: str
-    slug: str | None = None
+    slug: str
 
 
 class PublisherQueryResponse(PydanticBaseModel):
