@@ -1,10 +1,12 @@
-from typing import List
+from typing import ForwardRef, List, Optional
 
-from feo.client import api
+from feo.client import RecordCollection, api
 from feo.client.api import schemas
 
 
 class Technology(schemas.Technology):
+    _projections: Optional[ForwardRef("RecordCollection")] = None  # type: ignore[valid-type]
+
     @classmethod
     def from_id(cls, id: str) -> "Technology":
         """
@@ -62,3 +64,11 @@ class Technology(schemas.Technology):
     def id(self) -> str:
         """The ID of the technology."""
         return self.slug
+
+    @property
+    def projections(self):
+        """The RecordCollection associated with the technoogy"""
+        if self._projections is None:
+            collection = RecordCollection()
+            self._projections = collection.search(technology=self.slug)
+        return self._projections
