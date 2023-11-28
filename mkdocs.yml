@@ -21,7 +21,7 @@ nav:
       - Run: client/run.md
       - 'Record Collection': client/record_collection.md
   - Tutorials: https://github.com/transition-zero/feo-client-examples
-  - API Reference: redoc.html
+  - API Reference: api-reference/index.md
   - Tech Blog: https://transitionzero.medium.com/
 repo_url: https://github.com/transition-zero/feo-client
 
