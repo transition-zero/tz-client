@@ -2,6 +2,7 @@ from typing import List
 
 from feo.client import api
 from feo.client.api import schemas
+from feo.client.record import RecordCollection
 
 
 class Technology(schemas.Technology):
@@ -62,3 +63,9 @@ class Technology(schemas.Technology):
     def id(self) -> str:
         """The ID of the technology."""
         return self.slug
+
+    @property
+    def projections(self):
+        """The RecordCollection associated with the technoogy"""
+        collection = RecordCollection()
+        return collection.search(technology=self.slug)

@@ -44,8 +44,9 @@ class RecordCollection(pd.DataFrame):
         datum_type: list[str] | None = None,
         datum_detail: list[str] | None = None,
         node_type: list[str] | None = None,
+        technology: str | None = None,
     ):
-        """Instantiate an RecordCollection from a node.
+        """Instantiate a RecordCollection from a node or technology.
 
         Args:
             node_id (str): The id of the node to retieve records for.
@@ -56,7 +57,7 @@ class RecordCollection(pd.DataFrame):
             datum_type (list[str]): Datum type of the record (e.g. 'Landuse').
             datum_detail (list[str]): Datum detail of the record.
             node_type (list[str]): Node type of the record (e.g. 'country').
-
+            technology: Technology slug of the record (e.g. 'coal').
         Returns:
             RecordCollection: A pandas-dataframe extension for FEO records.
         """
@@ -69,6 +70,7 @@ class RecordCollection(pd.DataFrame):
             datum_type=datum_type,
             datum_detail=datum_detail,
             node_type=node_type,
+            technology=technology,
         )
 
         obj = cls.from_feo_records(records)  # type: ignore[arg-type]
