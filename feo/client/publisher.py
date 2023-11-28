@@ -1,8 +1,9 @@
 from typing import TYPE_CHECKING, ForwardRef, List, Optional
 
-from feo.client import api
+from feo.client import api, factory
 from feo.client.api import schemas
-from feo.client.source import factory as source_factory
+
+# from feo.client.source import factory as source_factory
 
 if TYPE_CHECKING:
     from feo.client.source import Source
@@ -50,7 +51,7 @@ class Publisher(schemas.Publisher):
     @classmethod
     def _get_sources(cls, publisher_slug: str):
         return [
-            source_factory(**source.model_dump())
+            factory.source(**source.model_dump())
             for source in api.sources.search(publisher_slug=publisher_slug)
         ]
 

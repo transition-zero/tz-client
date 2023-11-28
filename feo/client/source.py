@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, ForwardRef, Optional
 
-from feo.client import api
+from feo.client import api, factory
 from feo.client.api import schemas
 from feo.client.utils import parse_slug
 
@@ -77,6 +77,11 @@ class Source(schemas.Source):
             return self.base_license
         return self.base_license
 
-
-def factory(**kwargs):
-    return Source(**kwargs)
+    @property
+    def publisher(self):
+        if self._publisher is None:
+            self._publisher = factory.publisher(
+                **api.publishers.get(slug=self.publisher_slug).model_dump()
+            )
+            return self._publisher
+        return self._publisher
