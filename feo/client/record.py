@@ -12,7 +12,7 @@ class Record(schemas.RecordBase):
 
 
 class RecordCollection(pd.DataFrame):
-    """An RecordCollection is an extention of a Pandas DataFrame.
+    """A RecordCollection is an extention of a Pandas DataFrame.
 
     It can be used in precisely the same way as a Pandas DataFrame
     but has a few extra useful constructors.
