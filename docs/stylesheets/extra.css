@@ -33,6 +33,7 @@
 }
 [data-md-color-scheme="slate"] {
   --md-primary-fg-color: #FFB405;
+  --md-primary-bg-color: #1F283D;
 }
 
 :root {
