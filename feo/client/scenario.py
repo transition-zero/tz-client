@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 
-from feo.client import api
+from feo.client import api, factory
 from feo.client.api import schemas
 
 if TYPE_CHECKING:
@@ -73,25 +73,25 @@ class Scenario(schemas.ScenarioBase):
         return f"{self.model_slug}:{self.slug}"
 
     @property
-    def model(self) -> "Model":
+    def model(self) -> Optional["Model"]:
         """The model associated with this scenario."""
-        from feo.client.model import Model
-
-        scenario_data = api.models.get(slug=self.id, includes="model")
-        return Model(**scenario_data.model.model_dump())
+        scenario_data = api.scenarios.get(fullslug=self.id, includes="model")
+        if scenario_data.model is None:
+            return None
+        return factory.model(**scenario_data.model.model_dump())
 
     @property
-    def featured_run(self) -> "Run":
+    def featured_run(self) -> Optional["Run"]:
         """The featured run associated with this scenario."""
-        from feo.client.run import Run
-
-        scenario_data = api.models.get(slug=self.id, includes="featured_run")
-        return Run(**scenario_data.featured_run.model_dump())
+        scenario_data = api.scenarios.get(fullslug=self.id, includes="featured_run")
+        if scenario_data.featured_run is None:
+            return None
+        return factory.run(**scenario_data.featured_run.model_dump())
 
     @property
     def runs(self) -> list["Run"]:
         """The featured run associated with this scenario."""
-        from feo.client.run import Run
-
-        scenario_data = api.models.get(slug=self.id, includes="runs")
-        return [Run(**r.model_dump()) for r in scenario_data.runs]
+        scenario_data = api.scenarios.get(fullslug=self.id, includes="runs")
+        if scenario_data.runs is None:
+            return []
+        return [factory.run(**r.model_dump()) for r in scenario_data.runs]

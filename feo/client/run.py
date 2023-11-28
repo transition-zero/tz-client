@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 
-from feo.client import api
+from feo.client import api, factory
 from feo.client.api import schemas
 
 if TYPE_CHECKING:
@@ -74,17 +74,17 @@ class Run(schemas.RunBase):
         return f"{self.model_slug}:{self.scenario_slug}:{self.slug}"
 
     @property
-    def model(self) -> "Model":
+    def model(self) -> Optional["Model"]:
         """The model associated with this run."""
-        from feo.client.model import Model
-
-        scenario_data = api.models.get(slug=self.id, includes="model")
-        return Model(**scenario_data.model.model_dump())
+        run_data = api.runs.get(fullslug=self.id, includes="model")
+        if run_data.model is None:
+            return None
+        return factory.model(**run_data.model.model_dump())
 
     @property
-    def scenario(self) -> "Scenario":
+    def scenario(self) -> Optional["Scenario"]:
         """The scenario associated with this run."""
-        from feo.client.scenario import Scenario
-
-        scenario_data = api.scenarios.get(slug=self.id, includes="scenario")
-        return Scenario(**scenario_data.scenario.model_dump())
+        run_data = api.runs.get(fullslug=self.id, includes="scenario")
+        if run_data.scenario is None:
+            return None
+        return factory.scenario(**run_data.scenario.model_dump())

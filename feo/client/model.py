@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 
-from feo.client import api
+from feo.client import api, factory
 from feo.client.api import schemas
 
 if TYPE_CHECKING:
@@ -33,7 +33,7 @@ class Model(schemas.ModelBase):
         public: bool | None = None,
         limit: int = 10,
         page: int = 0,
-    ) -> List["schemas.Model"]:
+    ) -> List["Model"]:
         """
         Search for models.
 
@@ -72,18 +72,15 @@ class Model(schemas.ModelBase):
     @property
     def scenarios(self) -> list["Scenario"]:
         """A collection of scenarios associated with this model."""
-        from feo.client.scenario import Scenario
-
         model_data = api.models.get(slug=self.id, includes="scenarios")
-        return [Scenario(**s.model_dump()) for s in model_data.scenarios]
+        if model_data.scenarios is None:
+            return []
+        return [factory.scenario(**s.model_dump()) for s in model_data.scenarios]
 
     @property
-    def featured_scenario(self) -> "Scenario":
+    def featured_scenario(self) -> Optional["Scenario"]:
         """The featured scenario associated with this model."""
-        from feo.client.scenario import Scenario
-
         model_data = api.models.get(slug=self.id, includes="featured_scenario")
         if model_data.featured_scenario is None:
             return None
-        else:
-            return Scenario(**model_data.featured_scenario.model_dump())
+        return factory.scenario(**model_data.featured_scenario.model_dump())
