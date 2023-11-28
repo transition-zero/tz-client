@@ -1,8 +1,7 @@
 from typing import List
 
-from feo.client import api
+from feo.client import RecordCollection, api
 from feo.client.api import schemas
-from feo.client.record import RecordCollection
 
 
 class Technology(schemas.Technology):
