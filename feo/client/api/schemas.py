@@ -433,6 +433,7 @@ class SourceQueryResponse(PydanticBaseModel):
     next_page: int | None
     sources: list[Source]
 
+
 class TechnologyBase(BaseModel):
     uuid: str = Field(..., title="UUID")
     slug: str = Field(..., title="Slug")
