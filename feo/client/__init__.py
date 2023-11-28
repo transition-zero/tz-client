@@ -36,6 +36,7 @@ from feo.client.record import Record, RecordCollection
 from feo.client.run import Run
 from feo.client.scenario import Scenario
 from feo.client.source import Source
+from feo.client.technology import Technology
 
 Publisher.model_rebuild()
 Source.model_rebuild()
@@ -51,6 +52,7 @@ __all__ = [
     "RecordCollection",
     "Publisher",
     "Source",
+    "Technology",
     "Features",
     "Geometry",
 ]

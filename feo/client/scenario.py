@@ -66,4 +66,4 @@ class Scenario(schemas.Scenario):
         """
         The ID of the scenario. A combination of the model slug and scenario slug.
         """
-        return f"{self.model_slug}:{self.slug}"
+        return f"{self.model_slug}:{self.slug}"  # noqa
