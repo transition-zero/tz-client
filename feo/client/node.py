@@ -21,13 +21,7 @@ class Node(schemas.NodeBase):
     Nodes can be loaded directly with their id:
 
     ```python
-    germany = Node("DEU")
-    ```
-
-    Nodes can also be retrieved by calling a well-known alias:
-
-    ```python
-    germany = Node("germany")
+    germany = Node.from_id("DEU")
     ```
     """
 
@@ -49,6 +43,10 @@ class Node(schemas.NodeBase):
     ) -> list["Node"]:
         """
         Search for nodes using an alias.
+
+        ```python
+        germany_nodes = Node.search("Germany")
+        ```
 
         Args:
             alias (str): The target alias to search.
