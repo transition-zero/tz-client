@@ -2,7 +2,7 @@ from datetime import date, datetime
 from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 from warnings import warn
 
-from pydantic import BaseModel, Field, conlist, field_validator, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, conlist, field_validator
 from shapely import from_geojson  # type: ignore
 
 try:
