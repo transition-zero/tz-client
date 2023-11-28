@@ -129,23 +129,6 @@ class ModelScenarioRunLink(BaseModel):
     type: str = Field(..., title="Type")
 
 
-class RunBase(BaseModel):
-    name: str = Field(..., title="Name")
-    slug: str | None = Field(None, title="Slug")
-    description: str = Field(..., title="Description")
-    public: bool = Field(..., title="Public")
-    scenario_slug: str = Field(..., title="Scenario Slug")
-    model_slug: str = Field(..., title="Model Slug")
-    data: dict[str, Any] | None = Field(None, title="Data")
-    featured: bool | None = Field(None, title="Featured")
-    status: str = Field(..., title="Status")
-    links: list[ModelScenarioRunLink] | None = Field(None, title="Links")
-    capacity_datetime_convention: str | None = Field(None, title="Capacity Datetime Convention")
-    production_datetime_convention: str | None = Field(None, title="Production Datetime Convention")
-    flow_datetime_convention: str | None = Field(None, title="Flow Datetime Convention")
-    preview_image_url: str | None = Field(None, title="Preview Image Url")
-
-
 class TimeScopeContiguous(BaseModel):
     resolution_hourly: int = Field(..., title="Resolution Hourly")
 
@@ -192,15 +175,15 @@ class ScenarioBase(BaseModel):
     status: str = Field(..., title="Status")
     links: list[ModelScenarioRunLink] | None = Field(None, title="Links")
     data: dict[str, Any] | None = Field(None, title="Data")
+    owner_id: str = Field(..., title="Owner Id")
+    owner: UserNameplate | None = None
+    preview_image_url: str | None = Field(None, title="Preview Image Url")
 
 
 class Scenario(ScenarioBase):
-    owner_id: str = Field(..., title="Owner Id")
     model: "Model | None" = None
-    owner: UserNameplate | None = None
     runs: "list[Run] | None" = Field(None, title="Runs")
     featured_run: "Run| None" = None
-    preview_image_url: str | None = Field(None, title="Preview Image Url")
 
 
 class ModelBase(BaseModel):
@@ -260,10 +243,22 @@ class Metric(BaseModel):
     value: float = Field(..., title="Value")
 
 
-class Run(RunBase):
+class RunBase(BaseModel):
+    name: str = Field(..., title="Name")
+    slug: str | None = Field(None, title="Slug")
+    description: str = Field(..., title="Description")
+    public: bool = Field(..., title="Public")
+    scenario_slug: str = Field(..., title="Scenario Slug")
+    model_slug: str = Field(..., title="Model Slug")
+    data: dict[str, Any] | None = Field(None, title="Data")
+    featured: bool | None = Field(None, title="Featured")
+    status: str = Field(..., title="Status")
+    links: list[ModelScenarioRunLink] | None = Field(None, title="Links")
+    capacity_datetime_convention: str | None = Field(None, title="Capacity Datetime Convention")
+    production_datetime_convention: str | None = Field(None, title="Production Datetime Convention")
+    flow_datetime_convention: str | None = Field(None, title="Flow Datetime Convention")
+    preview_image_url: str | None = Field(None, title="Preview Image Url")
     owner_id: str = Field(..., title="Owner Id")
-    model: Model | None = None
-    scenario: Scenario | None = None
     owner: UserNameplate | None = None
     nodes: list[str] | None = Field(None, title="Nodes")
     valid_datetimes: list[str] | None = Field(None, title="Valid Datetimes")
@@ -275,6 +270,11 @@ class Run(RunBase):
     system_cost: dict[str, Any] | None = Field(None, title="System Cost")
     profiles: dict[str, Any] | None = Field(None, title="Profiles")
     metrics: list[Metric] | None = Field(None, title="Metrics")
+
+
+class Run(RunBase):
+    model: Model | None = None
+    scenario: Scenario | None = None
 
 
 class RunQueryResult(BaseModel):
