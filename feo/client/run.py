@@ -1,10 +1,14 @@
-from typing import List
+from typing import TYPE_CHECKING, List, Optional
 
-from feo.client import api
+from feo.client import api, factory
 from feo.client.api import schemas
 
+if TYPE_CHECKING:
+    from feo.client.model import Model
+    from feo.client.scenario import Scenario
 
-class Run(schemas.Run):
+
+class Run(schemas.RunBase):
     @classmethod
     def from_id(cls, id: str) -> "Run":
         """
@@ -43,8 +47,8 @@ class Run(schemas.Run):
             featured (bool, optional): Filter by whether the run is featured.
             includes (str, optional): Additional fields to include in the search results.
             public (bool, optional): Filter by whether the run is public.
-            limit (int, optional): The maximum number of runs to return. Default is 5.
-            page (int, optional): The page number of the results. Default is 0.
+            limit (int): The maximum number of search results to return per page.
+            page (int): The page number of search results to return.
 
         Returns:
             List[Run]: A list of Run objects.
@@ -67,4 +71,20 @@ class Run(schemas.Run):
     @property
     def id(self) -> str:
         """The ID of the run. A combination of the model, scenario, and run slugs."""
-        return f"{self.model_slug}:{self.scenario_slug}:{self.slug}"  # noqa
+        return f"{self.model_slug}:{self.scenario_slug}:{self.slug}"
+
+    @property
+    def model(self) -> Optional["Model"]:
+        """The model associated with this run."""
+        run_data = api.runs.get(fullslug=self.id, includes="model")
+        if run_data.model is None:
+            return None
+        return factory.model(**run_data.model.model_dump())
+
+    @property
+    def scenario(self) -> Optional["Scenario"]:
+        """The scenario associated with this run."""
+        run_data = api.runs.get(fullslug=self.id, includes="scenario")
+        if run_data.scenario is None:
+            return None
+        return factory.scenario(**run_data.scenario.model_dump())

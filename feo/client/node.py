@@ -21,13 +21,7 @@ class Node(schemas.NodeBase):
     Nodes can be loaded directly with their id:
 
     ```python
-    germany = Node("DEU")
-    ```
-
-    Nodes can also be retrieved by calling a well-known alias:
-
-    ```python
-    germany = Node("germany")
+    germany = Node.from_id("DEU")
     ```
     """
 
@@ -45,22 +39,38 @@ class Node(schemas.NodeBase):
 
     @classmethod
     def search(
-        cls, alias: str, threshold: float = 0.5, node_type: str | None = None
+        cls,
+        alias: str,
+        threshold: float = 0.5,
+        node_type: str | None = None,
+        limit: int = 10,
+        page: int = 0,
     ) -> list["Node"]:
         """
         Search for nodes using an alias.
+
+        ```python
+        germany_nodes = Node.search("Germany")
+        ```
 
         Args:
             alias (str): The target alias to search.
             threshold (float): The desired confidence in the search result.
             node_type (str): filter search to a specific node type.
+            limit (int): The maximum number of search results to return per page.
+            page (int): The page number of search results to return.
 
         Returns:
             List[Node]: A list of Node objects.
         """
 
         search_results = api.aliases.get(
-            alias=alias, threshold=threshold, node_type=node_type, includes="node"
+            alias=alias,
+            threshold=threshold,
+            node_type=node_type,
+            includes="node",
+            limit=limit,
+            page=page,
         )
 
         return [

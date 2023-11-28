@@ -1,10 +1,13 @@
-from typing import List
+from typing import TYPE_CHECKING, List, Optional
 
-from feo.client import api
+from feo.client import api, factory
 from feo.client.api import schemas
 
+if TYPE_CHECKING:
+    from feo.client.scenario import Scenario
 
-class Model(schemas.Model):
+
+class Model(schemas.ModelBase):
     @classmethod
     def from_id(cls, id: str) -> "Model":
         """
@@ -30,7 +33,7 @@ class Model(schemas.Model):
         public: bool | None = None,
         limit: int = 10,
         page: int = 0,
-    ) -> List["schemas.Model"]:
+    ) -> List["Model"]:
         """
         Search for models.
 
@@ -41,7 +44,7 @@ class Model(schemas.Model):
             sort (str | None): The sorting criteria for the search result.
             featured (bool | None): Filter models by featured status.
             public (bool | None): Filter models by public status.
-            limit (int): The maximum number of search results to return.
+            limit (int): The maximum number of search results to return per page.
             page (int): The page number of search results to return.
 
         Returns:
@@ -65,3 +68,19 @@ class Model(schemas.Model):
     def id(self) -> str:
         """The ID of the model."""
         return self.slug
+
+    @property
+    def scenarios(self) -> list["Scenario"]:
+        """A collection of scenarios associated with this model."""
+        model_data = api.models.get(slug=self.id, includes="scenarios")
+        if model_data.scenarios is None:
+            return []
+        return [factory.scenario(**s.model_dump()) for s in model_data.scenarios]
+
+    @property
+    def featured_scenario(self) -> Optional["Scenario"]:
+        """The featured scenario associated with this model."""
+        model_data = api.models.get(slug=self.id, includes="featured_scenario")
+        if model_data.featured_scenario is None:
+            return None
+        return factory.scenario(**model_data.featured_scenario.model_dump())
