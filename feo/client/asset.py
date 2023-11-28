@@ -24,6 +24,8 @@ class Asset(schemas.NodeBase):
         threshold: float = 0.5,
         node_type: str | None = None,
         sector: str | None = None,
+        limit: int = 10,
+        page: int = 0,
     ) -> list["schemas.Node"]:
         """
         Search for nodes using an alias.
@@ -33,13 +35,21 @@ class Asset(schemas.NodeBase):
             threshold (float): The desired confidence in the search result.
             node_type (str): filter search to a specific node type.
             sector (str): the industrial sector to filter assets for
+            limit (int): The maximum number of search results to return per page.
+            page (int): The page number of search results to return.
 
         Returns:
             list[schemas.Node]: A list of Node objects.
         """
 
         search_results = api.aliases.get(
-            alias=alias, threshold=threshold, node_type=node_type, includes="power_unit"
+            alias=alias,
+            threshold=threshold,
+            node_type=node_type,
+            sector=sector,
+            includes="power_unit",
+            limit=limit,
+            page=page,
         )
 
         return [

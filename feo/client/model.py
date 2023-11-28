@@ -44,7 +44,7 @@ class Model(schemas.ModelBase):
             sort (str | None): The sorting criteria for the search result.
             featured (bool | None): Filter models by featured status.
             public (bool | None): Filter models by public status.
-            limit (int): The maximum number of search results to return.
+            limit (int): The maximum number of search results to return per page.
             page (int): The page number of search results to return.
 
         Returns:

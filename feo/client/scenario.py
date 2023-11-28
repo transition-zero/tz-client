@@ -45,8 +45,8 @@ class Scenario(schemas.ScenarioBase):
             owner_id (str | None): The ID of the owner to filter scenarios by.
             featured (bool | None): Whether to filter scenarios by featured status.
             public (bool | None): Whether to filter scenarios by public status.
-            limit (int): The maximum number of scenarios to return (default is 5).
-            page (int): The page number of the search results (default is 0).
+            limit (int): The maximum number of search results to return per page.
+            page (int): The page number of search results to return.
 
         Returns:
             List[Scenario]: A list of Scenario objects matching the search criteria.
