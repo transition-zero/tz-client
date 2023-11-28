@@ -16,7 +16,7 @@ class Features(schemas.FeatureCollection):
         properties: Optional[dict] = None,
         limit: Optional[int] = None,
         page: Optional[int] = None,
-    ):
+    ) -> "Features":
         """Search for vector features
 
         Args:
@@ -50,7 +50,7 @@ class Features(schemas.FeatureCollection):
 
 class Geometry(schemas.Geometry):
     @classmethod
-    def get(cls, feature_id: str, collection_id: str = "admin-gadm"):
+    def get(cls, feature_id: str, collection_id: str = "admin-gadm") -> "Geometry":
         """Get a geometry for a specific feature
 
         Args:
