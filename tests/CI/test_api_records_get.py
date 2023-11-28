@@ -16,7 +16,6 @@ RECORD_GET_CASES = [
 ]
 
 
-@pytest.mark.skip(reason="edge case bug not resolved yet")  # FIXME
 @pytest.mark.parametrize("record_get_cases", RECORD_GET_CASES)
 def test_api_records_get(record_get_cases):
     print(record_get_cases)
