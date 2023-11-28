@@ -1,9 +1,13 @@
 site_name: Future Energy Outlook Docs
 
 plugins:
-- search
-- mkdocstrings
-- mkdocs-jupyter
+    - search
+    - mkdocstrings
+    - multirepo:
+          cleanup: true
+    - mkdocs-jupyter:
+          include: ["*.ipynb"]
+          include_source: True
 
 nav:
   - Home: index.md
@@ -20,7 +24,7 @@ nav:
       - Scenario: client/scenario.md
       - Run: client/run.md
       - 'Record Collection': client/record_collection.md
-  - Tutorials: https://github.com/transition-zero/feo-client-examples
+  - Tutorials: '!import https://github.com/transition-zero/feo-client-examples?branch=main&docs_dir=feo-client-examples'
   - API Reference: redoc.md
   - Tech Blog: https://transitionzero.medium.com/
 repo_url: https://github.com/transition-zero/feo-client
