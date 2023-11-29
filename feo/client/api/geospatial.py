@@ -1,5 +1,7 @@
 from typing import List, Optional, Union
 
+from httpx.exceptions import ReadTimeout
+
 from feo.client.api.base import BaseAPI
 from feo.client.api.schemas import FeatureCollection, Geometry
 
@@ -21,6 +23,7 @@ class VectorAPI(BaseAPI):
         properties: Optional[dict] = None,
         limit: Optional[int] = None,
         page: Optional[int] = None,
+        timeout: Optional[int] = FEATURES_TIMEOUT,
     ) -> FeatureCollection:
         if isinstance(feature_ids, list):
             feature_ids = ",".join(feature_ids)
@@ -40,15 +43,25 @@ class VectorAPI(BaseAPI):
 
         params = {k: v for k, v in params.items() if v is not None}
 
-        resp = self.client.get(
-            f"/collections/{collection_id}/items", params=params, timeout=FEATURES_TIMEOUT
-        )
-        resp.raise_for_status()
+        try:
+            resp = self.client.get(
+                f"/collections/{collection_id}/items", params=params, timeout=timeout
+            )
+            resp.raise_for_status()
+        except ReadTimeout:
+            raise ReadTimeout(
+                f"Vector query timed out after {timeout}s. Try increasing the 'timeout' argument,"
+                " particularly on slow connections"
+            )
 
         return FeatureCollection(**resp.json())
 
-    def get_geometry(self, feature_id: str, collection_id: str) -> Geometry:
-        resp = self.get_features(collection_id=collection_id, feature_ids=[feature_id])
+    def get_geometry(
+        self, feature_id: str, collection_id: str, timeout: Optional[int] = FEATURES_TIMEOUT
+    ) -> Geometry:
+        resp = self.get_features(
+            collection_id=collection_id, feature_ids=[feature_id], timeout=timeout
+        )
 
         try:
             ft = resp.features[0]
