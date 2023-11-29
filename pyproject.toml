@@ -3,7 +3,7 @@ name = "feo-client"
 dynamic = ["version"]
 description = "A Python Client for programmatic interactions with the Future Energy Outlook platform by TransitionZero"
 readme = "README.md"
-requires-python = ">=3.9"  # hardcoding this for now
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 keywords = ["energy", "systems"]
 authors = [
