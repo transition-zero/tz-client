@@ -12,19 +12,26 @@ plugins:
 nav:
   - Docs:
     - index.md
-    - Installation: installation.md
-    - API: client/api.md
-    - Node: client/node.md
-    - Asset: client/asset.md
-    - 'Asset Collection': client/asset_collection.md
-    #- Source: client/source.md
-    #- Publisher: client/publisher.md
-    - Model: client/model.md
-    - Scenario: client/scenario.md
-    - Run: client/run.md
-    - 'Record Collection': client/record_collection.md
-    - Technology: client/technology.md
-    - Geometry: client/geometry.md
+    - Python Client: 
+      - Installation: installation.md
+      - API: client/api.md
+      - Node: client/node.md
+      - Asset: client/asset.md
+      - 'Asset Collection': client/asset_collection.md
+      #- Source: client/source.md
+      #- Publisher: client/publisher.md
+      - Model: client/model.md
+      - Scenario: client/scenario.md
+      - Run: client/run.md
+      - 'Record Collection': client/record_collection.md
+      - Technology: client/technology.md
+      - Geometry: client/geometry.md
+    - Data Coverage: 
+      - Power:
+        - Generation: data-coverage/power/generation.md
+        - Assets: data-coverage/power/assets.md
+      - Steel: data-coverage/steel/index.md
+    - FEO-OSeMOSYS: '!import https://github.com/transition-zero/feo-esmod-osemosys'
   - API Reference: redoc.md
   - Tutorials: '!import https://github.com/transition-zero/feo-client-examples?branch=main&docs_dir=feo-client-examples'
   - Tech Blog: https://transitionzero.medium.com/
@@ -49,6 +56,7 @@ theme:
   features:
     - header.autohide
     - navigation.tabs
+    - navigation.expand
 
 
 
