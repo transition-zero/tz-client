@@ -11,7 +11,7 @@ In the physics of systems modelling, Nodes are discrete units around which the c
 
 To access data for nodes, you can use this [Jupyter Notebook on Github](https://github.com/transition-zero/feo-client-examples/blob/main/feo-client-examples/0_nodes.ipynb).
 
-See also: [Geometries](https://docs.feo.transitionzero.org/client/geometries)
+See also: [Geometry](./geometry.md)
 
 ---
 
