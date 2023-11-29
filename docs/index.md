@@ -10,7 +10,7 @@ The Python Client and API have been crafted for energy systems modellers seeking
 
 ## Audience
 
-Our users span the entire ecosystem, from governments, think tanks, and academics to those in the commercial sector—asset owners, corporations, and individuals in the financial services sector. Whether you're involved in developing state-of-the-art energy systems models, you'll find our comprehensive and quality-controlled data to be a valuable resource.
+Our users include governments, think tanks, and academics, as well as the commercial sector—asset owners, corporations, and individuals in the financial services sector. Whether you're involved in developing state-of-the-art energy systems models or are just in need of programmatic access to energy systems data.
 
 ## Results Viewer
 
@@ -18,7 +18,7 @@ For non-programmatic users, our <a href="https://feo.transitionzero.org/" target
 
 ## Licensing
 
-Access to the data is free under the <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.en" target="_blank">Creative Commons 4.0 License: CC-BY-NC</a>, while the FEO platform is licensed under the <a href="https://github.com/transition-zero/feo-client-examples/blob/main/LICENSE" target="_blank">Apache License, Version 2.0</a>.
+Access to the data is free under the <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.en" target="_blank">Creative Commons 4.0 License: CC-BY-NC</a>, while the Python client and tutorial notebooks licensed under the <a href="https://github.com/transition-zero/feo-client-examples/blob/main/LICENSE" target="_blank">Apache License, Version 2.0</a>.
 
 ## Get in Touch!
 
