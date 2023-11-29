@@ -203,7 +203,7 @@ class RecordBase(PydanticBaseModel):
     valid_timestamp_start: datetime = Field(..., title="Valid Timestamp Start")
     valid_timestamp_end: datetime = Field(..., title="Valid Timestamp End")
     datum_type: str = Field(..., title="Datum Type")
-    datum_detail: str = Field(..., title="Datum Detail")
+    datum_detail: str | None = Field(None, title="Datum Detail")
     value: float | None = Field(..., title="Value")
     unit: str = Field(..., title="Unit")
     properties: dict[str, Any] | None = Field(None, title="Properties")
