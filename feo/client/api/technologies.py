@@ -9,7 +9,7 @@ class TechnologyAPI(BaseAPI):
         resp = self.client.get(f"/technologies/{slug}")
         resp.raise_for_status()
 
-        return TechnologyQueryResponse(**resp.json())
+        return Technology(**resp.json())
 
     def search(
         self,
