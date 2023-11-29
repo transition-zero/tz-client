@@ -10,22 +10,21 @@ plugins:
           include_source: True
 
 nav:
-  - Home: index.md
-  - Installation: installation.md
-  - Docs:
-    - Python Client:
-      - API: client/api.md
-      - Node: client/node.md
-      - Asset: client/asset.md
-      - 'Asset Collection': client/asset_collection.md
-      #- Source: client/source.md
-      #- Publisher: client/publisher.md
-      - Model: client/model.md
-      - Scenario: client/scenario.md
-      - Run: client/run.md
-      - 'Record Collection': client/record_collection.md
-  - Tutorials: '!import https://github.com/transition-zero/feo-client-examples?branch=main&docs_dir=feo-client-examples'
+  - Docs: 
+    - index.md
+    - Installation: installation.md
+    - API: client/api.md
+    - Node: client/node.md
+    - Asset: client/asset.md
+    - 'Asset Collection': client/asset_collection.md
+    #- Source: client/source.md
+    #- Publisher: client/publisher.md
+    - Model: client/model.md
+    - Scenario: client/scenario.md
+    - Run: client/run.md
+    - 'Record Collection': client/record_collection.md
   - API Reference: redoc.md
+  - Tutorials: '!import https://github.com/transition-zero/feo-client-examples?branch=main&docs_dir=feo-client-examples'
   - Tech Blog: https://transitionzero.medium.com/
 repo_url: https://github.com/transition-zero/feo-client
 
