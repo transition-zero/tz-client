@@ -84,7 +84,54 @@ The feo login can also be called directly (for example via a Jupyter notebook):
 
 The FEO client provides object-level interfaces to the main FEO building blocks. Users may also use the underlying API wrapper.
 
+### Accessing node-level data
+
+In the FEO platform, all data is indexed to a `Node`. Nodes are used to represent useful physical and administrative boundaries - ranging from individual physical assets through to entire countries and continents. This flexibility allows FEO users to access data at all levels of aggregation via the FEO platform .
+
+In the physics of systems modelling, Nodes are discrete units around which the continuity of energy and materials is constrained. In other words, at every node in a systems model, the input plus supply to the node must equal the output plus demand.
+To begin, import the `Node` client.
+```
+from feo.client import Node
+```
+
+The `Node.search` method can be used to search for Nodes. 
+```
+Node.search("Bali")
+```
+
+Each search result is an instance of the `Node` object.
+```
+IDN = Node.search("indonesia")[0]
+IDN
+```
+
+Nodes have an `id` which is unique. Nodes can have many names (or `aliases`), one of which is attached to the node as a primary English name.
+```
+IDN.id, IDN.name_primary_en
+```
+
 ### Accessing asset-level data
+
+In the FEO platform, `Assets` are a subset of Nodes. Assets are Nodes which correspond to physical plant and equipment like power stations and steelworks. 
+
+To begin, import the Asset client.
+```
+from feo.client import Asset
+```
+
+Like nodes, assets can be searched for: 
+```
+search_results = Asset.search("Banten Suralaya power", sector="power")
+search_results
+for asset in search_results:
+    print(asset.id, asset.name_primary_en)
+```
+
+... or directly instantiated:
+```
+asset = Asset.from_id("PWRCOAIDNA0U0")
+asset.id, asset.name_primary_en
+```
 
 ### Accessing historical data
 
