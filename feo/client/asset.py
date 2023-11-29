@@ -28,7 +28,7 @@ class Asset(schemas.NodeBase):
         page: int = 0,
     ) -> list["schemas.Node"]:
         """
-        Search for nodes using an alias.Search is performed by matching chunks of string
+        Search for nodes using an alias. Note: Search is performed by matching chunks of strings
         and therefore larger strings will be less precise in terms of Assets returned.
 
         Args:
