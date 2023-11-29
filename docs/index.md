@@ -6,7 +6,7 @@ This documentation site is designed to facilitate easy access and understanding 
 
 ## Purpose
 
-The Python Client and API have been crafted for energy systems modellers seeking access to data for nodes, assets, technologies, as well as the data supporting models and scenarios published by TransitionZero.
+The Python Client and API have been crafted for energy systems modellers seeking access to data for nodes, assets, technologies, as well as the data supporting models and scenarios published by [TransitionZero](https://www.transitionzero.org/).
 
 ## Audience
 
@@ -14,7 +14,7 @@ Our users span the entire ecosystem, from governments, think tanks, and academic
 
 ## Results Viewer
 
-For non-programmatic users, our [Results Viewer](https://feo.transitionzero.org/) tool allows access to data for published scenarios, downloadable as CSV.
+For non-programmatic users, our [Results Viewer](https://feo.transitionzero.org/) tool allows access to data for published scenarios, downloadable as Excel.
 
 ## Licensing
 
