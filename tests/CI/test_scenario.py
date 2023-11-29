@@ -39,4 +39,7 @@ def test_scenario_model():
 
 def test_scenario_str():
     scenario = Scenario.from_id("feo-global-indonesia:feo-indonesia-current-policies")
-    assert str(scenario) == "Scenario: Global Indonesia (feo-global-indonesia)"
+    assert (
+        str(scenario) == "Scenario: FEO Indonesia - Current Policies "
+        "(id=feo-global-indonesia:feo-indonesia-current-policies)"
+    )

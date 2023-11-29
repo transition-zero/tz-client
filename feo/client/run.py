@@ -90,4 +90,4 @@ class Run(schemas.RunBase):
         return factory.scenario(**run_data.scenario.model_dump())
 
     def __str__(self) -> str:
-        return f"Run: {self.name} ({self.id})"
+        return f"Run: {self.name} (id={self.id})"

@@ -58,7 +58,7 @@ class Asset(schemas.NodeBase):
         ]
 
     def __str__(self) -> str:
-        return f"Scenario: {self.name} ({self.id})"
+        return f"Asset: {self.name_primary_en} (id={self.id})"
 
 
 class AssetCollection(pd.DataFrame):

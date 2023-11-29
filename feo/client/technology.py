@@ -74,4 +74,4 @@ class Technology(schemas.Technology):
         return self._projections
 
     def __str__(self) -> str:
-        return f"Technology: {self.name} ({self.id})"
+        return f"Technology: {self.name} (id={self.id})"

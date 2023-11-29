@@ -41,4 +41,4 @@ class TestAsset:
         assert isinstance(asset.properties, dict | None)
 
     def test_str(self, asset):
-        assert str(asset) == "Asset: Rooppur nuclear power plant (PWRURNBGDA0U0)"
+        assert str(asset) == "Asset: Rooppur nuclear power plant - 2 (id=PWRURNBGDA0U0)"

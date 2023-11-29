@@ -86,4 +86,4 @@ class Model(schemas.ModelBase):
         return factory.scenario(**model_data.featured_scenario.model_dump())
 
     def __str__(self) -> str:
-        return f"Model: {self.name} ({self.id})"
+        return f"Model: {self.name} (id={self.id})"

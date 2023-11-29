@@ -97,4 +97,4 @@ class Scenario(schemas.ScenarioBase):
         return [factory.run(**r.model_dump()) for r in scenario_data.runs]
 
     def __str__(self) -> str:
-        return f"Scenario: {self.name} ({self.id})"
+        return f"Scenario: {self.name} (id={self.id})"

@@ -39,4 +39,4 @@ def test_run_model():
 
 def test_run_str():
     run = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
-    assert str(run) == "Run: Global Indonesia (feo-global-indonesia)"
+    assert str(run) == "Run: demo (id=feo-global-indonesia:feo-indonesia-current-policies:demo)"

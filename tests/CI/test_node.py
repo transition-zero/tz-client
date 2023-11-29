@@ -59,4 +59,4 @@ def test_node_geometry(node):
 
 
 def test_node_str(node):
-    assert str(node) == "Node: Germany (DEU)"
+    assert str(node) == "Node: Germany (id=DEU)"

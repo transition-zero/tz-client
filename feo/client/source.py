@@ -46,7 +46,10 @@ class Source(schemas.Source):
         """
 
         search_results = api.sources.search(
-            name=name, year=year, publisher_slug=publisher_id, includes="publisher,links,license"
+            name=name,
+            year=year,
+            publisher_slug=publisher_id,
+            includes="publisher,links,license",
         )
 
         return [cls(**source.model_dump()) for source in search_results]
@@ -91,4 +94,4 @@ class Source(schemas.Source):
         return f"{self.publisher_slug}:{self.slug}"
 
     def __str__(self) -> str:
-        return f"Source: {self.name} ({self.id})"
+        return f"Source: {self.name} (i{self.id})"

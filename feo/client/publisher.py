@@ -68,4 +68,4 @@ class Publisher(schemas.Publisher):
         return self.slug
 
     def __str__(self) -> str:
-        return f"Publisher: {self.name} ({self.id})"
+        return f"Publisher: {self.name} (id={self.id})"

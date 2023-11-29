@@ -125,4 +125,4 @@ class Node(schemas.NodeBase):
             return self._geometry
 
     def __str__(self) -> str:
-        return f"Node: {self.name} ({self.id})"
+        return f"Node: {self.name_primary_en} (id={self.id})"
