@@ -5,7 +5,7 @@ from feo.client.api.schemas import Technology, TechnologyQueryResponse
 
 
 class TechnologyAPI(BaseAPI):
-    def get(self, slug: str) -> TechnologyQueryResponse:
+    def get(self, slug: str) -> Technology:
         resp = self.client.get(f"/technologies/{slug}")
         resp.raise_for_status()
 
