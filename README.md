@@ -122,7 +122,6 @@ from feo.client import Asset
 Like nodes, assets can be searched for: 
 ```
 search_results = Asset.search("Banten Suralaya power", sector="power")
-search_results
 for asset in search_results:
     print(asset.id, asset.name_primary_en)
 ```
