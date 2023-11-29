@@ -1,6 +1,6 @@
 import pytest
 
-from feo.client import Technology
+from feo.client import RecordCollection, Technology
 
 
 @pytest.mark.skip(reason="missing tech data")
@@ -15,3 +15,10 @@ def test_technology_search():
     technologies = Technology.search()
     assert isinstance(technologies, list)
     assert isinstance(technologies[0], Technology)
+
+
+@pytest.mark.skip(reason="missing tech data")
+def test_technology_projections():
+    technology = Technology.from_id("coal")
+    projections = technology.projections
+    assert isinstance(projections, RecordCollection)

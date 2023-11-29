@@ -14,6 +14,12 @@ cd feo-client
 pip install ".[dev]"
 ```
 
+To install pre-commit hooks (recommended), run
+
+```console
+pre-commit install
+```
+
 ## Authentication
 
 Running our test suite first requires authentication
