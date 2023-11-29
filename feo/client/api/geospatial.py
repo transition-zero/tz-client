@@ -1,6 +1,6 @@
 from typing import List, Optional, Union
 
-from httpx.exceptions import ReadTimeout
+from httpx import ReadTimeout
 
 from feo.client.api.base import BaseAPI
 from feo.client.api.schemas import FeatureCollection, Geometry
