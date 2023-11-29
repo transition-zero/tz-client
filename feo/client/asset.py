@@ -58,7 +58,7 @@ class Asset(schemas.NodeBase):
 
 
 class AssetCollection(pd.DataFrame):
-    """An AssetCollection is an extention of a Pandas DataFrame.
+    """An AssetCollection is an extension of a Pandas DataFrame.
 
     It can be used in precisely the same way as a Pandas DataFrame
     but has a few extra useful constructors.
