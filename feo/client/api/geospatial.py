@@ -3,6 +3,8 @@ from typing import List, Optional, Union
 from feo.client.api.base import BaseAPI
 from feo.client.api.schemas import FeatureCollection, Geometry
 
+FEATURES_TIMEOUT = 30
+
 
 class NoFeaturesFound(Exception):
     pass
@@ -38,7 +40,9 @@ class VectorAPI(BaseAPI):
 
         params = {k: v for k, v in params.items() if v is not None}
 
-        resp = self.client.get(f"/collections/{collection_id}/items", params=params)
+        resp = self.client.get(
+            f"/collections/{collection_id}/items", params=params, timeout=FEATURES_TIMEOUT
+        )
         resp.raise_for_status()
 
         return FeatureCollection(**resp.json())

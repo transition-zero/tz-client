@@ -29,7 +29,7 @@ class Client:
     httpx_client = httpx.Client(
         base_url=base_url,
         headers=headers,
-        timeout=20,
+        timeout=10,
     )
 
     def __init__(self):
