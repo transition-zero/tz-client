@@ -53,6 +53,9 @@ class Asset(schemas.NodeBase):
             for alias in search_results.aliases
         ]
 
+    def __str__(self) -> str:
+        return f"Asset: {self.name_primary_en} (id={self.id})"
+
 
 class AssetCollection(pd.DataFrame):
     """An AssetCollection is an extention of a Pandas DataFrame.
