@@ -94,7 +94,7 @@ To begin, import the `Node` client.
 from feo.client import Node
 ```
 
-The `Node.search` method can be used to search for Nodes. 
+The `Node.search` method can be used to search for Nodes.
 ```
 Node.search("Bali")
 ```
@@ -112,14 +112,14 @@ IDN.id, IDN.name_primary_en
 
 ### Accessing asset-level data
 
-In the FEO platform, `Assets` are a subset of Nodes. Assets are Nodes which correspond to physical plant and equipment like power stations and steelworks. 
+In the FEO platform, `Assets` are a subset of Nodes. Assets are Nodes which correspond to physical plant and equipment like power stations and steelworks.
 
 To begin, import the Asset client.
 ```
 from feo.client import Asset
 ```
 
-Like nodes, assets can be searched for: 
+Like nodes, assets can be searched for:
 ```
 search_results = Asset.search("Banten Suralaya power", sector="power")
 for asset in search_results:
