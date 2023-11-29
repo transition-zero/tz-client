@@ -13,10 +13,6 @@ class Asset(schemas.NodeBase):
         node = api.assets.get(ids=id)[0]
         return cls(**node.model_dump())
 
-    def __init__(self, id: str, **kwargs):
-        """Initialise Asset from `id` as a positional argument"""
-        super(self.__class__, self).__init__(id=id, **kwargs)
-
     @classmethod
     def search(
         cls,

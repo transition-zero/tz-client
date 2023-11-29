@@ -90,6 +90,39 @@ The FEO client provides object-level interfaces to the main FEO building blocks.
 
 ### Accessing systems models and reports
 
+System Models are representations of energy and material flows, usually optimised by economic logic like least-costs-minimisation.
+
+System models in FEO are composed of three objects - Models, Scenarios, and Runs.
+
+- **Models** describe the geographic, temporal, and sectoral scope of the systems model.
+- **Scenarios** are narrative counter-factuals of the future, which may be accompanied by numeric projections
+- **Runs** are solutions to parameterised systems models, used to explore uncertainty
+
+Models, Scenarios, and Runs can be imported from the client:
+```
+from feo.client import Model, Scenario, Run
+```
+
+The `Model` client can be used to search and retrieve model objects.
+```
+Model.search(model_slug='feo-global-indonesia')
+```
+
+Models can also be retrieved directly by id
+```
+idn_model = Model.from_id('feo-global-indonesia')
+```
+
+Scenarios associated can also be retrieved from the model object.
+```
+idn_model.scenarios
+```
+
+... as can the runs associated with scenarios
+```
+run = idn_model.scenarios[0].runs
+```
+
 ### Simple API calls
 
 
