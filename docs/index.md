@@ -18,7 +18,7 @@ For non-programmatic users, our [Results Viewer](https://feo.transitionzero.org/
 
 ## Licensing
 
-Access to the data is free under the [Creative Commons 4.0 License: CC-BY-NC](https://creativecommons.org/licenses/by-nc/4.0/deed.en), while the FEO platform is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+Access to the data is free under the [Creative Commons 4.0 License: CC-BY-NC](https://creativecommons.org/licenses/by-nc/4.0/deed.en), while the FEO platform is licensed under the [Apache License, Version 2.0](https://github.com/transition-zero/feo-client-examples/blob/main/LICENSE).
 
 ## Get in Touch!
 
