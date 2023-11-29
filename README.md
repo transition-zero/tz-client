@@ -9,9 +9,29 @@
 
 <!-- badges-begin -->
 
-<img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License" href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/feffb38d46c750cad5402dca5dd54bf9/raw/tests_passing.json" alt="Tests Passing"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/d2b6ec23e3c6e8309236216689d91782/raw/coverage_badge.json" alt="Test Coverage"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/bd1e357c1bce5fc2c0808bcdb569157c/raw/python_version_badge.json" alt="Supported Python versions"><img src="https://img.shields.io/badge/under%20construction-ffae00" alt="Under Construction">
+[![License][license badge]][license]
+[![Contributor Covenant][contributor covenant badge]][code of conduct]
+![Tests][tests badge]
+![Coverage][coverage badge]
+![Python][python badge]
+![Status][status badge]
+
+[license badge]: https://img.shields.io/badge/License-Apache_2.0-blue.svg
+[license]: https://opensource.org/licenses/Apache-2.0
+
+[contributor covenant badge]: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
+[code of conduct]: https://github.com/transition-zero/feo-client/blob/main/CODE-OF-CONDUCT.md
+
+[tests badge]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/feffb38d46c750cad5402dca5dd54bf9/raw/tests_passing.json
+
+[coverage badge]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/d2b6ec23e3c6e8309236216689d91782/raw/coverage_badge.json
+
+[python badge]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/bd1e357c1bce5fc2c0808bcdb569157c/raw/python_version_badge.json
+
+[status badge]: https://img.shields.io/badge/under%20construction-ffae00
 
 <!-- badges-end -->
+
 **Documentation**: <a href="https://docs.feo.transitionzero.org" target="_blank">https://docs.feo.transitionzero.org</a>
 
 **API Reference**: <a href="https://api.feo.transitionzero.org/latest/docs" target="_blank">https://api.feo.transitionzero.org/latest/docs</a>
@@ -20,7 +40,7 @@
 
 ---
 
-The _Future Energy Outlook_ is TransitionZero's open-access energy transition research platform.
+The _Future Energy Outlook_ (FEO) is TransitionZero's open-access energy transition research platform.
 This Python Client gives programmatic access to all the functionality of the FEO platform:
 
 * **Open Data**: Asset-level and historical data free to access, forever.
@@ -28,7 +48,7 @@ This Python Client gives programmatic access to all the functionality of the FEO
 * **Transparent Data Provenance**: Trace all data back to its origin.
 * **Reproduceable**: Built with open-source systems modelling frameworks, with transparent or user-defined assumptions.
 * **Social and Shareable**: Share systems models reports publicly and star your favourites.
-* **Analysis-Ready outputs**: Download analysis-ready spreadsheets.
+* **Analysis-Ready Outputs**: Download analysis-ready spreadsheets.
 * **Flagship Analysis**: Access premier research outputs prepared by TransitionZero researchers.
 
 
@@ -69,6 +89,39 @@ The FEO client provides object-level interfaces to the main FEO building blocks.
 ### Accessing historical data
 
 ### Accessing systems models and reports
+
+System Models are representations of energy and material flows, usually optimised by economic logic like least-costs-minimisation.
+
+System models in FEO are composed of three objects - Models, Scenarios, and Runs.
+
+- **Models** describe the geographic, temporal, and sectoral scope of the systems model.
+- **Scenarios** are narrative counter-factuals of the future, which may be accompanied by numeric projections
+- **Runs** are solutions to parameterised systems models, used to explore uncertainty
+
+Models, Scenarios, and Runs can be imported from the client:
+```
+from feo.client import Model, Scenario, Run
+```
+
+The `Model` client can be used to search and retrieve model objects.
+```
+Model.search(model_slug='feo-global-indonesia')
+```
+
+Models can also be retrieved directly by id
+```
+idn_model = Model.from_id('feo-global-indonesia')
+```
+
+Scenarios associated can also be retrieved from the model object.
+```
+idn_model.scenarios
+```
+
+... as can the runs associated with scenarios
+```
+run = idn_model.scenarios[0].runs
+```
 
 ### Simple API calls
 

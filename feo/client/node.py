@@ -117,9 +117,12 @@ class Node(schemas.NodeBase):
 
     @property
     def geometry(self) -> Geometry:
-        """The WGS84 GeoJSON for this node's geometry"""
+        """The node's geometry in WGS84 coordinate reference system."""
         if self._geometry is None:
             self._geometry = self._get_geometry(self.id)
             return self._geometry
         else:
             return self._geometry
+
+    def __str__(self) -> str:
+        return f"Node: {self.name_primary_en} (id={self.id})"

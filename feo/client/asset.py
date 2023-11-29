@@ -13,10 +13,6 @@ class Asset(schemas.NodeBase):
         node = api.assets.get(ids=id)[0]
         return cls(**node.model_dump())
 
-    def __init__(self, id: str, **kwargs):
-        """Initialise Asset from `id` as a positional argument"""
-        super(self.__class__, self).__init__(id=id, **kwargs)
-
     @classmethod
     def search(
         cls,
@@ -56,6 +52,9 @@ class Asset(schemas.NodeBase):
             cls(**alias.node.model_dump())  # type: ignore[union-attr, misc]
             for alias in search_results.aliases
         ]
+
+    def __str__(self) -> str:
+        return f"Asset: {self.name_primary_en} (id={self.id})"
 
 
 class AssetCollection(pd.DataFrame):
