@@ -24,6 +24,7 @@ nav:
     - Run: client/run.md
     - 'Record Collection': client/record_collection.md
     - Technology: client/technology.md
+    - Geometry: client/geometry.md
   - API Reference: redoc.md
   - Tutorials: '!import https://github.com/transition-zero/feo-client-examples?branch=main&docs_dir=feo-client-examples'
   - Tech Blog: https://transitionzero.medium.com/
