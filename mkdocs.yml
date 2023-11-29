@@ -10,7 +10,7 @@ plugins:
           include_source: True
 
 nav:
-  - Docs: 
+  - Docs:
     - index.md
     - Installation: installation.md
     - API: client/api.md

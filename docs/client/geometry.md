@@ -19,4 +19,4 @@ Each of these exists as a 'Collection' that can be browsed and searched via seve
 
 Raster data represents geographic data as a matrix of cells that each contains an attribute value. Each cell in the raster data represents something, for instance buildings, roads, forests, etc.
 
-To access a wide variety of geospatial data, covering vector and raster data types, you can use this [Jupyter Notebook on Github](https://github.com/transition-zero/feo-client-examples/blob/main/feo-client-examples/4_geometries.ipynb). 
+To access a wide variety of geospatial data, covering vector and raster data types, you can use this [Jupyter Notebook on Github](https://github.com/transition-zero/feo-client-examples/blob/main/feo-client-examples/4_geometries.ipynb).
