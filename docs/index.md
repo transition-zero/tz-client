@@ -1,12 +1,5 @@
 # Home
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/transition-zero/.github/raw/main/profile/img/logo-dark.png">
-  <img alt="TransitionZero Logo - Light" width="100%" src="https://github.com/transition-zero/.github/raw/main/profile/img/logo-light.png">
-</picture>
-
----
-
 ## Overview
 
 This documentation site is designed to facilitate easy access and understanding of the data available through TransitionZero’s Future Energy Outlook Python Client and API.
