@@ -40,7 +40,6 @@ class TestAsset:
         assert asset.id == "PWRURNBGDA0U0"
         assert isinstance(asset.properties, dict | None)
 
-    @pytest.mark.skip(reason="missing source data")
     def test_sources(self, asset):
         sources = asset.sources
         assert isinstance(sources, list)
