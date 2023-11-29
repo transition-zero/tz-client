@@ -56,3 +56,7 @@ def test_search_pagination():
 def test_node_geometry(node):
     geom = node.geometry
     assert isinstance(geom, Geometry)
+
+
+def test_node_str(node):
+    assert str(node) == "Node: Germany (DEU)"

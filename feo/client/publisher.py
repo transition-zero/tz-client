@@ -62,3 +62,10 @@ class Publisher(schemas.Publisher):
             self._sources = self._get_sources(self.slug)
             return self._sources
         return self._sources
+
+    @property
+    def id(self) -> str:
+        return self.slug
+
+    def __str__(self) -> str:
+        return f"Publisher: {self.name} ({self.id})"

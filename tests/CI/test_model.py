@@ -38,3 +38,8 @@ def test_model_scenarios():
     assert isinstance(scenarios[0], Scenario)
 
     assert isinstance(model.featured_scenario, Scenario | None)
+
+
+def test_model_str():
+    model = Model.from_id("feo-global-indonesia")
+    assert str(model) == "Model: Global Indonesia (feo-global-indonesia)"

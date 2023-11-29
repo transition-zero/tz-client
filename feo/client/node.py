@@ -123,3 +123,6 @@ class Node(schemas.NodeBase):
             return self._geometry
         else:
             return self._geometry
+
+    def __str__(self) -> str:
+        return f"Node: {self.name} ({self.id})"

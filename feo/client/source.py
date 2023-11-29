@@ -85,3 +85,10 @@ class Source(schemas.Source):
             )
             return self._publisher
         return self._publisher
+
+    @property
+    def id(self) -> str:
+        return f"{self.publisher_slug}:{self.slug}"
+
+    def __str__(self) -> str:
+        return f"Source: {self.name} ({self.id})"

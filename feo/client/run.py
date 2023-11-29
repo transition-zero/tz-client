@@ -88,3 +88,6 @@ class Run(schemas.RunBase):
         if run_data.scenario is None:
             return None
         return factory.scenario(**run_data.scenario.model_dump())
+
+    def __str__(self) -> str:
+        return f"Run: {self.name} ({self.id})"
