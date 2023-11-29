@@ -47,7 +47,10 @@ class Node(schemas.NodeBase):
         page: int = 0,
     ) -> list["Node"]:
         """
-        Search for nodes using an alias.
+        Search for nodes using an alias. Search is performed by matching
+        chunks of string and therefore larger strings will be less precise
+        in terms of Nodes returned.
+
 
         ```python
         germany_nodes = Node.search("Germany")
