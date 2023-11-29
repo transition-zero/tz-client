@@ -2,6 +2,8 @@ from typing import TYPE_CHECKING, List, Optional, Union
 
 import pandas as pd
 
+import pandas as pd
+
 from feo.client import api, factory
 from feo.client.api import schemas
 
@@ -243,3 +245,10 @@ class Run(schemas.RunBase):
 
     def __str__(self) -> str:
         return f"Run: {self.name} (id={self.id})"
+    
+    @property
+    def results(self):
+        if self._run_results is None:
+            self._run_results = RunResults(id=self.id)
+            return self._run_results
+        return self._run_results
