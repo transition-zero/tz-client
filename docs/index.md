@@ -6,7 +6,7 @@ This documentation site is designed to facilitate easy access and understanding 
 
 ## Purpose
 
-The Python Client and API have been crafted for energy systems modellers seeking access to data for nodes, assets, technologies, as well as the data supporting models and scenarios published by [TransitionZero](https://www.transitionzero.org/).
+The Python Client and API have been crafted for energy systems modellers seeking access to data for nodes, assets, technologies, as well as the data supporting models and scenarios published by <a href="https://www.transitionzero.org/" target="_blank">TransitionZero</a>.
 
 ## Audience
 
@@ -14,12 +14,12 @@ Our users span the entire ecosystem, from governments, think tanks, and academic
 
 ## Results Viewer
 
-For non-programmatic users, our [Results Viewer](https://feo.transitionzero.org/) tool allows access to data for published scenarios, downloadable as Excel.
+For non-programmatic users, our <a href="https://feo.transitionzero.org/" target="_blank">Results Viewer</a> tool allows access to data for published scenarios, downloadable as Excel.
 
 ## Licensing
 
-Access to the data is free under the [Creative Commons 4.0 License: CC-BY-NC](https://creativecommons.org/licenses/by-nc/4.0/deed.en), while the FEO platform is licensed under the [Apache License, Version 2.0](https://github.com/transition-zero/feo-client-examples/blob/main/LICENSE).
+Access to the data is free under the <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.en" target="_blank">Creative Commons 4.0 License: CC-BY-NC</a>, while the FEO platform is licensed under the <a href="https://github.com/transition-zero/feo-client-examples/blob/main/LICENSE" target="_blank">Apache License, Version 2.0</a>.
 
 ## Get in Touch!
 
-We're here to help! If you encounter challenges or have questions, feel free to reach out to us via email at [info@transitionzero.org](mailto:info@transitionzero.org).
+We're here to help! If you encounter challenges or have questions, feel free to reach out to us via email at <a href="mailto:support@transitionzero.org" target="_blank">support@transitionzero.org</a>.
