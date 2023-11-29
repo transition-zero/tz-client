@@ -1,7 +1,7 @@
 # Node
 
 ![OSeMOSYS Global: An open-source, open data global electricity system model generator](../assets/images/node.png)
-*Caption: OSeMOSYS Global: An open-source, open data global electricity system model generator*
+*OSeMOSYS Global: An open-source, open data global electricity system model generator*
 
 
 ---
