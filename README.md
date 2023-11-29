@@ -90,17 +90,17 @@ Model.search(model_slug='feo-global-indonesia')
 
 Models can also be retrieved directly by id
 ```
-ic_model = Model.from_id('feo-global-indonesia')
+idn_model = Model.from_id('feo-global-indonesia')
 ```
 
 Scenarios associated can also be retrieved from the model object.
 ```
-ic_model.scenarios
+idn_model.scenarios
 ```
 
 ... as can the runs associated with scenarios
 ```
-run = ic_model.scenarios[0].runs
+run = idn_model.scenarios[0].runs
 ```
 
 ### Simple API calls
