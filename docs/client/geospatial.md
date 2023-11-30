@@ -26,4 +26,4 @@ FEO Raster collections include:
 
 ## Examples
 
-To access a wide variety of geospatial data you can use this [Jupyter Notebook on Github](https://github.com/transition-zero/feo-client-examples/blob/main/feo-client-examples/4_geometries.ipynb).
+To access a wide variety of geospatial data you can use this [Jupyter Notebook on Github](https://github.com/transition-zero/feo-client-examples/blob/main/feo-client-examples/4_geospatial_data.ipynb).
