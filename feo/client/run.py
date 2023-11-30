@@ -19,6 +19,10 @@ class Result(schemas.ResultBase):
     pass
 
 
+class Result(schemas.ResultBase):
+    pass
+
+
 class ResultsCollection(pd.DataFrame):
     """A ResultsCollection is an extention of a Pandas DataFrame.
 
@@ -243,10 +247,3 @@ class Run(schemas.RunBase):
 
     def __str__(self) -> str:
         return f"Run: {self.name} (id={self.id})"
-
-    @property
-    def results(self):
-        if self._run_results is None:
-            self._run_results = RunResults(id=self.id)
-            return self._run_results
-        return self._run_results
