@@ -67,5 +67,7 @@ jobs:
       if: always()
       with:
         status: ${{ job.status }} # required
+        notify_when: "failure"
+        notification_title: "PANIC: feo-client prod tests are failing"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FEO_ALERTS }} # required
