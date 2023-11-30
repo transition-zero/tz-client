@@ -1,6 +1,7 @@
 import pytest
 
 from feo.client import Model, Run, utils
+from feo.client.run import RunResults
 
 
 @pytest.fixture
@@ -63,7 +64,12 @@ def test_run_str(run_fixture):
 def test_results_collection():
     net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
     assert net_zero_demo_run.results == RunResults(id="feo-global-indonesia:coal-retirement:main")
-    assert type(net_zero_demo_run.results.node_capacity) == ResultsCollection
-    assert type(net_zero_demo_run.results.edge_capacity) == ResultsCollection
-    net_zero_demo_run.results.edge_capacity.filter(node_id="IDN", technology="coal")
-    net_zero_demo_run.results.edge_capacity.next_page()
+    net_zero_demo_run.results.production.filter(node_id="IDN", technology="coal")
+    net_zero_demo_run.results.production.filter(node_id="IDN", technology="coal")
+    net_zero_demo_run.results.production.next_page()
+
+
+def test_to_feo_results():
+    net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
+    assert net_zero_demo_run.results == RunResults(id="feo-global-indonesia:coal-retirement:main")
+    assert net_zero_demo_run.results.capacity.to_feo_results()

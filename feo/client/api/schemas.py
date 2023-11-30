@@ -391,6 +391,10 @@ class ScenarioQueryResult(PydanticBaseModel):
     total_pages: int | None = Field(None, title="Total Pages")
 
 
+class ResultBase(PydanticBaseModel):
+    pass
+
+
 class Publisher(PydanticBaseModel):
     name: str
     short_name: str
