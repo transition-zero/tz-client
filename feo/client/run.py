@@ -23,6 +23,10 @@ class Result(schemas.ResultBase):
     pass
 
 
+class Result(schemas.ResultBase):
+    pass
+
+
 class ResultsCollection(pd.DataFrame):
     """A ResultsCollection is an extention of a Pandas DataFrame.
 
