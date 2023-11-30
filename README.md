@@ -169,7 +169,7 @@ idn_model.scenarios
 run = idn_model.scenarios[0].runs
 ```
 
-### Simple API calls
+<!-- ### Simple API calls -->
 
 
 
@@ -179,4 +179,8 @@ The full documentation for FEO can be found here: <a href="https://docs.feo.tran
 
 ## Contributing
 
+See the [Contributing Guide](CONTRIBUTING.md) and our [Code of Conduct](CODE-OF-CONDUCT.md).
+
 ## License
+
+[Apache license 2.0](LICENSE)
