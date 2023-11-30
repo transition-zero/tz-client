@@ -1,10 +1,22 @@
-from feo.client import Model, Run
+import pytest
+
+from feo.client import Model, Run, utils
 
 
-def test_run_init():
-    run = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
+@pytest.fixture
+def run_fixture():
+    if utils.ENVIRONMENT == "staging":
+        run = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
+    elif utils.ENVIRONMENT == "production":
+        run = Run.from_id("feo-global-indonesia:net-zero-2060:main")
+    else:
+        raise ValueError("Unknown environment")
+    return run
+
+
+def test_run_init(run_fixture):
+    run = run_fixture
     assert isinstance(run, Run)
-    assert run.id == "feo-global-indonesia:feo-indonesia-current-policies:demo"
 
 
 def test_run_search():
@@ -30,13 +42,19 @@ def test_search_pagination():
     assert ids1.intersection(ids2) == set()
 
 
-def test_run_model():
-    run = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
+def test_run_model(run_fixture):
+    run = run_fixture
     model = run.model
     assert isinstance(model, Model)
     assert model.id == "feo-global-indonesia"
 
 
-def test_run_str():
-    run = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
-    assert str(run) == "Run: demo (id=feo-global-indonesia:feo-indonesia-current-policies:demo)"
+def test_run_str(run_fixture):
+    run = run_fixture
+    if utils.ENVIRONMENT == "staging":
+        output = "Run: demo (id=feo-global-indonesia:feo-indonesia-current-policies:demo)"
+    elif utils.ENVIRONMENT == "production":
+        output = "Run: main (id=feo-global-indonesia:net-zero-2060:main)"
+    else:
+        raise ValueError("Unknown environment")
+    assert str(run) == output

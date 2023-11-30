@@ -2,9 +2,15 @@ from datetime import datetime
 
 import pytest
 
-from feo.client import api
+from feo.client import api, utils
 
-FULLSLUG = "feo-global-indonesia:feo-indonesia-current-policies:demo"
+if utils.ENVIRONMENT == "staging":
+    FULLSLUG = "feo-global-indonesia:feo-indonesia-current-policies:demo"
+elif utils.ENVIRONMENT == "production":
+    FULLSLUG = "feo-global-indonesia:net-zero-2060:main"
+else:
+    raise ValueError("Unknown environment")
+
 EXAMPLE_PARAMS = [
     dict(
         fullslug=FULLSLUG,
