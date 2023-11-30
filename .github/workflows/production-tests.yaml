@@ -1,9 +1,6 @@
 name: Production Integration Tests
 
-on:
-  schedule:
-    - cron: '0 * * * *' # run hourly for now
-  workflow_dispatch:
+on: push
 
 permissions:
   contents: read
