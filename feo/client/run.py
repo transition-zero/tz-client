@@ -26,11 +26,11 @@ class ResultsCollection(pd.DataFrame):
     but has a few extra useful constructors.
 
     Args:
-        _filters Optional[List[Result]]: filters that can be applied to the ResultsCollection df
+        _filters Optional[List[Result]]: stores the filters currently applied to the df
         _scope Optional[schemas.CollectionScope]: params for generating api query for pagination
         _page Optional[int]: if generated from an API query, the current page of the query.
-        _chart_type str: stores the type of the ResultsCollection df
-        _chart_subtype Optional[str]: stores the subtype of ResultsCollection df
+        _chart_type str: stores the type of the df
+        _chart_subtype Optional[str]: stores the subtype of the df
     """
 
     _filters: List[Result] | None = None
@@ -103,49 +103,51 @@ class RunResults(schemas.PydanticBaseModel):
     _price: Optional[ResultsCollection] = None
 
     @property
-    def capacity(self):
+    def capacity(self) -> Optional[ResultsCollection]:
         if self._capacity is None:
             run_response = api.runs.get(fullslug=self.id, includes="capacity")
             if hasattr(run_response, "capacity"):
                 self._capacity = ResultsCollection().from_dict(run_response.capacity)
                 self._capacity._table = "capacity"
             else:
-                raise ValueError("Unexpected response from API, 'capacity' not found in response.")
+                print("Capacity not found.")
+                return None
         return self._capacity
 
     @property
-    def production(self):
+    def production(self) -> Optional[ResultsCollection]:
         if self._production is None:
             run_response = api.runs.get(fullslug=self.id, includes="production")
             if hasattr(run_response, "production"):
                 self._production = ResultsCollection().from_dict(run_response.production)
                 self._production._table = "production"
             else:
-                raise ValueError(
-                    "Unexpected response from API, 'production' not found in response."
-                )
+                print("Production not found.")
+                return None
         return self._production
 
     @property
-    def flow(self):
+    def flow(self) -> Optional[ResultsCollection]:
         if self._flow is None:
             run_response = api.runs.get(fullslug=self.id, includes="flow")
             if hasattr(run_response, "flow"):
                 self._flow = ResultsCollection().from_dict(run_response.flow)
                 self._flow._table = "flow"
             else:
-                raise ValueError("Unexpected response from API, 'flow' not found in response.")
+                print("Flow not found.")
+                return None
         return self._flow
 
     @property
-    def price(self):
+    def price(self) -> Optional[ResultsCollection]:
         if self._price is None:
             run_response = api.runs.get(fullslug=self.id, includes="price")
             if hasattr(run_response, "price"):
                 self._price = ResultsCollection().from_dict(run_response.price)
                 self._price._table = "price"
             else:
-                raise ValueError("Unexpected response from API, 'price' not found in response.")
+                print("Price not found.")
+                return None
         return self._price
 
 
