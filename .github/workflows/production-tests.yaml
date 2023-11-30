@@ -67,4 +67,4 @@ jobs:
       with:
         status: ${{ job.status }} # required
       env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FEO_ALERTS }} # required
