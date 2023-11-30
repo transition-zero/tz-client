@@ -63,44 +63,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-
-    - name: Install repo
-      run: |
         pip install -e .[dev]
 
-    - name: Sleep for 5 seconds
-      uses: jakejarvis/wait-action@master
+    - uses: ravsamhq/notify-slack-action@v2
+      if: always()
       with:
-        time: '5s'
-
-    - name: Test with pytest and capture coverage
-      run: |
-        pytest --cov=feo --cov-report=json:coverage.json
-
-    - name: parse coverage report
-      id: show_coverage_val
-      run: |
-        jq '.totals.percent_covered' coverage.json
-
-    - name: parse coverage report
-      id: extract_coverage_val
-      run: |
-        echo "COVERAGE=$(jq '.totals.percent_covered' coverage.json)" >> $GITHUB_ENV
-
-    - name: substring coverage
-      id: substring_coverage
-      run: |
-        coverage_int=$(echo "${{ env.COVERAGE }}" | cut -c 1-2)
-        echo "coverage_int=$coverage_int" >> $GITHUB_OUTPUT
-
-    - name: Create the Badge
-      uses: schneegans/dynamic-badges-action@v1.7.0
-      with:
-        auth: ${{ secrets.GIST_SECRET }}
-        gistID: ${{vars.GIST_ID}}
-        filename: coverage_badge.json
-        label: coverage
-        message: "%${{ steps.substring_coverage.outputs.coverage_int }}"
-        valColorRange: ${{ env.COVERAGE }}
-        maxColorRange: 100
-        minColorRange: 50
+        status: ${{ job.status }} # required
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
