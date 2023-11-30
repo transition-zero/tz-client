@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, List, Optional, Union
 
 import pandas as pd
 
@@ -11,8 +11,8 @@ if TYPE_CHECKING:
 
 
 class ResultsFilter(schemas.PydanticBaseModel):
-    node_ids: List[str] | str | None = None
-    edge_ids: List[str] | str | None = None
+    node_ids: Optional[Union[List[str], str]] = None
+    edge_ids: Optional[Union[List[str], str]] = None
 
 
 class Result(schemas.ResultBase):
@@ -26,11 +26,11 @@ class ResultsCollection(pd.DataFrame):
     but has a few extra useful constructors.
 
     Args:
-        _filters (List[Result] | None): TO BE FILLED
-        _scope (schemas.CollectionScope | None): params for generating api query for pagination
-        _page (int | None): if generated from an API query, the current page of the query.
-        _chart_type (str): TO BE FILLED
-        _chart_subtype (str | None): TO BE FILLED
+        _filters Optional[List[Result]]: filters that can be applied to the ResultsCollection df
+        _scope Optional[schemas.CollectionScope]: params for generating api query for pagination
+        _page Optional[int]: if generated from an API query, the current page of the query.
+        _chart_type str: stores the type of the ResultsCollection df
+        _chart_subtype Optional[str]: stores the subtype of ResultsCollection df
     """
 
     _filters: List[Result] | None = None
@@ -54,8 +54,9 @@ class ResultsCollection(pd.DataFrame):
 
     def filter(
         self,
-        node_ids: List[str] | str | None = None,
-        edge_ids: List[str] | str | None = None,
+        node_id: Optional[str] = None,
+        node_ids: Optional[List[str]] = None,
+        edge_ids: Optional[List[str]] = None,
     ) -> None:
         self._filters = ResultsFilter(node_ids=node_ids, edge_ids=edge_ids)
 
@@ -96,54 +97,60 @@ class ResultsCollectionRow(pd.Series):
 
 class RunResults(schemas.PydanticBaseModel):
     id: str
-    _node_capacity: ResultsCollection | None = None
-    _edge_capacity: ResultsCollection | None = None
-    _production: ResultsCollection | None = None
-    _flow: ResultsCollection | None = None
+    _capacity: Optional[ResultsCollection] = None
+    _production: Optional[ResultsCollection] = None
+    _flow: Optional[ResultsCollection] = None
+    _price: Optional[ResultsCollection] = None
 
     @property
-    def node_capacity(self):
-        if self._node_capacity is None:
-            self._node_capacity = ResultsCollection()
-            self._node_capacity._table = "node_capacity"
-            return self._node_capacity
-        return self._node_capacity
-
-    @property
-    def edge_capacity(self):
-        if self._edge_capacity is None:
-            self._edge_capacity = ResultsCollection()
-            self._edge_capacity._table = "edge_capacity"
-            return self._edge_capacity
-        return self._edge_capacity
+    def capacity(self):
+        if self._capacity is None:
+            run_response = api.runs.get(fullslug=self.id, includes="capacity")
+            if hasattr(run_response, "capacity"):
+                self._capacity = ResultsCollection().from_dict(run_response.capacity)
+                self._capacity._table = "capacity"
+            else:
+                raise ValueError("Unexpected response from API, 'capacity' not found in response.")
+        return self._capacity
 
     @property
     def production(self):
         if self._production is None:
-            self._production = ResultsCollection()
-            self._production._table = "production"
-            return self._production
+            run_response = api.runs.get(fullslug=self.id, includes="production")
+            if hasattr(run_response, "production"):
+                self._production = ResultsCollection().from_dict(run_response.production)
+                self._production._table = "production"
+            else:
+                raise ValueError(
+                    "Unexpected response from API, 'production' not found in response."
+                )
         return self._production
 
     @property
     def flow(self):
         if self._flow is None:
-            self._flow = ResultsCollection()
-            self._flow._table = "flow"
-            return self._flow
+            run_response = api.runs.get(fullslug=self.id, includes="flow")
+            if hasattr(run_response, "flow"):
+                self._flow = ResultsCollection().from_dict(run_response.flow)
+                self._flow._table = "flow"
+            else:
+                raise ValueError("Unexpected response from API, 'flow' not found in response.")
         return self._flow
 
     @property
     def price(self):
         if self._price is None:
-            self._price = ResultsCollection()
-            self._price._table = "price"
-            return self._price
+            run_response = api.runs.get(fullslug=self.id, includes="price")
+            if hasattr(run_response, "price"):
+                self._price = ResultsCollection().from_dict(run_response.price)
+                self._price._table = "price"
+            else:
+                raise ValueError("Unexpected response from API, 'price' not found in response.")
         return self._price
 
 
 class Run(schemas.RunBase):
-    _run_results: RunResults | None = None
+    _run_results: Optional[RunResults] = None
 
     @classmethod
     def from_id(cls, id: str) -> "Run":
@@ -156,19 +163,19 @@ class Run(schemas.RunBase):
         Returns:
             Run: A Run object.
         """
-        run = api.runs.get(fullslug=id)
-        return cls(**run.model_dump())
+        run_reponse = api.runs.get(fullslug=id)
+        return cls(**run_reponse.model_dump())
 
     @classmethod
     def search(
         cls,
-        slug: str | None = None,
-        model_slug: str | None = None,
-        scenario_slug: str | None = None,
-        owner_id: str | None = None,
-        featured: bool | None = None,
-        includes: str | None = None,
-        public: bool | None = None,
+        slug: Optional[str] = None,
+        model_slug: Optional[str] = None,
+        scenario_slug: Optional[str] = None,
+        owner_id: Optional[str] = None,
+        featured: Optional[bool] = None,
+        includes: Optional[str] = None,
+        public: Optional[bool] = None,
         limit: int = 5,
         page: int = 0,
     ) -> List["Run"]:
@@ -202,7 +209,7 @@ class Run(schemas.RunBase):
             page=page,
         )
 
-        return [cls(**run.model_dump()) for run in search_results]
+        return [cls(**r.model_dump()) for r in search_results]
 
     @property
     def id(self) -> str:
