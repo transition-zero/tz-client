@@ -12,12 +12,10 @@ jobs:
     env:
       AUTH0_DOMAIN: ${{ vars.AUTH0_DOMAIN}}
       AUTH0_AUDIENCE: ${{ vars.AUTH0_AUDIENCE}}
-      CLIENT_ID: ${{ vars.CLIENT_ID}}
-      CLIENT_SECRET: ${{ vars.CLIENT_SECRET}}
+      CLIENT_ID: ${{ secrets.CLIENT_ID}}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET}}
       TEST_USER: ${{ vars.TEST_USER}}
-      TEST_PW: ${{ vars.TEST_PW}}
-      GIST_ID: ${{ vars.GIST_ID}}
-      FEO_API_URL: ${{ vars.FEO_API_URL}}
+      TEST_PW: ${{ secrets.TEST_PW}}
 
     steps:
 
