@@ -37,13 +37,13 @@ jobs:
         url: "https://${{vars.AUTH0_DOMAIN}}/oauth/token"
         method: POST
         payload: '{
-          "client_id": "${{vars.CLIENT_ID}}",
-          "username": "${{vars.TEST_USER}}",
-          "password": "${{vars.TEST_PW}}",
+          "client_id": "${{env.CLIENT_ID}}",
+          "username": "${{env.TEST_USER}}",
+          "password": "${{env.TEST_PW}}",
           "realm": "Username-Password-Authentication",
-          "client_secret": "${{secrets.CLIENT_SECRET}}",
+          "client_secret": "${{env.CLIENT_SECRET}}",
           "scope": "openid permissions",
-          "audience": "${{vars.AUTH0_AUDIENCE}}",
+          "audience": "${{env.AUTH0_AUDIENCE}}",
           "grant_type": "http://auth0.com/oauth/grant-type/password-realm"
         }'
 
