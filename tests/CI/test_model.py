@@ -42,4 +42,4 @@ def test_model_scenarios():
 
 def test_model_str():
     model = Model.from_id("feo-global-indonesia")
-    assert str(model) == "Model: FEO-Global Indonesia (id=feo-global-indonesia)"
+    assert str(model) == "Model: Indonesia JETP (id=feo-global-indonesia)"

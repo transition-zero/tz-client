@@ -1,10 +1,11 @@
 from feo.client import Model, Run
+from feo.client.run import ResultsCollection, RunResults
 
 
 def test_run_init():
-    run = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
+    run = Run.from_id("feo-global-indonesia:net-zero-2060:main")
     assert isinstance(run, Run)
-    assert run.id == "feo-global-indonesia:feo-indonesia-current-policies:demo"
+    assert run.id == "feo-global-indonesia:net-zero-2060:main"
 
 
 def test_run_search():
@@ -31,12 +32,21 @@ def test_search_pagination():
 
 
 def test_run_model():
-    run = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
+    run = Run.from_id("feo-global-indonesia:net-zero-2060:main")
     model = run.model
     assert isinstance(model, Model)
     assert model.id == "feo-global-indonesia"
 
 
 def test_run_str():
-    run = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
-    assert str(run) == "Run: demo (id=feo-global-indonesia:feo-indonesia-current-policies:demo)"
+    run = Run.from_id("feo-global-indonesia:net-zero-2060:main")
+    assert str(run) == "Run: main (id=feo-global-indonesia:net-zero-2060:main)"
+
+
+def test_results_collection():
+    net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
+    assert net_zero_demo_run.results == RunResults(id="feo-global-indonesia:coal-retirement:main")
+    assert type(net_zero_demo_run.results.node_capacity) == ResultsCollection
+    assert type(net_zero_demo_run.results.edge_capacity) == ResultsCollection
+    net_zero_demo_run.results.edge_capacity.filter(node_id="IDN", technology="coal")
+    net_zero_demo_run.results.edge_capacity.next_page()
