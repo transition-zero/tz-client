@@ -1,6 +1,9 @@
-from feo.client import api
+from feo.client import api, utils
 
-EXAMPLE_SCENARIO = "feo-global-indonesia:feo-indonesia-current-policies"
+if utils.ENVIRONMENT == "staging":
+    EXAMPLE_SCENARIO = "feo-global-indonesia:feo-indonesia-current-policies"
+elif utils.ENVIRONMENT == "production":
+    EXAMPLE_SCENARIO = "feo-global-indonesia:net-zero-2060"
 
 
 def test_scenario_search():
