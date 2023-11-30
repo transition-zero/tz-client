@@ -12,17 +12,20 @@ from feo.client.geospatial import Geometry
 class Node(schemas.NodeBase):
 
     """
+    <!--
     The Node class enables access to geospatially-referenced data of a given node.
     Nodes are the fundamental building blocks of systems models, and can represent
     administrative areas like countries or continents, or physical assets like
     power stations or substations. TransitionZero indexes all data to nodes so
     it can easily be used to design and validate systems models.
+    -->
 
     Nodes can be loaded directly with their id:
 
     ```python
     germany = Node.from_id("DEU")
     ```
+
     """
 
     _geometry: Optional[Geometry] = None
@@ -117,7 +120,7 @@ class Node(schemas.NodeBase):
 
     @property
     def geometry(self) -> Geometry:
-        """The WGS84 GeoJSON for this node's geometry"""
+        """The node's geometry in WGS84 coordinate reference system."""
         if self._geometry is None:
             self._geometry = self._get_geometry(self.id)
             return self._geometry
