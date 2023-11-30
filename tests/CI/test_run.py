@@ -1,45 +1,22 @@
 import pytest
 
 from feo.client import Model, Run, utils
-from feo.client.run import RunResults
-
-TECHNOLOGIES = [
-    "BAT",
-    "BIO",
-    "CCG",
-    "CCS",
-    "COA",
-    "COG",
-    "CSP",
-    "GEO",
-    "HYD",
-    "OCG",
-    "OIL",
-    "OTH",
-    "PET",
-    "SPV",
-    "URN",
-    "WAS",
-    "WAV",
-    "WOF",
-    "WON",
-]
+from feo.client.run import ResultsCollection, RunResults
 
 
 @pytest.fixture
 def run_fixture():
     if utils.ENVIRONMENT == "staging":
-        run = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
+        run_result = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
     elif utils.ENVIRONMENT == "production":
-        run = Run.from_id("feo-global-indonesia:net-zero-2060:main")
+        run_result = Run.from_id("feo-global-indonesia:net-zero-2060:main")
     else:
         raise ValueError("Unknown environment")
-    return run
+    return run_result
 
 
 def test_run_init(run_fixture):
-    run = run_fixture
-    assert isinstance(run, Run)
+    assert isinstance(run_fixture, Run)
 
 
 def test_run_search():
@@ -66,37 +43,46 @@ def test_search_pagination():
 
 
 def test_run_model(run_fixture):
-    run = run_fixture
-    model = run.model
+    model = run_fixture.model
     assert isinstance(model, Model)
     assert model.id == "feo-global-indonesia"
 
 
 def test_run_str(run_fixture):
-    run = run_fixture
     if utils.ENVIRONMENT == "staging":
         output = "Run: demo (id=feo-global-indonesia:feo-indonesia-current-policies:demo)"
     elif utils.ENVIRONMENT == "production":
         output = "Run: main (id=feo-global-indonesia:net-zero-2060:main)"
     else:
         raise ValueError("Unknown environment")
-    assert str(run) == output
+    assert str(run_fixture) == output
 
 
-def test_results_collection():
+def test_results_collection_types(run_fixture):
+    if utils.ENVIRONMENT == "staging":
+        run_id = "feo-global-indonesia:feo-indonesia-current-policies:demo"
+    elif utils.ENVIRONMENT == "production":
+        run_id = "feo-global-indonesia:net-zero-2060:main"
+    assert run_fixture.results == RunResults(id=run_id)
+    assert type(run_fixture.results.price) == ResultsCollection
+    assert type(run_fixture.results.node_capacity) == ResultsCollection
+    assert type(run_fixture.results.edge_capacity) == ResultsCollection
+    assert type(run_fixture.results.flow) == ResultsCollection
+
+
+def test_results_collection_next_page():
     net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
-    assert net_zero_demo_run.results == RunResults(id="feo-global-indonesia:coal-retirement:main")
-    assert net_zero_demo_run.results.price
-    assert net_zero_demo_run.results.node_capacity
-    # net_zero_demo_run.results.node_capacity.filter(
-    #     node_id="IDN", technology="coal", start_date="2020-01-01", end_date="23-01-01"
-    # )
-    # net_zero_demo_run.results.edge_capacity.filter(node_id="IDN", technology="coal", )
-    # net_zero_demo_run.results.production.filter(node_id="IDN", technology="coal")
-    # net_zero_demo_run.results.production.next_page()
+    net_zero_demo_run.results.production.next_page()
 
 
-def test_to_feo_results():
+def test_results_collection_to_feo_results():
     net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
     assert net_zero_demo_run.results == RunResults(id="feo-global-indonesia:coal-retirement:main")
     assert net_zero_demo_run.results.node_capacity.to_feo_results()
+
+
+def test_results_collection_filter():
+    net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
+    net_zero_demo_run.results.edge_capacity.filter(node_id="IDN")
+    net_zero_demo_run.results.node_capacity.filter(technology="coal")
+    net_zero_demo_run.results.node_capacity.filter(start_date="2020-01-01", end_date="23-01-01")

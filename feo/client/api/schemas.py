@@ -19,6 +19,26 @@ except ImportError:
     )
 
 
+class TechnologyTypes(BaseModel):
+    BAT: str = "Battery"
+    BIO: str = "Biomass"
+    CCG: str = "Combined Cycle Gas"
+    CCS: str = "Carbon Capture and Storage"
+    COA: str = "Coal"
+    COG: str = "Combined Cycle Gas"
+    CSP: str = "Concentrated Solar Power"
+    HYD: str = "Hydro"
+    OCG: str = "Open Cycle Gas"
+    OIL: str = "Oil"
+    OTH: str = "Other"
+    PET: str = "Petroleum"
+    SPV: str = "Solar Photovoltaic"
+    URN: str = "Uranium"
+    WAS: str = "Waste"
+    WOF: str = "Wind Offshore"
+    WON: str = "Wind Onshore"
+
+
 class PydanticBaseModel(BaseModel):
     # avoid protected 'model_' namespace
     model_config = ConfigDict(protected_namespaces=())

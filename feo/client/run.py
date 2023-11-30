@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional, Union
 
 import pandas as pd
@@ -13,6 +14,10 @@ if TYPE_CHECKING:
 class ResultsFilter(schemas.PydanticBaseModel):
     node_ids: Optional[Union[List[str], str]] = None
     edge_ids: Optional[Union[List[str], str]] = None
+    technology: Optional[str] = None
+    commodity: Optional[str] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
 
 
 class Result(schemas.ResultBase):
@@ -80,10 +85,6 @@ class ResultsCollection(pd.DataFrame):
         self.__dict__.update(pd.concat([self, new_collection], ignore_index=True).__dict__)
         return len(new_collection)
 
-    def to_feo_results(self) -> List[Result]:
-        """Instantiate a list of Results from a ResultsCollection."""
-        return [Result(**row) for idx, row in self.iterrows()]
-
 
 class ResultsCollectionRow(pd.Series):
     @property
@@ -93,11 +94,6 @@ class ResultsCollectionRow(pd.Series):
     @property
     def _constructor_expanddim(self) -> "ResultsCollection":
         return ResultsCollection
-
-    def to_feo_results(self) -> Result:
-        return Result(
-            **self.to_dict(),
-        )
 
 
 class RunResults(schemas.PydanticBaseModel):
