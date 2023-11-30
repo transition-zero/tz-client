@@ -56,9 +56,14 @@ class ResultsCollection(pd.DataFrame):
         self,
         node_id: Optional[str] = None,
         node_ids: Optional[List[str]] = None,
+        edge_id: Optional[str] = None,
         edge_ids: Optional[List[str]] = None,
     ) -> None:
-        self._filters = ResultsFilter(node_ids=node_ids, edge_ids=edge_ids)
+        if node_ids is None and node_id is not None:
+            node_ids = [node_id]
+        if edge_ids is None and edge_id is not None:
+            edge_ids = [edge_id]
+        self._filters = ResultsFilter()
 
     def next_page(self) -> int:
         """
@@ -97,22 +102,45 @@ class ResultsCollectionRow(pd.Series):
 
 class RunResults(schemas.PydanticBaseModel):
     id: str
-    _capacity: Optional[ResultsCollection] = None
+    _node_capacity: Optional[ResultsCollection] = None
+    _edge_capacity: Optional[ResultsCollection] = None
     _production: Optional[ResultsCollection] = None
     _flow: Optional[ResultsCollection] = None
     _price: Optional[ResultsCollection] = None
 
     @property
-    def capacity(self) -> Optional[ResultsCollection]:
-        if self._capacity is None:
-            run_response = api.runs.get(fullslug=self.id, includes="capacity")
+    def node_capacity(self) -> Optional[ResultsCollection]:
+        if self._node_capacity is None:
+            run_response = api.runs.get(fullslug=self.id, includes="capacity,capacity.nodes.gross")
             if hasattr(run_response, "capacity"):
-                self._capacity = ResultsCollection().from_dict(run_response.capacity)
-                self._capacity._table = "capacity"
+                self._node_capacity = ResultsCollection().from_dict(
+                    run_response.capacity.get("nodes", {}).get("gross")
+                )
+                if self._node_capacity is None:
+                    print("Could not find node capacities in API response.")
+                    return None
+                self._node_capacity._table = "node_capacity"
             else:
-                print("Capacity not found.")
+                print("Node capacity not found.")
                 return None
-        return self._capacity
+        return self._node_capacity
+
+    @property
+    def edge_capacity(self):
+        if self._edge_capacity is None:
+            run_response = api.runs.get(fullslug=self.id, includes="capacity,capacity.edges.gross")
+            if hasattr(run_response, "capacity"):
+                self._edge_capacity = ResultsCollection().from_dict(
+                    run_response.capacity.get("edges", {}).get("gross")
+                )
+                if self._edge_capacity is None:
+                    print("Could not find edge capacities in API response.")
+                    return None
+                self._edge_capacity._table = "edge_capacity"
+            else:
+                print("Edge capacity not found.")
+                return None
+        return self._edge_capacity
 
     @property
     def production(self) -> Optional[ResultsCollection]:
@@ -141,9 +169,9 @@ class RunResults(schemas.PydanticBaseModel):
     @property
     def price(self) -> Optional[ResultsCollection]:
         if self._price is None:
-            run_response = api.runs.get(fullslug=self.id, includes="price")
-            if hasattr(run_response, "price"):
-                self._price = ResultsCollection().from_dict(run_response.price)
+            run_response = api.runs.get(fullslug=self.id, includes="marginal_cost")
+            if hasattr(run_response, "marginal_cost"):
+                self._price = ResultsCollection().from_dict(run_response.marginal_cost)
                 self._price._table = "price"
             else:
                 print("Price not found.")

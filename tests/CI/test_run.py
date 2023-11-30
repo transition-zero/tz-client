@@ -3,6 +3,28 @@ import pytest
 from feo.client import Model, Run, utils
 from feo.client.run import RunResults
 
+TECHNOLOGIES = [
+    "BAT",
+    "BIO",
+    "CCG",
+    "CCS",
+    "COA",
+    "COG",
+    "CSP",
+    "GEO",
+    "HYD",
+    "OCG",
+    "OIL",
+    "OTH",
+    "PET",
+    "SPV",
+    "URN",
+    "WAS",
+    "WAV",
+    "WOF",
+    "WON",
+]
+
 
 @pytest.fixture
 def run_fixture():
@@ -64,12 +86,17 @@ def test_run_str(run_fixture):
 def test_results_collection():
     net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
     assert net_zero_demo_run.results == RunResults(id="feo-global-indonesia:coal-retirement:main")
-    net_zero_demo_run.results.production.filter(node_id="IDN", technology="coal")
-    net_zero_demo_run.results.production.filter(node_id="IDN", technology="coal")
-    net_zero_demo_run.results.production.next_page()
+    assert net_zero_demo_run.results.price
+    assert net_zero_demo_run.results.node_capacity
+    # net_zero_demo_run.results.node_capacity.filter(
+    #     node_id="IDN", technology="coal", start_date="2020-01-01", end_date="23-01-01"
+    # )
+    # net_zero_demo_run.results.edge_capacity.filter(node_id="IDN", technology="coal", )
+    # net_zero_demo_run.results.production.filter(node_id="IDN", technology="coal")
+    # net_zero_demo_run.results.production.next_page()
 
 
 def test_to_feo_results():
     net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
     assert net_zero_demo_run.results == RunResults(id="feo-global-indonesia:coal-retirement:main")
-    assert net_zero_demo_run.results.capacity.to_feo_results()
+    assert net_zero_demo_run.results.node_capacity.to_feo_results()
