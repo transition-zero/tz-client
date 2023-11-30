@@ -50,7 +50,7 @@ def test_scenario_model(scenario):
 def test_scenario_str(scenario):
     if utils.ENVIRONMENT == "staging":
         output = (
-            "Scenario: feo-indonesia-current-policies "
+            "Scenario: FEO Indonesia - Current Policies "
             "(id=feo-global-indonesia:feo-indonesia-current-policies)"
         )
     elif utils.ENVIRONMENT == "production":
