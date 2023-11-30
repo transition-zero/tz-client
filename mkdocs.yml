@@ -25,7 +25,7 @@ nav:
       - Run: client/run.md
       - 'Record Collection': client/record_collection.md
       - Technology: client/technology.md
-      - Geometry: client/geometry.md
+      - Geospatial: client/geospatial.md
     - Data Coverage:
       - Power:
         - Generation: data-coverage/power/generation.md
