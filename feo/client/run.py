@@ -101,49 +101,43 @@ class RunResults(schemas.PydanticBaseModel):
     _node_capacity: Optional[ResultsCollection] = None
     _edge_capacity: Optional[ResultsCollection] = None
     _production: Optional[ResultsCollection] = None
-    _flow: Optional[ResultsCollection] = None
-    _price: Optional[ResultsCollection] = None
+    _node_flow: Optional[ResultsCollection] = None
+    _edge_flow: Optional[ResultsCollection] = None
 
     @property
     def node_capacity(self) -> Optional[ResultsCollection]:
         if self._node_capacity is None:
-            run_response = api.runs.get(fullslug=self.id, includes="capacity,capacity.nodes.gross")
-            if hasattr(run_response, "capacity"):
-                self._node_capacity = ResultsCollection().from_dict(
-                    run_response.capacity.get("nodes", {}).get("gross")
-                )
-                if self._node_capacity is None:
-                    print("Could not find node capacities in API response.")
-                    return None
-                self._node_capacity._table = "node_capacity"
-            else:
-                print("Node capacity not found.")
-                return None
+            response = api.runs.get_chart_data(
+                fullslug=self.id,
+                attribute="node_capacity",
+                chart_type="Capacity",
+                node_or_edge="node",
+            )
+            self._node_capacity = ResultsCollection().from_dict(response.data)
+            self._node_capacity._table = "node_capacity"
         return self._node_capacity
 
     @property
-    def edge_capacity(self):
+    def edge_capacity(self) -> Optional[ResultsCollection]:
         if self._edge_capacity is None:
-            run_response = api.runs.get(fullslug=self.id, includes="capacity,capacity.edges.gross")
-            if hasattr(run_response, "capacity"):
-                self._edge_capacity = ResultsCollection().from_dict(
-                    run_response.capacity.get("edges", {}).get("gross")
-                )
-                if self._edge_capacity is None:
-                    print("Could not find edge capacities in API response.")
-                    return None
-                self._edge_capacity._table = "edge_capacity"
-            else:
-                print("Edge capacity not found.")
-                return None
+            response = api.runs.get_chart_data(
+                fullslug=self.id,
+                attribute="edge_capacity",
+                chart_type="Capacity",
+                node_or_edge="edge",
+            )
+            self._edge_capacity = ResultsCollection().from_dict(response.data)
+            self._edge_capacity._table = "edge_capacity"
         return self._edge_capacity
 
     @property
     def production(self) -> Optional[ResultsCollection]:
         if self._production is None:
-            run_response = api.runs.get(fullslug=self.id, includes="production")
-            if hasattr(run_response, "production"):
-                self._production = ResultsCollection().from_dict(run_response.production)
+            response = api.runs.get_chart_data(
+                fullslug=self.id, chart_type="AggregateProductionBar"
+            )
+            if hasattr(response, "production"):
+                self._production = ResultsCollection().from_dict(response.data)
                 self._production._table = "production"
             else:
                 print("Production not found.")
@@ -151,28 +145,28 @@ class RunResults(schemas.PydanticBaseModel):
         return self._production
 
     @property
-    def flow(self) -> Optional[ResultsCollection]:
-        if self._flow is None:
-            run_response = api.runs.get(fullslug=self.id, includes="flow")
-            if hasattr(run_response, "flow"):
-                self._flow = ResultsCollection().from_dict(run_response.flow)
-                self._flow._table = "flow"
+    def node_flow(self) -> Optional[ResultsCollection]:
+        if self._node_flow is None:
+            response = api.runs.get(fullslug=self.id, includes="flow")
+            if hasattr(response, "flow"):
+                self._node_flow = ResultsCollection().from_dict(response.flow)
+                self._node_flow._table = "flow"
             else:
                 print("Flow not found.")
                 return None
-        return self._flow
+        return self._node_flow
 
     @property
-    def price(self) -> Optional[ResultsCollection]:
-        if self._price is None:
-            run_response = api.runs.get(fullslug=self.id, includes="marginal_cost")
-            if hasattr(run_response, "marginal_cost"):
-                self._price = ResultsCollection().from_dict(run_response.marginal_cost)
-                self._price._table = "price"
+    def edge_flow(self) -> Optional[ResultsCollection]:
+        if self._edge_flow is None:
+            response = api.runs.get(fullslug=self.id, includes="flow")
+            if hasattr(response, "flow"):
+                self._edge_flow = ResultsCollection().from_dict(response.flow)
+                self._edge_flow._table = "flow"
             else:
-                print("Price not found.")
+                print("Flow not found.")
                 return None
-        return self._price
+        return self._edge_flow
 
 
 class Run(schemas.RunBase):

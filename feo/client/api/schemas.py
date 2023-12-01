@@ -19,26 +19,6 @@ except ImportError:
     )
 
 
-class TechnologyTypes(BaseModel):
-    BAT: str = "Battery"
-    BIO: str = "Biomass"
-    CCG: str = "Combined Cycle Gas"
-    CCS: str = "Carbon Capture and Storage"
-    COA: str = "Coal"
-    COG: str = "Combined Cycle Gas"
-    CSP: str = "Concentrated Solar Power"
-    HYD: str = "Hydro"
-    OCG: str = "Open Cycle Gas"
-    OIL: str = "Oil"
-    OTH: str = "Other"
-    PET: str = "Petroleum"
-    SPV: str = "Solar Photovoltaic"
-    URN: str = "Uranium"
-    WAS: str = "Waste"
-    WOF: str = "Wind Offshore"
-    WON: str = "Wind Onshore"
-
-
 class PydanticBaseModel(BaseModel):
     # avoid protected 'model_' namespace
     model_config = ConfigDict(protected_namespaces=())
@@ -413,6 +393,49 @@ class ScenarioQueryResult(PydanticBaseModel):
 
 class ResultBase(PydanticBaseModel):
     pass
+
+
+class DataSeries(PydanticBaseModel):
+    x: List[int] = Field(...)
+    y: List[float] = Field(...)
+
+
+class ChartDataCapacityBar(PydanticBaseModel):
+    data: Dict[str, DataSeries] = Field(...)
+
+
+class ChartDataProductionBar(PydanticBaseModel):
+    data: Dict[str, DataSeries] = Field(...)  # tech: [year,value]
+
+
+class ChartDataFacettedProduction(PydanticBaseModel):
+    data: Dict[str, Dict[str, DataSeries]] = Field(...)
+
+
+class ChartNodeTimeseries(PydanticBaseModel):
+    data: Dict[str, Dict[str, DataSeries]] = Field(...)
+
+
+class ChartEdgeTimeSeries(PydanticBaseModel):
+    data: Dict[str, Dict[str, Dict[str, DataSeries]]] = Field(...)
+
+
+class ChartDataProductionTimeSeries(PydanticBaseModel):
+    data: Dict[str, Dict[str, Dict[str, DataSeries]]] = Field(...)
+
+
+class ChartDataFlowTimeSeries(PydanticBaseModel):
+    data: Dict[str, Dict[str, Dict[str, Dict[str, DataSeries]]]] = Field(...)
+
+
+class ChartData(PydanticBaseModel):
+    capacity_bar: Optional[ChartDataCapacityBar] = Field(None)
+    production_bar: Optional[ChartDataProductionBar] = Field(None)
+    facetted_production: Optional[ChartDataFacettedProduction] = Field(None)
+    node_capacity: Optional[ChartNodeTimeseries] = Field(None)
+    edge_capacity: Optional[ChartEdgeTimeSeries] = Field(None)
+    production_timeseries: Optional[ChartDataProductionTimeSeries] = Field(None)
+    flow_timeseries: Optional[ChartDataFlowTimeSeries] = Field(None)
 
 
 class Publisher(PydanticBaseModel):
