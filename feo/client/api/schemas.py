@@ -384,10 +384,6 @@ class ScenarioQueryResult(PydanticBaseModel):
     total_pages: int | None = Field(None, title="Total Pages")
 
 
-class ResultBase(PydanticBaseModel):
-    pass
-
-
 class DataSeries(PydanticBaseModel):
     x: List[int] = Field(...)
     y: List[float] = Field(...)

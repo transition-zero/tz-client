@@ -10,10 +10,6 @@ if TYPE_CHECKING:
     from feo.client.scenario import Scenario
 
 
-class Result(schemas.ResultBase):
-    pass
-
-
 class ResultsCollection(pd.DataFrame):
     """
     A ResultsCollection is an extention of a Pandas DataFrame.
