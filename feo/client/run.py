@@ -42,6 +42,13 @@ class ResultsCollection(pd.DataFrame):
 
 
 class ResultsCollectionRow(pd.Series):
+    """
+    A ResultsCollectionRow is an extension of a Pandas Series.
+
+    It can be used in precisely the same way as a Pandas Series
+    but has a few extra useful constructors.
+    """
+
     @property
     def _constructor(self) -> "ResultsCollectionRow":
         return ResultsCollectionRow
@@ -65,7 +72,7 @@ class RunResults(schemas.PydanticBaseModel):
             entry = {
                 "node_id": node_id,
                 "technology_type": tech_type,
-                "timestamp": pd.to_datetime(year),
+                "timestamp": pd.to_datetime(year, format="%Y"),
                 "value": value,
             }
             if commodity:

@@ -20,6 +20,12 @@ To install pre-commit hooks (recommended), run
 pre-commit install
 ```
 
+Please also run mypy with
+
+```console
+pip install ".[dev]" && mypy -p feo.client
+```
+
 ## Authentication
 
 Running our test suite first requires authentication

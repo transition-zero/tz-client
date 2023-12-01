@@ -50,7 +50,7 @@ class RunAPI(BaseAPI):
             print("node_or_edge must be given as either 'node' or 'edge' for this chart type!")
 
         if year:
-            params["year"] = year
+            params["year"] = str(year)
 
         resp = self.client.get(f"/runs/{fullslug}/chart_data", params=params)
         resp.raise_for_status()
