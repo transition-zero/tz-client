@@ -1,7 +1,6 @@
 import pytest
 
 from feo.client import Model, Run, utils
-from feo.client.api.schemas import DataSeries
 
 
 @pytest.fixture
@@ -69,13 +68,19 @@ def test_run_str(run_fixture):
     assert str(run_fixture) == output
 
 
-def test_results_collection_capacities(run_fixture_with_chart_data):
+def test_results_node_collection_capacities(run_fixture_with_chart_data):
     # structure should be:
     # node_id, technology_type, year, value
     #   IDN-AC     BAT           2047  1.87
     #   BIO        BIO           2047  1.86
-    assert type(run_fixture_with_chart_data.results.node_capacity["IDN-AC"].iloc[0]) == DataSeries
-    assert (
-        type(run_fixture_with_chart_data.results.edge_capacity["IDN-AC"].iloc[0]["ELEC"])
-        == DataSeries
-    )
+    columns = ["node_id", "technology_type", "timestamp", "value"]
+    assert [c for c in run_fixture_with_chart_data.results.node_capacity.columns] == columns
+
+
+def test_results_edge_collection_capacities(run_fixture_with_chart_data):
+    # structure should be:
+    # node_id, technology_type, commodity, year, value
+    #   IDN-AC     BAT           ELEC        2047  1.87
+    #   BIO        BIO           ELEC        2047  1.86
+    columns = ["node_id", "technology_type", "commodity", "timestamp", "value"]
+    assert [c for c in run_fixture_with_chart_data.results.edge_capacity.columns] == columns

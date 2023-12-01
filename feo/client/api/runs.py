@@ -37,7 +37,11 @@ class RunAPI(BaseAPI):
     ) -> Run:
         if chart_type not in CHART_TYPES:
             print(f"chart_type {chart_type} invalid- must be one of {CHART_TYPES}")
-        params = {"fullslug": fullslug, "chart_type": chart_type, "capacity_type": capacity_type}
+        params = {
+            "fullslug": fullslug,
+            "chart_type": chart_type,
+            "capacity_type": capacity_type,
+        }
         if node_or_edge == "node":
             params["node_ids"] = "*"
         elif node_or_edge == "edge":

@@ -5,6 +5,7 @@ import pandas as pd
 
 from feo.client import api, factory
 from feo.client.api import schemas
+from feo.client.api.schemas import DataSeries
 
 if TYPE_CHECKING:
     from feo.client.model import Model
@@ -59,6 +60,39 @@ class RunResults(schemas.PydanticBaseModel):
     _node_flow: Optional[ResultsCollection] = None
     _edge_flow: Optional[ResultsCollection] = None
 
+    def _expand_dataseries(self, series: DataSeries) -> dict:
+        for year, value in zip(series.x, series.y):
+            year = pd.to_datetime(year)
+            value = value
+
+    def _structure_data(self, data: dict, commodity_column: bool = False) -> dict:
+        restructured_data = []
+        for node_id, tech_data in data.items():
+            for tech_type, series_data in tech_data.items():
+                if commodity_column:
+                    for commodity, series in series_data.items():
+                        for year, value in zip(series.x, series.y):
+                            restructured_data.append(
+                                {
+                                    "node_id": node_id,
+                                    "technology_type": tech_type,
+                                    "commodity": commodity,
+                                    "timestamp": pd.to_datetime(year),
+                                    "value": value,
+                                }
+                            )
+                else:
+                    for year, value in zip(series_data.x, series_data.y):
+                        restructured_data.append(
+                            {
+                                "node_id": node_id,
+                                "technology_type": tech_type,
+                                "timestamp": pd.to_datetime(year),
+                                "value": value,
+                            }
+                        )
+        return restructured_data
+
     @property
     def node_capacity(self) -> Optional[ResultsCollection]:
         if self._node_capacity is None:
@@ -69,7 +103,9 @@ class RunResults(schemas.PydanticBaseModel):
                 node_or_edge="node",
             )
             if response.data is not None:
-                self._node_capacity = ResultsCollection().from_dict(response.data)
+                self._node_capacity = ResultsCollection().from_dict(
+                    self._structure_data(response.data)
+                )
                 self._node_capacity._table = "node_capacity"
         return self._node_capacity
 
@@ -83,7 +119,9 @@ class RunResults(schemas.PydanticBaseModel):
                 node_or_edge="edge",
             )
             if response.data is not None:
-                self._edge_capacity = ResultsCollection().from_dict(response.data)
+                self._edge_capacity = ResultsCollection().from_dict(
+                    self._structure_data(response.data, commodity_column=True)
+                )
                 self._edge_capacity._table = "edge_capacity"
         return self._edge_capacity
 
