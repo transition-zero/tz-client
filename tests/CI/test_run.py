@@ -79,8 +79,8 @@ def test_results_node_collection_capacities(run_fixture_with_chart_data):
 
 def test_results_edge_collection_capacities(run_fixture_with_chart_data):
     # structure should be:
-    # node_id, technology_type, commodity, year, value
-    #   IDN-AC     BAT           ELEC        2047  1.87
-    #   BIO        BIO           ELEC        2047  1.86
-    columns = ["node_id", "technology_type", "commodity", "timestamp", "value"]
+    # node_id, technology_type,  year, value, commodity,
+    #   IDN-AC     BAT           2047  1.87     ELEC
+    #   BIO        BIO           2047  1.86     ELEC
+    columns = ["node_id", "technology_type", "timestamp", "value", "commodity"]
     assert [c for c in run_fixture_with_chart_data.results.edge_capacity.columns] == columns

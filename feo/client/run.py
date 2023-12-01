@@ -5,7 +5,6 @@ import pandas as pd
 
 from feo.client import api, factory
 from feo.client.api import schemas
-from feo.client.api.schemas import DataSeries
 
 if TYPE_CHECKING:
     from feo.client.model import Model
@@ -60,10 +59,19 @@ class RunResults(schemas.PydanticBaseModel):
     _node_flow: Optional[ResultsCollection] = None
     _edge_flow: Optional[ResultsCollection] = None
 
-    def _expand_dataseries(self, series: DataSeries) -> dict:
+    def _structure_data_entry(self, series, node_id, tech_type, commodity=None) -> dict:
+        series_data = []
         for year, value in zip(series.x, series.y):
-            year = pd.to_datetime(year)
-            value = value
+            entry = {
+                "node_id": node_id,
+                "technology_type": tech_type,
+                "timestamp": pd.to_datetime(year),
+                "value": value,
+            }
+            if commodity:
+                entry["commodity"] = commodity
+            series_data.append(entry)
+        return series_data
 
     def _structure_data(self, data: dict, commodity_column: bool = False) -> dict:
         restructured_data = []
@@ -71,26 +79,13 @@ class RunResults(schemas.PydanticBaseModel):
             for tech_type, series_data in tech_data.items():
                 if commodity_column:
                     for commodity, series in series_data.items():
-                        for year, value in zip(series.x, series.y):
-                            restructured_data.append(
-                                {
-                                    "node_id": node_id,
-                                    "technology_type": tech_type,
-                                    "commodity": commodity,
-                                    "timestamp": pd.to_datetime(year),
-                                    "value": value,
-                                }
-                            )
-                else:
-                    for year, value in zip(series_data.x, series_data.y):
-                        restructured_data.append(
-                            {
-                                "node_id": node_id,
-                                "technology_type": tech_type,
-                                "timestamp": pd.to_datetime(year),
-                                "value": value,
-                            }
+                        series_data = self._structure_data_entry(
+                            series, node_id, tech_type, commodity
                         )
+                        restructured_data += series_data
+                else:
+                    series_data = self._structure_data_entry(series_data, node_id, tech_type)
+                    restructured_data += series_data
         return restructured_data
 
     @property
