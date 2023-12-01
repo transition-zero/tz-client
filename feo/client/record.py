@@ -96,9 +96,7 @@ class RecordCollection(pd.DataFrame):
         )
         self._page += 1
 
-        self.__dict__.update(
-            pd.concat([self, new_collection], ignore_index=True).__dict__
-        )
+        self.__dict__.update(pd.concat([self, new_collection], ignore_index=True).__dict__)
         return len(new_collection)
 
     def to_feo_records(self):
