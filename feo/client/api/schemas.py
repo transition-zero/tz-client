@@ -35,13 +35,6 @@ class PowerUnit(PydanticBaseModel):
     capacity_unit: str | None
     start_date: date | None
     retired_date: date | None = None
-    technology_detail: dict | None
-    has_ccs: bool | None
-    is_captive: bool | None
-    captive_detail: dict | None = None
-    properties: dict | None
-    other_ids_names: dict | None
-    ownership_details: dict | None
 
 
 class NodeBase(PydanticBaseModel):
