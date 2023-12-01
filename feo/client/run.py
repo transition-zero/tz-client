@@ -25,24 +25,12 @@ class Result(schemas.ResultBase):
 
 
 class ResultsCollection(pd.DataFrame):
-    """A ResultsCollection is an extention of a Pandas DataFrame.
+    """
+    A ResultsCollection is an extention of a Pandas DataFrame.
 
     It can be used in precisely the same way as a Pandas DataFrame
     but has a few extra useful constructors.
-
-    Args:
-        _filters Optional[List[Result]]: stores the filters currently applied to the df
-        _scope Optional[schemas.CollectionScope]: params for generating api query for pagination
-        _page Optional[int]: if generated from an API query, the current page of the query.
-        _chart_type str: stores the type of the df
-        _chart_subtype Optional[str]: stores the subtype of the df
     """
-
-    _filters: List[Result] | None = None
-    _scope: Optional[schemas.CollectionScope] = None
-    _page: int | None = None
-    _chart_type: str
-    _chart_subtype: str | None
 
     @property
     def _constructor(self) -> "ResultsCollection":
@@ -51,39 +39,6 @@ class ResultsCollection(pd.DataFrame):
     @property
     def _constructor_sliced(self) -> "ResultsCollectionRow":
         return ResultsCollectionRow
-
-    def from_feo_results(cls, results: List[Result]) -> "ResultsCollection":
-        """Instiate an ResultsCollection from a list of results."""
-        # pd.DataFrame.from_records
-        return cls.from_records([r.model_dump() for r in results])
-
-    def filter(
-        self,
-        node_id: Optional[str] = None,
-        node_ids: Optional[List[str]] = None,
-        edge_id: Optional[str] = None,
-        edge_ids: Optional[List[str]] = None,
-    ) -> None:
-        if node_ids is None and node_id is not None:
-            node_ids = [node_id]
-        if edge_ids is None and edge_id is not None:
-            edge_ids = [edge_id]
-        self._filters = ResultsFilter()
-
-    def next_page(self) -> int:
-        """
-        Paginate through results. The Result collection must have a `_scope`.
-        Returns the next page of results and concatenates them in-place to the current collection.
-        """
-        if not self._scope:
-            raise ValueError("Cant iterate an unscoped ResultsCollection")
-        new_collection = self.__class__.from_feo_results(
-            api.results.get(parent_node_id=self._scope.parent_node_id, page=self._page + 1)
-        )
-        self._page += 1
-
-        self.__dict__.update(pd.concat([self, new_collection], ignore_index=True).__dict__)
-        return len(new_collection)
 
 
 class ResultsCollectionRow(pd.Series):
@@ -131,45 +86,6 @@ class RunResults(schemas.PydanticBaseModel):
                 self._edge_capacity = ResultsCollection().from_dict(response.data)
                 self._edge_capacity._table = "edge_capacity"
         return self._edge_capacity
-
-    @property
-    def production(self) -> Optional[ResultsCollection]:
-        if self._production is None:
-            response = api.runs.get_chart_data(
-                fullslug=self.id, chart_type="AggregateProductionBar"
-            )
-            if response.data is not None:
-                self._production = ResultsCollection().from_dict(response.data)
-                self._production._table = "production"
-        return self._production
-
-    @property
-    def node_flow(self) -> Optional[ResultsCollection]:
-        if self._node_flow is None:
-            response = api.runs.get_chart_data(
-                fullslug=self.id,
-                attribute="flow_timeseries",
-                chart_type="Flow",
-                node_or_edge="node",
-            )
-            if response.data is not None:
-                self._node_flow = ResultsCollection().from_dict(response.data)
-                self._node_flow._table = "edge_capacity"
-        return self._node_flow
-
-    @property
-    def edge_flow(self) -> Optional[ResultsCollection]:
-        if self._edge_flow is None:
-            response = api.runs.get_chart_data(
-                fullslug=self.id,
-                attribute="flow_timeseries",
-                chart_type="Flow",
-                node_or_edge="edge",
-            )
-            if response.data is not None:
-                self._edge_flow = ResultsCollection().from_dict(response.data)
-                self._edge_flow._table = "edge_capacity"
-        return self._edge_flow
 
 
 class Run(schemas.RunBase):

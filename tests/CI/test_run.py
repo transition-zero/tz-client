@@ -2,7 +2,6 @@ import pytest
 
 from feo.client import Model, Run, utils
 from feo.client.api.schemas import DataSeries
-from feo.client.run import ResultsCollection, RunResults
 
 
 @pytest.fixture
@@ -71,34 +70,12 @@ def test_run_str(run_fixture):
 
 
 def test_results_collection_capacities(run_fixture_with_chart_data):
+    # structure should be:
+    # node_id, technology_type, year, value
+    #   IDN-AC     BAT           2047  1.87
+    #   BIO        BIO           2047  1.86
     assert type(run_fixture_with_chart_data.results.node_capacity["IDN-AC"].iloc[0]) == DataSeries
     assert (
         type(run_fixture_with_chart_data.results.edge_capacity["IDN-AC"].iloc[0]["ELEC"])
         == DataSeries
     )
-
-
-@pytest.mark.skip(reason="not finished implementing yet")
-def test_results_collection_flows(run_fixture_with_chart_data):
-    assert type(run_fixture_with_chart_data.results.node_flow) == ResultsCollection
-    assert type(run_fixture_with_chart_data.results.edge_flow) == ResultsCollection
-
-
-@pytest.mark.skip(reason="not finished implementing yet")
-def test_results_collection_next_page(run_fixture_with_chart_data):
-    run_fixture_with_chart_data.results.production.next_page()
-
-
-@pytest.mark.skip(reason="not finished implementing yet")
-def test_results_collection_to_feo_results():
-    net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
-    assert net_zero_demo_run.results == RunResults(id="feo-global-indonesia:coal-retirement:main")
-    assert net_zero_demo_run.results.node_capacity.to_feo_results()
-
-
-@pytest.mark.skip(reason="not finished implementing yet")
-def test_results_collection_filter():
-    net_zero_demo_run = Run.from_id("feo-global-indonesia:coal-retirement:main")
-    net_zero_demo_run.results.edge_capacity.filter(node_id="IDN")
-    net_zero_demo_run.results.node_capacity.filter(technology="coal")
-    net_zero_demo_run.results.node_capacity.filter(start_date="2020-01-01", end_date="23-01-01")
