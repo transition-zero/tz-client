@@ -92,11 +92,13 @@ class RecordCollection(pd.DataFrame):
         if not self._scope:
             raise ValueError("Cant iterate an unscoped RecordCollection")
         new_collection = self.__class__.from_feo_records(
-            api.records.get(parent_node_id=self._scope.parent_node_id, page=self._page + 1)
+            api.records.get(node_id=self._scope.node_id, page=self._page + 1)
         )
         self._page += 1
 
-        self.__dict__.update(pd.concat([self, new_collection], ignore_index=True).__dict__)
+        self.__dict__.update(
+            pd.concat([self, new_collection], ignore_index=True).__dict__
+        )
         return len(new_collection)
 
     def to_feo_records(self):
