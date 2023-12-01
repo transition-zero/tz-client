@@ -57,7 +57,10 @@ class VectorAPI(BaseAPI):
         return FeatureCollection(**resp.json())
 
     def get_geometry(
-        self, feature_id: str, collection_id: str, timeout: Optional[int] = FEATURES_TIMEOUT
+        self,
+        feature_id: str,
+        collection_id: str,
+        timeout: Optional[int] = FEATURES_TIMEOUT,
     ) -> Geometry:
         resp = self.get_features(
             collection_id=collection_id, feature_ids=[feature_id], timeout=timeout
