@@ -31,7 +31,7 @@ class RunResults(schemas.PydanticBaseModel):
     _node_flow: Optional[ResultsCollection] = None
     _edge_flow: Optional[ResultsCollection] = None
 
-    def _structure_data_entry(self, series, node_id, tech_type, commodity=None) -> list:
+    def _structure_series(self, series, node_id, tech_type, commodity=None) -> list:
         series_data = []
         for year, value in zip(series.x, series.y):
             entry = {
@@ -45,18 +45,16 @@ class RunResults(schemas.PydanticBaseModel):
             series_data.append(entry)
         return series_data
 
-    def _structure_data(self, data: dict, commodity_column: bool = False) -> list:
+    def _structure_response(self, data: dict, commodity_column: bool = False) -> list:
         restructured_data = []
         for node_id, tech_data in data.items():
             for tech_type, series_data in tech_data.items():
                 if commodity_column:
                     for commodity, series in series_data.items():
-                        series_data = self._structure_data_entry(
-                            series, node_id, tech_type, commodity
-                        )
+                        series_data = self._structure_series(series, node_id, tech_type, commodity)
                         restructured_data += series_data
                 else:
-                    series_data = self._structure_data_entry(series_data, node_id, tech_type)
+                    series_data = self._structure_series(series_data, node_id, tech_type)
                     restructured_data += series_data
         return restructured_data
 
@@ -70,7 +68,7 @@ class RunResults(schemas.PydanticBaseModel):
                 node_or_edge="node",
             )
             if response.data is not None:
-                self._node_capacity = ResultsCollection(self._structure_data(response.data))
+                self._node_capacity = ResultsCollection(self._structure_response(response.data))
                 self._node_capacity._table = "node_capacity"
         return self._node_capacity
 
@@ -85,7 +83,7 @@ class RunResults(schemas.PydanticBaseModel):
             )
             if response.data is not None:
                 self._edge_capacity = ResultsCollection(
-                    self._structure_data(response.data, commodity_column=True)
+                    self._structure_response(response.data, commodity_column=True)
                 )
                 self._edge_capacity._table = "edge_capacity"
         return self._edge_capacity
