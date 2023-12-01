@@ -1,7 +1,6 @@
-from abc import ABC
-
-from .client import client
+from .client import Client
 
 
-class BaseAPI(ABC):
-    client = client
+class BaseAPI:
+    def __init__(self):
+        self.client = Client()
