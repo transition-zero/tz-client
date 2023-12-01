@@ -1,5 +1,4 @@
-from datetime import datetime
-from typing import TYPE_CHECKING, List, Optional, Union
+from typing import TYPE_CHECKING, List, Optional
 
 import pandas as pd
 
@@ -9,15 +8,6 @@ from feo.client.api import schemas
 if TYPE_CHECKING:
     from feo.client.model import Model
     from feo.client.scenario import Scenario
-
-
-class ResultsFilter(schemas.PydanticBaseModel):
-    node_ids: Optional[Union[List[str], str]] = None
-    edge_ids: Optional[Union[List[str], str]] = None
-    technology: Optional[str] = None
-    commodity: Optional[str] = None
-    start_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
 
 
 class Result(schemas.ResultBase):
@@ -119,7 +109,9 @@ class RunResults(schemas.PydanticBaseModel):
                 node_or_edge="edge",
             )
             if response.data is not None:
-                self._edge_capacity = ResultsCollection(self._structure_data(response.data))
+                self._edge_capacity = ResultsCollection(
+                    self._structure_data(response.data, commodity_column=True)
+                )
                 self._edge_capacity._table = "edge_capacity"
         return self._edge_capacity
 
