@@ -33,11 +33,11 @@ class ResultsCollection(pd.DataFrame):
     """
 
     @property
-    def _constructor(self) -> "ResultsCollection":
+    def _constructor(self):
         return ResultsCollection
 
     @property
-    def _constructor_sliced(self) -> "ResultsCollectionRow":
+    def _constructor_sliced(self):
         return ResultsCollectionRow
 
 
@@ -50,11 +50,11 @@ class ResultsCollectionRow(pd.Series):
     """
 
     @property
-    def _constructor(self) -> "ResultsCollectionRow":
+    def _constructor(self):
         return ResultsCollectionRow
 
     @property
-    def _constructor_expanddim(self) -> "ResultsCollection":
+    def _constructor_expanddim(self):
         return ResultsCollection
 
 
