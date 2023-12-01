@@ -22,27 +22,6 @@ class ResultsCollection(pd.DataFrame):
     def _constructor(self):
         return ResultsCollection
 
-    @property
-    def _constructor_sliced(self):
-        return ResultsCollectionRow
-
-
-class ResultsCollectionRow(pd.Series):
-    """
-    A ResultsCollectionRow is an extension of a Pandas Series.
-
-    It can be used in precisely the same way as a Pandas Series
-    but has a few extra useful constructors.
-    """
-
-    @property
-    def _constructor(self):
-        return ResultsCollectionRow
-
-    @property
-    def _constructor_expanddim(self):
-        return ResultsCollection
-
 
 class RunResults(schemas.PydanticBaseModel):
     id: str
