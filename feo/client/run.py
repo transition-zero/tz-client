@@ -66,7 +66,7 @@ class RunResults(schemas.PydanticBaseModel):
     _node_flow: Optional[ResultsCollection] = None
     _edge_flow: Optional[ResultsCollection] = None
 
-    def _structure_data_entry(self, series, node_id, tech_type, commodity=None) -> dict:
+    def _structure_data_entry(self, series, node_id, tech_type, commodity=None) -> list:
         series_data = []
         for year, value in zip(series.x, series.y):
             entry = {
@@ -80,7 +80,7 @@ class RunResults(schemas.PydanticBaseModel):
             series_data.append(entry)
         return series_data
 
-    def _structure_data(self, data: dict, commodity_column: bool = False) -> dict:
+    def _structure_data(self, data: dict, commodity_column: bool = False) -> list:
         restructured_data = []
         for node_id, tech_data in data.items():
             for tech_type, series_data in tech_data.items():
@@ -105,9 +105,7 @@ class RunResults(schemas.PydanticBaseModel):
                 node_or_edge="node",
             )
             if response.data is not None:
-                self._node_capacity = ResultsCollection().from_dict(
-                    self._structure_data(response.data)
-                )
+                self._node_capacity = ResultsCollection(self._structure_data(response.data))
                 self._node_capacity._table = "node_capacity"
         return self._node_capacity
 
@@ -121,9 +119,7 @@ class RunResults(schemas.PydanticBaseModel):
                 node_or_edge="edge",
             )
             if response.data is not None:
-                self._edge_capacity = ResultsCollection().from_dict(
-                    self._structure_data(response.data, commodity_column=True)
-                )
+                self._edge_capacity = ResultsCollection(self._structure_data(response.data))
                 self._edge_capacity._table = "edge_capacity"
         return self._edge_capacity
 
