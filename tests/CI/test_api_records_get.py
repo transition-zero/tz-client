@@ -15,6 +15,7 @@ RECORD_GET_CASES = [
         dict(value=1570.5),
     ),
 ]
+RECORD_DEFAULT_PAGE_LIMIT = 100
 
 
 @pytest.mark.parametrize("record_get_cases", RECORD_GET_CASES)
