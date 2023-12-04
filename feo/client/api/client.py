@@ -36,9 +36,6 @@ class Client:
         pass
 
     def get(self, *args, **kwargs):
-        if "params" in kwargs:
-            if kwargs["params"]["limit"] is None:
-                kwargs["params"]["limit"] = 100
         return self.httpx_client.get(*args, **kwargs)
 
     def post(self, *args, **kwargs):

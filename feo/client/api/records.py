@@ -21,7 +21,7 @@ class RecordsAPI(BaseAPI):
         value: float | None = None,
         unit: list[str] | str | None = None,
         properties: dict | None = None,
-        limit: int | None = None,
+        limit: int | None = 100,
         page: int | None = None,
     ) -> List[Record]:
         params = dict(
