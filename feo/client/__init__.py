@@ -27,6 +27,9 @@
     ```
 """
 
+
+from importlib.metadata import version
+
 from feo.client.asset import Asset, AssetCollection
 from feo.client.geospatial import Features, Geometry
 from feo.client.model import Model
@@ -40,6 +43,8 @@ from feo.client.technology import Technology
 
 Publisher.model_rebuild()
 Source.model_rebuild()
+
+__version__ = version("feo-client")
 
 __all__ = [
     "Node",
