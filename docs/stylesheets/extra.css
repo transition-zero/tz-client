@@ -1,27 +1,27 @@
 @font-face {
   font-family: 'Good Sans';
-  src: url('./fonts/GoodSans-Regular.otf');
+  src: url('../assets/fonts/GoodSans-Regular.otf');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Good Sans';
-  src: url('./fonts/GoodSans-RegularItalic.otf');
+  src: url('../assets/fonts/GoodSans-RegularItalic.otf');
   font-weight: normal;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Good Sans';
-  src: url('./fonts/GoodSans-Medium.otf');
+  src: url('../assets/fonts/GoodSans-Medium.otf');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Good Sans';
-  src: url('./fonts/GoodSans-MediumItalic.otf');
+  src: url('../assets/fonts/GoodSans-MediumItalic.otf');
   font-weight: 500;
   font-style: italic;
 }

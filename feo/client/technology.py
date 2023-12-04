@@ -72,3 +72,6 @@ class Technology(schemas.Technology):
             collection = RecordCollection()
             self._projections = collection.search(technology=self.slug)
         return self._projections
+
+    def __str__(self) -> str:
+        return f"Technology: {self.name} (id={self.id})"

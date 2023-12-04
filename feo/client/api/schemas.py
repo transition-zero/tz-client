@@ -35,13 +35,6 @@ class PowerUnit(PydanticBaseModel):
     capacity_unit: str | None
     start_date: date | None
     retired_date: date | None = None
-    technology_detail: dict | None
-    has_ccs: bool | None
-    is_captive: bool | None
-    captive_detail: dict | None = None
-    properties: dict | None
-    other_ids_names: dict | None
-    ownership_details: dict | None
 
 
 class NodeBase(PydanticBaseModel):
@@ -204,7 +197,7 @@ class RecordBase(PydanticBaseModel):
     valid_timestamp_start: datetime = Field(..., title="Valid Timestamp Start")
     valid_timestamp_end: datetime = Field(..., title="Valid Timestamp End")
     datum_type: str = Field(..., title="Datum Type")
-    datum_detail: str = Field(..., title="Datum Detail")
+    datum_detail: str | None = Field(None, title="Datum Detail")
     value: float | None = Field(..., title="Value")
     unit: str = Field(..., title="Unit")
     properties: dict[str, Any] | None = Field(None, title="Properties")
@@ -390,6 +383,49 @@ class ScenarioQueryResult(PydanticBaseModel):
     scenarios: list[Scenario] = Field(..., title="Scenarios")
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
+
+
+class DataSeries(PydanticBaseModel):
+    x: List[int] = Field(...)
+    y: List[float] = Field(...)
+
+
+class ChartDataCapacityBar(PydanticBaseModel):
+    data: Dict[str, DataSeries] = Field(...)
+
+
+class ChartDataProductionBar(PydanticBaseModel):
+    data: Dict[str, DataSeries] = Field(...)  # tech: [year,value]
+
+
+class ChartDataFacettedProduction(PydanticBaseModel):
+    data: Dict[str, Dict[str, DataSeries]] = Field(...)
+
+
+class ChartNodeTimeseries(PydanticBaseModel):
+    data: Dict[str, Dict[str, DataSeries]] = Field(...)
+
+
+class ChartEdgeTimeSeries(PydanticBaseModel):
+    data: Dict[str, Dict[str, Dict[str, DataSeries]]] = Field(...)
+
+
+class ChartDataProductionTimeSeries(PydanticBaseModel):
+    data: Dict[str, Dict[str, Dict[str, DataSeries]]] = Field(...)
+
+
+class ChartDataFlowTimeSeries(PydanticBaseModel):
+    data: Dict[str, Dict[str, Dict[str, Dict[str, DataSeries]]]] = Field(...)
+
+
+class ChartData(PydanticBaseModel):
+    capacity_bar: Optional[ChartDataCapacityBar] = Field(None)
+    production_bar: Optional[ChartDataProductionBar] = Field(None)
+    facetted_production: Optional[ChartDataFacettedProduction] = Field(None)
+    node_capacity: Optional[ChartNodeTimeseries] = Field(None)
+    edge_capacity: Optional[ChartEdgeTimeSeries] = Field(None)
+    production_timeseries: Optional[ChartDataProductionTimeSeries] = Field(None)
+    flow_timeseries: Optional[ChartDataFlowTimeSeries] = Field(None)
 
 
 class Publisher(PydanticBaseModel):

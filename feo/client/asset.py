@@ -15,10 +15,6 @@ class Asset(schemas.NodeBase):
         node = api.assets.get(ids=id)[0]
         return cls(**node.model_dump())
 
-    def __init__(self, id: str, **kwargs):
-        """Initialise Asset from `id` as a positional argument"""
-        super(self.__class__, self).__init__(id=id, **kwargs)
-
     @classmethod
     def search(
         cls,
@@ -71,9 +67,12 @@ class Asset(schemas.NodeBase):
                 self._source_objects = None
         return self._source_objects
 
+    def __str__(self) -> str:
+        return f"Asset: {self.name_primary_en} (id={self.id})"
+
 
 class AssetCollection(pd.DataFrame):
-    """An AssetCollection is an extention of a Pandas DataFrame.
+    """An AssetCollection is an extension of a Pandas DataFrame.
 
     It can be used in precisely the same way as a Pandas DataFrame
     but has a few extra useful constructors.

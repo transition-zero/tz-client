@@ -1,0 +1,73 @@
+name: Production Integration Tests
+
+on:
+  schedule:
+    - cron: '0 * * * *' # run hourly for now
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: prod
+    env:
+      AUTH0_DOMAIN: ${{ vars.AUTH0_DOMAIN}}
+      AUTH0_AUDIENCE: ${{ vars.AUTH0_AUDIENCE}}
+      CLIENT_ID: ${{ secrets.CLIENT_ID}}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET}}
+      TEST_USER: ${{ vars.TEST_USER}}
+      TEST_PW: ${{ secrets.TEST_PW}}
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: mkdir token
+      run: |
+        mkdir $HOME/.tz-feo
+
+    - name: cURL an access token
+      id: curlToken
+      uses: satak/webrequest-action@master
+      with:
+        url: "https://${{vars.AUTH0_DOMAIN}}/oauth/token"
+        method: POST
+        payload: '{
+          "client_id": "${{env.CLIENT_ID}}",
+          "username": "${{env.TEST_USER}}",
+          "password": "${{env.TEST_PW}}",
+          "realm": "Username-Password-Authentication",
+          "client_secret": "${{env.CLIENT_SECRET}}",
+          "scope": "openid permissions",
+          "audience": "${{env.AUTH0_AUDIENCE}}",
+          "grant_type": "http://auth0.com/oauth/grant-type/password-realm"
+        }'
+
+    - name: response echo
+      run: |
+        echo '${{steps.curlToken.outputs.output}}' > $HOME/tmp.json
+
+    - name: parse token from curl request
+      run: |
+        echo "$(jq '.data' $HOME/tmp.json)" > $HOME/.tz-feo/token.json
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .[dev]
+
+    - uses: ravsamhq/notify-slack-action@v2
+      if: always()
+      with:
+        status: ${{ job.status }} # required
+        notify_when: "failure"
+        notification_title: "PANIC: feo-client prod tests are failing"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FEO_ALERTS }} # required

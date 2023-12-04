@@ -1,10 +1,21 @@
-from feo.client import Scenario
+import pytest
+
+from feo.client import Model, Scenario, utils
 
 
-def test_scenario_init():
-    scenario = Scenario.from_id("feo-global-indonesia:feo-indonesia-current-policies")
+@pytest.fixture
+def scenario():
+    if utils.ENVIRONMENT == "staging":
+        scenario = Scenario.from_id("feo-global-indonesia:feo-indonesia-current-policies")
+    elif utils.ENVIRONMENT == "production":
+        scenario = Scenario.from_id("feo-global-indonesia:net-zero-2060")
+    else:
+        raise ValueError("Unknown environment")
+    return scenario
+
+
+def test_scenario_init(scenario):
     assert isinstance(scenario, Scenario)
-    assert scenario.id == "feo-global-indonesia:feo-indonesia-current-policies"
 
 
 def test_scenario_search():
@@ -28,3 +39,22 @@ def test_search_pagination():
     ids2 = {item.id for item in items2}
     # assert that items on different pages are all different
     assert ids1.intersection(ids2) == set()
+
+
+def test_scenario_model(scenario):
+    model = scenario.model
+    assert isinstance(model, Model)
+    assert model.id == "feo-global-indonesia"
+
+
+def test_scenario_str(scenario):
+    if utils.ENVIRONMENT == "staging":
+        output = (
+            "Scenario: FEO Indonesia - Current Policies "
+            "(id=feo-global-indonesia:feo-indonesia-current-policies)"
+        )
+    elif utils.ENVIRONMENT == "production":
+        output = "Scenario: Net Zero 2060 (id=feo-global-indonesia:net-zero-2060)"
+    else:
+        raise ValueError("Unknown environment")
+    assert str(scenario) == output

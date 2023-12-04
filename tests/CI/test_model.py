@@ -1,4 +1,4 @@
-from feo.client import Model, Scenario
+from feo.client import Model, Scenario, utils
 
 
 def test_model_init():
@@ -38,3 +38,12 @@ def test_model_scenarios():
     assert isinstance(scenarios[0], Scenario)
 
     assert isinstance(model.featured_scenario, Scenario | None)
+
+
+def test_model_str():
+    model = Model.from_id("feo-global-indonesia")
+    if utils.ENVIRONMENT == "staging":
+        output = "Model: FEO-Global Indonesia (id=feo-global-indonesia)"
+    elif utils.ENVIRONMENT == "production":
+        output = "Model: Indonesia JETP (id=feo-global-indonesia)"
+    assert str(model) == output

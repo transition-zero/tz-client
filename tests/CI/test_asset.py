@@ -44,3 +44,6 @@ class TestAsset:
         sources = asset.sources
         assert isinstance(sources, list)
         assert isinstance(sources[0], Source)
+
+    def test_str(self, asset):
+        assert str(asset) == "Asset: Rooppur nuclear power plant - 2 (id=PWRURNBGDA0U0)"
