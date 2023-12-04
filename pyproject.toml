@@ -17,13 +17,13 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.11"
-pandas = ">2"
-pydantic = ">2"
-requests = ">=2.31"
-httpx = ">0.25"
-click = ">8.1"
-shapely = ">1.7.1"
+python = "*"
+pandas = "*"
+pydantic = "*"
+requests = "*"
+httpx = "*"
+click = "*"
+shapely = "*"
 
 [tool.poetry.dev-dependencies] # Optional
 pre-commit = "*"
