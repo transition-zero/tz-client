@@ -33,9 +33,8 @@ tox = "*"
 coverage = "*"
 types-requests = "*"
 pandas-stubs = "*"
+geopandas = "*"
 
-[tool.poetry.extras]
-geo = ["geopandas"]
 
 [tool.poetry.urls]  # Optional
 "Homepage" = "https://github.com/transitionzero/feo-client"
