@@ -4,8 +4,6 @@ from typing import List
 from feo.client.api.base import BaseAPI
 from feo.client.api.schemas import Record, RecordsResponse
 
-RECORD_DEFAULT_PAGE_LIMIT = 100
-
 
 class RecordsAPI(BaseAPI):
     def get(
@@ -23,7 +21,7 @@ class RecordsAPI(BaseAPI):
         value: float | None = None,
         unit: list[str] | str | None = None,
         properties: dict | None = None,
-        limit: int | None = RECORD_DEFAULT_PAGE_LIMIT,
+        limit: int | None = None,
         page: int | None = None,
     ) -> List[Record]:
         params = dict(
