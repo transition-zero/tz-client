@@ -8,19 +8,17 @@ class Technology(schemas.Technology):
     _projections: Optional[ForwardRef("RecordCollection")] = None  # type: ignore[valid-type]
 
     @classmethod
-    def from_id(cls, id: str, limit=10, page=0) -> "Technology":
+    def from_id(cls, id: str) -> "Technology":
         """
         Initialize the Technology object from an ID.
 
         Args:
             id (str): A technology ID, e.g. `coal`.
-            limit (int): The maximum number of search results to return.
-            page (int): The page number of search results to return.
 
         Returns:
             Technology: A Technology object.
         """
-        technology = api.technologies.get(slug=id, limit=limit, page=page)
+        technology = api.technologies.get(slug=id)
         return cls(**technology.model_dump())
 
     @classmethod
