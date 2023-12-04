@@ -1,3 +1,7 @@
+[project]
+name = "feo-client"
+dynamic = ["version"]
+
 [tool.poetry]
 name = "feo"
 version = "0.1.0"
@@ -13,7 +17,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.10"
+python = ">=3.11"
 pandas = ">2"
 pydantic = ">2"
 requests = ">=2.31"
@@ -33,7 +37,9 @@ tox = "*"
 coverage = "*"
 types-requests = "*"
 pandas-stubs = "*"
-geopandas = "*"
+
+[tool.poetry.extras]
+geo = ["geopandas"]
 
 
 [tool.poetry.urls]  # Optional
