@@ -1,49 +1,43 @@
-[project]
-name = "feo-client"
-dynamic = ["version"]
+[tool.poetry]
+name = "feo"
+version = "0.1.0"
 description = "A Python Client for programmatic interactions with the Future Energy Outlook platform by TransitionZero"
 readme = "README.md"
-requires-python = ">=3.10"
-license = {file = "LICENSE"}
+license = "LICENSE"
 keywords = ["energy", "systems"]
-authors = [
-  {name = "Lucas Kruitwagen", email = "lucas.kruitwagen@gmail.com" },
-]
+authors = ["Lucas Kruitwagen"]
 
 # For a list of valid classifiers, see https://pypi.org/classifiers/
 classifiers = [
   "Development Status :: 3 - Alpha",
 ]
 
-dependencies = [
-  "pandas>2",
-  "pydantic>2",
-  "requests>=2.31",
-  "httpx>0.25",
-  "click>8.1",
-  "shapely",
-]
+[tool.poetry.dependencies]
+python = ">=3.10"
+pandas = ">2"
+pydantic = ">2"
+requests = ">=2.31"
+httpx = ">0.25"
+click = ">8.1"
+shapely = ">1.7.1"
 
-[project.optional-dependencies] # Optional
-dev = [
-  "pre-commit",
-  "black",
-  "pytest",
-  "pytest-order",
-  "pytest-asyncio",
-  "pytest-cov",
-  "mypy",
-  "tox",
-  "coverage",
-  "types-requests",
-  "pandas-stubs",
-  ]
+[tool.poetry.dev-dependencies] # Optional
+pre-commit = "*"
+black = "*"
+pytest = "*"
+pytest-order = "*"
+pytest-asyncio = "*"
+pytest-cov = "*"
+mypy = "*"
+tox = "*"
+coverage = "*"
+types-requests = "*"
+pandas-stubs = "*"
 
-geo = [
-  "geopandas",
-  ]
+[tool.poetry.extras]
+geo = ["geopandas"]
 
-[project.urls]  # Optional
+[tool.poetry.urls]  # Optional
 "Homepage" = "https://github.com/transitionzero/feo-client"
 "Bug Reports" = "https://github.com/transitionzero/feo-client/issues"
 "Funding" = "https://transitionzero.org"
@@ -51,7 +45,7 @@ geo = [
 
 # The following would provide a command line executable called `sample`
 # which executes the function `main` from this package when invoked.
-[project.scripts]  # Optional
+[tool.poetry.scripts] # Optional
 feo = "feo.client.cli:main"
 
 # This is configuration specific to the `setuptools` build backend.

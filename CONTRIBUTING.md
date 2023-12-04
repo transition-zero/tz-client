@@ -11,7 +11,8 @@ As contributors and maintainers to this project, you are expected to abide by Tr
 ```console
 git clone https://github.com/transition-zero/feo-client.git
 cd feo-client
-pip install ".[dev]"
+pip install poetry
+poetry install
 ```
 
 To install pre-commit hooks (recommended), run
@@ -23,7 +24,7 @@ pre-commit install
 Please also run mypy with
 
 ```console
-pip install ".[dev]" && mypy -p feo.client
+poetry run mypy -p feo.client
 ```
 
 ## Authentication
@@ -37,7 +38,11 @@ feo auth login
 ## Running tests
 
 ```console
-pytest
+poetry run pytest
 ```
 
-After having made changes in the codebase, run `pip install ".[dev]"` to pick them up in the tests.
+To get a coverage report, run
+
+```
+poetry run py.test tests --cov=feo
+```
