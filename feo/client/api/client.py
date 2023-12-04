@@ -35,7 +35,7 @@ class Client:
     def __init__(self):
         pass
 
-    def get(self, *args, **kwargs):
+    def get(self, *args, limit=100, **kwargs):
         return self.httpx_client.get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
