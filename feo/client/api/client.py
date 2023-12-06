@@ -8,7 +8,7 @@ from httpx._models import Request, Response
 from feo.client.api.schemas import AuthToken
 from feo.client.auth import AUTH0_CLIENT_ID, AUTH0_DOMAIN, TOKEN_PATH
 
-CLIENT_TIMEOUT = 10
+CLIENT_TIMEOUT = 30
 LOGIN_EXAMPLE = """from feo.client.auth import login
 login()"""
 
