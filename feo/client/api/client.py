@@ -63,9 +63,8 @@ class ClientAuth(httpx.Auth):
         token_response.read()
         token_json = token_response.json()
         if token_response.status_code == 403:
-            raise RefreshTokenError(
-                f"{token_json['error_description']}." f" Please login e.g. \n{LOGIN_EXAMPLE}"
-            )
+            err_description = token_json.get("error_description", "No additional information")
+            raise RefreshTokenError(f"{err_description}. Please login e.g. \n{LOGIN_EXAMPLE}")
         self.token = AuthToken(**token_json)
 
     def _refresh_token_request(self) -> httpx.Request:
