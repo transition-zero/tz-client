@@ -10,6 +10,9 @@ AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID", "HhT6aGS8u3Pg4PkVQ8sKUtnrtg0
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "prod-feo-tz.eu.auth0.com")
 AUTH0_AUDIENCE = os.environ.get("AUTH0_AUDIENCE", "https://api.feo.transitionzero.org")
 ALGORITHMS = ["RS256"]
+DEFAULT_TOKEN_PATH = os.path.join(os.path.expanduser("~"), ".tz-feo", "token.json")
+DEFAULT_TOKEN_ENV = "FEO_TOKEN_PATH"  # nosec
+TOKEN_PATH = os.environ.get(DEFAULT_TOKEN_ENV, DEFAULT_TOKEN_PATH)
 
 
 def login(config=None):
@@ -18,11 +21,7 @@ def login(config=None):
     to a new hidden folder in the $HOME directory
     """
 
-    token_dir = os.path.join(os.path.expanduser("~"), ".tz-feo")
-
-    if not os.path.exists(token_dir):
-        logger.info(f"Writing token directory {token_dir}")
-        os.makedirs(token_dir)
+    os.makedirs(os.path.dirname(TOKEN_PATH), exist_ok=True)
 
     device_code_payload = {
         "client_id": AUTH0_CLIENT_ID,
@@ -31,7 +30,9 @@ def login(config=None):
     }
 
     device_code_response = requests.post(
-        f"https://{AUTH0_DOMAIN}/oauth/device/code", json=device_code_payload, timeout=30  # noqa
+        f"https://{AUTH0_DOMAIN}/oauth/device/code",
+        json=device_code_payload,
+        timeout=30,  # noqa
     )
     device_code_response.raise_for_status()
 
@@ -55,7 +56,9 @@ def login(config=None):
     print("Checking for authentication", end="")
     while not authenticated:
         token_response = requests.post(
-            f"https://{AUTH0_DOMAIN}/oauth/token", data=token_payload, timeout=30  # noqa
+            f"https://{AUTH0_DOMAIN}/oauth/token",
+            data=token_payload,
+            timeout=30,  # noqa
         )
 
         token_data = token_response.json()
@@ -75,7 +78,25 @@ def login(config=None):
     # display a friendly welcome... print ('Hello {name}!')
 
     # write token data to file
-    json.dump(
-        token_data,
-        open(os.path.join(os.path.expanduser("~"), ".tz-feo", "token.json"), "w"),
+    save_token(token_data, TOKEN_PATH)
+
+
+def refresh(refresh_token):
+    token_payload = {
+        "grant_type": "refresh_token",
+        "client_id": AUTH0_CLIENT_ID,
+        "refresh_token": refresh_token,
+    }
+
+    token_response = requests.post(
+        f"https://{AUTH0_DOMAIN}/oauth/token", data=token_payload, timeout=30  # noqa
     )
+    token_response.raise_for_status()
+    token_data = token_response.json()
+
+    save_token(token_data, TOKEN_PATH)
+
+
+def save_token(token_data, token_path):
+    with open(token_path, "w") as tf:
+        json.dump(token_data, tf)

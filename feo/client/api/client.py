@@ -1,70 +1,71 @@
-import json
 import os
 
 import httpx
 
 from feo.client.api.schemas import AuthToken
-from feo.client.auth import login
+from feo.client.auth import AUTH0_CLIENT_ID, AUTH0_DOMAIN, TOKEN_PATH, login
+
+CLIENT_TIMEOUT = 10
 
 
-class MissingAuthError(BaseException):
-    pass
-
-
-class Auth:
-    DEFAULT_TOKEN_PATH = os.path.join(os.path.expanduser("~"), ".tz-feo", "token.json")
-    DEFAULT_TOKEN_ENV = "FEO_TOKEN_PATH"  # nosec
+class ClientAuth(httpx.Auth):
+    requires_response_body = True
 
     def __init__(self):
-        self.token_path = os.environ.get(self.DEFAULT_TOKEN_ENV, self.DEFAULT_TOKEN_PATH)
+        self.token_path = TOKEN_PATH
 
-        self.token = None
+    def _parse_token_file(self, token_file):
+        try:
+            self.token = AuthToken.from_file(self.token_path)
+        except FileNotFoundError:
+            raise FileNotFoundError(
+                f"No token file found at path '{self.token_path}'. Please login."
+            )
 
-    def authorize(self):
-        login()
-        self.token = AuthToken.from_file(self.token_path)
+    def _parse_token_response(self, token_response):
+        self.token = AuthToken(**token_response.json())
 
-    def to_header(self):
+    def _refresh_token_resquest(self):
+        token_payload = {
+            "grant_type": "refresh_token",
+            "client_id": AUTH0_CLIENT_ID,
+            "refresh_token": self.token.refresh_token,
+        }
+
+        return httpx.Request("POST", f"https://{AUTH0_DOMAIN}/oauth/token", data=token_payload)
+
+    def auth_flow(self, request):
         if self.token is None:
-            self.authorize()
+            try:
+                self._parse_token_file(self.token_path)
+            except FileNotFoundError:
+                login()
 
-        return {"Authorization": f"Bearer {self.token.access_token}"}
+        else:
+            request.headers.update({"Authorization": f"Bearer {self.token.access_token}"})
+            response = yield request
+
+            if response.status_code == 401:
+                # possible expired token
+                refresh_response = yield self.refresh_token_resquest()
+                self._parse_token_response(refresh_response)
+
+                request.headers.update({"Authorization": f"Bearer {self.token.access_token}"})
+                yield request
 
 
 class Client:
-    token_path = os.environ.get(
-        "FEO_TOKEN_PATH",
-        os.path.join(os.path.expanduser("~"), ".tz-feo", "token.json"),
-    )
-
-    if os.path.exists(token_path):
-        token = json.load(open(token_path))
-
-    else:
-        login()
-        token = json.load(open(token_path))
-
-    headers = {
-        "Authorization": "Bearer {}".format(token["access_token"]),
-        "user-agent": "feo-client",
-    }
-
     base_url = (
         os.environ.get("FEO_API_URL", "https://api.feo.transitionzero.org")
         + "/"
         + os.environ.get("FEO_API_VERSION", "v1")
     )
+
     httpx_client = httpx.Client(
         base_url=base_url,
-        headers=headers,
-        timeout=10,
+        auth=ClientAuth(),
+        timeout=CLIENT_TIMEOUT,
     )
-
-    def _add_auth(self, func):
-        pass
-
-    def _parse_token(self):
-        pass
 
     def __init__(self):
         pass
