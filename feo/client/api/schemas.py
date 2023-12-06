@@ -467,5 +467,5 @@ class AuthToken(BaseModel):
     @classmethod
     def from_file(cls, file_path):
         with open(file_path) as f:
-            token_dict = json.load(f.read())
+            token_dict = json.load(f)
         return cls(**token_dict)
