@@ -78,25 +78,5 @@ def login(config=None):
     # display a friendly welcome... print ('Hello {name}!')
 
     # write token data to file
-    save_token(token_data, TOKEN_PATH)
-
-
-def refresh(refresh_token):
-    token_payload = {
-        "grant_type": "refresh_token",
-        "client_id": AUTH0_CLIENT_ID,
-        "refresh_token": refresh_token,
-    }
-
-    token_response = requests.post(
-        f"https://{AUTH0_DOMAIN}/oauth/token", data=token_payload, timeout=30  # noqa
-    )
-    token_response.raise_for_status()
-    token_data = token_response.json()
-
-    save_token(token_data, TOKEN_PATH)
-
-
-def save_token(token_data, token_path):
-    with open(token_path, "w") as tf:
+    with open(TOKEN_PATH, "w") as tf:
         json.dump(token_data, tf)
