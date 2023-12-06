@@ -34,7 +34,7 @@ class ClientAuth(httpx.Auth):
                 except FileNotFoundError:
                     raise FileNotFoundError(
                         f"No token file found at path '{self.token_path}'. Please login."
-                    ) from None
+                    )
 
     def _parse_token_response(self, token_response):
         if token_response.status_code == 403:
