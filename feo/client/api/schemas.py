@@ -501,7 +501,7 @@ class TechnologyQueryResponse(PydanticBaseModel):
 
 class AuthToken(BaseModel):
     access_token: str
-    refresh_token: str
+    refresh_token: str = ""
     id_token: str
     scope: str
     expires_in: int
