@@ -1,11 +1,28 @@
-from typing import ForwardRef, List, Optional
+from typing import ForwardRef, Optional
 
 from feo.client import RecordCollection, api
 from feo.client.api import schemas
 
 
-class Technology(schemas.Technology):
+class Technology(schemas.TechnologyBase):
+
+    """
+    <!--
+    The Technology class enables access to technology data.
+    Technologies are related hierarchically to one another via their parents / children properties.
+    -->
+
+    Technologies can be loaded directly with their id:
+
+    ```python
+    coal = Technology.from_id("coal")
+    ```
+
+    """
+
     _projections: Optional[ForwardRef("RecordCollection")] = None  # type: ignore[valid-type]
+    _children: Optional[list["Technology"]] = None
+    _parents: Optional[list["Technology"]] = None
 
     @classmethod
     def from_id(cls, id: str) -> "Technology":
@@ -31,7 +48,7 @@ class Technology(schemas.Technology):
         public: bool | None = None,
         limit: int = 10,
         page: int = 0,
-    ) -> List["schemas.Technology"]:
+    ) -> list["Technology"]:
         """
         Search for technologies.
 
