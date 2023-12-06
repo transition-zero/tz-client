@@ -16,6 +16,8 @@ class RefreshTokenError(Exception):
 
 
 class ClientAuth(httpx.Auth):
+    """Auth class to attach token headers to requests"""
+
     requires_response_body = True
 
     def __init__(self):
@@ -27,6 +29,7 @@ class ClientAuth(httpx.Auth):
         with self._sync_lock:
             if self.token is None:
                 try:
+                    # parse from local token file
                     self.token = AuthToken.from_file(self.token_path)
                 except FileNotFoundError:
                     raise FileNotFoundError(
@@ -38,7 +41,8 @@ class ClientAuth(httpx.Auth):
             raise RefreshTokenError("Token refresh failed. Please login again.")
         self.token = AuthToken(**token_response.json())
 
-    def _refresh_token_request(self):
+    def _refresh_token_request(self) -> httpx.Request:
+        """Build a refresh token HTTPX request"""
         token_payload = {
             "grant_type": "refresh_token",
             "client_id": AUTH0_CLIENT_ID,
@@ -53,10 +57,12 @@ class ClientAuth(httpx.Auth):
         response = yield request
 
         if response.status_code == 401:
-            print("possible expired token")
+            # Auth failed - possible expired token
+            # Send refresh token request and parse response
             refresh_response = yield self._refresh_token_request()
             self._parse_token_response(refresh_response)
 
+            # attach new token header
             request.headers.update({"Authorization": f"Bearer {self.token.access_token}"})
             yield request
 
