@@ -45,6 +45,8 @@ class RecordCollection(pd.DataFrame):
         datum_detail: list[str] | None = None,
         node_type: list[str] | None = None,
         technology: str | None = None,
+        limit: int | None = 10,
+        page: int | None = 0,
     ):
         """Instantiate a RecordCollection from a node or technology.
 
@@ -58,6 +60,8 @@ class RecordCollection(pd.DataFrame):
             datum_detail (list[str]): Datum detail of the record.
             node_type (list[str]): Node type of the record (e.g. 'country').
             technology: Technology slug of the record (e.g. 'coal').
+            limit (int): The maximum number of search results to return.
+            page (int): The page number of search results to return.
         Returns:
             RecordCollection: A pandas-dataframe extension for FEO records.
         """
@@ -71,6 +75,8 @@ class RecordCollection(pd.DataFrame):
             datum_detail=datum_detail,
             node_type=node_type,
             technology=technology,
+            limit=limit,
+            page=page,
         )
 
         obj = cls.from_feo_records(records)  # type: ignore[arg-type]
@@ -92,7 +98,7 @@ class RecordCollection(pd.DataFrame):
         if not self._scope:
             raise ValueError("Cant iterate an unscoped RecordCollection")
         new_collection = self.__class__.from_feo_records(
-            api.records.get(parent_node_id=self._scope.parent_node_id, page=self._page + 1)
+            api.records.get(node_id=self._scope.node_id, page=self._page + 1)
         )
         self._page += 1
 

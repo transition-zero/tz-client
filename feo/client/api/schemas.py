@@ -385,6 +385,49 @@ class ScenarioQueryResult(PydanticBaseModel):
     total_pages: int | None = Field(None, title="Total Pages")
 
 
+class DataSeries(PydanticBaseModel):
+    x: List[int] = Field(...)
+    y: List[float] = Field(...)
+
+
+class ChartDataCapacityBar(PydanticBaseModel):
+    data: Dict[str, DataSeries] = Field(...)
+
+
+class ChartDataProductionBar(PydanticBaseModel):
+    data: Dict[str, DataSeries] = Field(...)  # tech: [year,value]
+
+
+class ChartDataFacettedProduction(PydanticBaseModel):
+    data: Dict[str, Dict[str, DataSeries]] = Field(...)
+
+
+class ChartNodeTimeseries(PydanticBaseModel):
+    data: Dict[str, Dict[str, DataSeries]] = Field(...)
+
+
+class ChartEdgeTimeSeries(PydanticBaseModel):
+    data: Dict[str, Dict[str, Dict[str, DataSeries]]] = Field(...)
+
+
+class ChartDataProductionTimeSeries(PydanticBaseModel):
+    data: Dict[str, Dict[str, Dict[str, DataSeries]]] = Field(...)
+
+
+class ChartDataFlowTimeSeries(PydanticBaseModel):
+    data: Dict[str, Dict[str, Dict[str, Dict[str, DataSeries]]]] = Field(...)
+
+
+class ChartData(PydanticBaseModel):
+    capacity_bar: Optional[ChartDataCapacityBar] = Field(None)
+    production_bar: Optional[ChartDataProductionBar] = Field(None)
+    facetted_production: Optional[ChartDataFacettedProduction] = Field(None)
+    node_capacity: Optional[ChartNodeTimeseries] = Field(None)
+    edge_capacity: Optional[ChartEdgeTimeSeries] = Field(None)
+    production_timeseries: Optional[ChartDataProductionTimeSeries] = Field(None)
+    flow_timeseries: Optional[ChartDataFlowTimeSeries] = Field(None)
+
+
 class Publisher(PydanticBaseModel):
     name: str
     short_name: str

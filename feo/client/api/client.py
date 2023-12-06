@@ -56,7 +56,7 @@ class ClientAuth(httpx.Auth):
             token_response httpx.Response: Response from the oauth/token endpoint.
 
         Raises:
-            RefreshTokenError: If
+            RefreshTokenError: If there is an error with the response.
         """
 
         # need to call read before parsing

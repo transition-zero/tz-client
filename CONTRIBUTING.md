@@ -6,7 +6,7 @@ Feel free to ask questions on the mailing list or on Slack.
 
 As contributors and maintainers to this project, you are expected to abide by TransitionZero's code of conduct. More information can be found at: Contributor Code of Conduct
 
-## Instaling dev dependencies
+## Installing dev dependencies
 
 ```console
 git clone https://github.com/transition-zero/feo-client.git
@@ -18,6 +18,12 @@ To install pre-commit hooks (recommended), run
 
 ```console
 pre-commit install
+```
+
+Please also run mypy with
+
+```console
+pip install ".[dev]" && mypy -p feo.client
 ```
 
 ## Authentication
@@ -33,3 +39,5 @@ feo auth login
 ```console
 pytest
 ```
+
+After having made changes in the codebase, run `pip install ".[dev]"` to pick them up in the tests.
