@@ -9,6 +9,8 @@ from feo.client.api.schemas import AuthToken
 from feo.client.auth import AUTH0_CLIENT_ID, AUTH0_DOMAIN, TOKEN_PATH
 
 CLIENT_TIMEOUT = 10
+LOGIN_EXAMPLE = """from feo.client.auth import login
+login()"""
 
 
 class RefreshTokenError(Exception):
@@ -33,7 +35,8 @@ class ClientAuth(httpx.Auth):
                     self.token = AuthToken.from_file(self.token_path)
                 except FileNotFoundError:
                     raise FileNotFoundError(
-                        f"No token file found at path '{self.token_path}'. Please login."
+                        f"No token file found at path '{self.token_path}'."
+                        f" Please login e.g. \n{LOGIN_EXAMPLE}"
                     )
 
     def _parse_token_response(self, token_response):
