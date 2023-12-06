@@ -1,3 +1,4 @@
+import json
 from datetime import date, datetime
 from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 from warnings import warn
@@ -496,3 +497,18 @@ class TechnologyQueryResponse(PydanticBaseModel):
     technologies: list[Technology] = Field(..., title="Technologies")
     page: int | None = Field(None, title="Page")
     total_pages: int | None = Field(None, title="Total Pages")
+
+
+class AuthToken(BaseModel):
+    access_token: str
+    refresh_token: str = ""
+    id_token: str
+    scope: str
+    expires_in: int
+    token_type: str
+
+    @classmethod
+    def from_file(cls, file_path):
+        with open(file_path) as f:
+            token_dict = json.load(f)
+        return cls(**token_dict)
