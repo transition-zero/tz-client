@@ -90,12 +90,12 @@ class Node(schemas.NodeBase):
 
     @classmethod
     def _get_children(cls, ids):
-        node_data = api.nodes.get(ids=ids, includes="node.children")
+        node_data = api.nodes.get(ids=ids, includes="children")
         return [cls(**child.model_dump()) for child in node_data[0].children]
 
     @classmethod
     def _get_parents(cls, ids):
-        node_data = api.nodes.get(ids=ids, includes="node.parents")
+        node_data = api.nodes.get(ids=ids, includes="parents")
         return [cls(**parent.model_dump()) for parent in node_data[0].parents]
 
     @property
