@@ -84,12 +84,12 @@ class Technology(schemas.TechnologyBase):
 
     @classmethod
     def _get_children(cls, slug):
-        technology = api.technologies.get(slug=slug, includes="technology.children")
+        technology = api.technologies.get(slug=slug, includes="children")
         return [cls(**child.model_dump()) for child in technology.children]
 
     @classmethod
     def _get_parents(cls, slug):
-        technology = api.technologies.get(slug=slug, includes="technology.parents")
+        technology = api.technologies.get(slug=slug, includes="parents")
         return [cls(**parent.model_dump()) for parent in technology.parents]
 
     @property
