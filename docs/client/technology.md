@@ -1,6 +1,6 @@
 # Technology
 
-Models can elucidate the role and value of technologies within the energy system and give modellers and give an indication for the optimal investment across a time horizon.
+Models can elucidate the role and value of technologies within the energy system and give modellers an indication for the optimal investment across a time horizon.
 
 Examples of technologies include: Coal, Nuclear, Onshore Wind, Offshore Wind and Solar PV. Each technology is represented as a physical power plant in models.
 
