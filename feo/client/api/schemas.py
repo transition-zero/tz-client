@@ -484,13 +484,11 @@ class TechnologyBase(PydanticBaseModel):
     owner_id: str = Field(..., title="Owner Id")
     public: bool = Field(..., title="Public")
     properties: dict | None = Field(None, title="Technology Parameters")
-    parents: list | None = Field(None, title="Parent Technologies")
-    children: list | None = Field(None, title="Child Technologies")
 
 
 class Technology(TechnologyBase):
-    parents: list[Union[str, "Technology"]] | None = Field(None, title="Parent Technologies")
-    children: list[Union[str, "Technology"]] | None = Field(None, title="Child Technologies")
+    parents: List[Union[str, "Technology"]] | None = Field(None, title="Parent Technologies")
+    children: List[Union[str, "Technology"]] | None = Field(None, title="Child Technologies")
 
 
 class TechnologyQueryResponse(PydanticBaseModel):

@@ -1,8 +1,14 @@
+import pytest
+
 from feo.client import Record, RecordCollection, Technology
 
 
-def test_technology_init():
-    technology = Technology.from_id("coal")
+@pytest.fixture
+def technology():
+    return Technology.from_id("coal")
+
+
+def test_technology_init(technology):
     assert isinstance(technology, Technology)
     assert technology.id == "coal"
 
@@ -13,9 +19,16 @@ def test_technology_search():
     assert isinstance(technologies[0], Technology)
 
 
-def test_technology_str():
-    technology = Technology.from_id("coal")
+def test_technology_str(technology):
     assert str(technology) == "Technology: Coal (id=coal)"
+
+
+def test_technology_children(technology):
+    assert isinstance(technology.children, list)
+
+
+def test_technology_parents(technology):
+    assert isinstance(technology.parents, list)
 
 
 def test_technology_projections():

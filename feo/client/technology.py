@@ -1,11 +1,28 @@
-from typing import ForwardRef, List, Optional
+from typing import ForwardRef, Optional
 
 from feo.client import RecordCollection, api
 from feo.client.api import schemas
 
 
-class Technology(schemas.Technology):
+class Technology(schemas.TechnologyBase):
+
+    """
+    <!--
+    The Technology class enables access to technology data.
+    Technologies are related hierarchically to one another via their parents / children properties.
+    -->
+
+    Technologies can be loaded directly with their id:
+
+    ```python
+    coal = Technology.from_id("coal")
+    ```
+
+    """
+
     _projections: Optional[ForwardRef("RecordCollection")] = None  # type: ignore[valid-type]
+    _children: Optional[list["Technology"]] = None
+    _parents: Optional[list["Technology"]] = None
 
     @classmethod
     def from_id(cls, id: str) -> "Technology":
@@ -31,7 +48,7 @@ class Technology(schemas.Technology):
         public: bool | None = None,
         limit: int = 10,
         page: int = 0,
-    ) -> List["schemas.Technology"]:
+    ) -> list["Technology"]:
         """
         Search for technologies.
 
@@ -64,6 +81,32 @@ class Technology(schemas.Technology):
     def id(self) -> str:
         """The ID of the technology."""
         return self.slug
+
+    @classmethod
+    def _get_children(cls, slug):
+        technology = api.technologies.get(slug=slug, includes="children")
+        return [cls(**child.model_dump()) for child in technology.children]
+
+    @classmethod
+    def _get_parents(cls, slug):
+        technology = api.technologies.get(slug=slug, includes="parents")
+        return [cls(**parent.model_dump()) for parent in technology.parents]
+
+    @property
+    def children(self) -> list["Technology"]:
+        """A set of technologies which are the heirarchical children of this technology."""
+        if self._children is None:
+            self._children = self._get_children(self.slug)
+            return self._children
+        return self._children
+
+    @property
+    def parents(self) -> list["Technology"]:
+        """A set of technology which are the heirarchical ancestors of this technology."""
+        if self._parents is None:
+            self._parents = self._get_parents(self.slug)
+            return self._parents
+        return self._parents
 
     @property
     def projections(self):
