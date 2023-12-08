@@ -57,6 +57,21 @@ class RunResults(schemas.PydanticBaseModel):
                     restructured_data += series_data
         return restructured_data
 
+    def _structure_production_records(self, data: dict) -> list:
+        records = [
+            {"node": node, "technology": tech, "commodity": commodity, "year": year, "value": value}
+            for node, techs in data.items()
+            for tech, commodities in techs.items()
+            for commodity, values in commodities.items()
+            for year in values["x"]
+            for value in values["y"]
+        ]
+        return records
+
+    def _structure_flow_records(self, data: dict) -> list:
+        records = []
+        return records
+
     @property
     def node_capacity(self) -> Optional[ResultsCollection]:
         if self._node_capacity is None:
@@ -97,9 +112,8 @@ class RunResults(schemas.PydanticBaseModel):
                 node_or_edge="node",
             )
             if response.data is not None:
-                # ToDo: Properly structure production results response
                 self._production = ResultsCollection(
-                    self._structure_response(response.data, commodity_column=True)
+                    self._structure_production_records(response.data)
                 )
                 self._production._table = "production_timeseries"
         return self._production
@@ -114,8 +128,7 @@ class RunResults(schemas.PydanticBaseModel):
                 node_or_edge="edge",
             )
             if response.data is not None:
-                # ToDo: Properly structure flow results response
-                self._flow = ResultsCollection(self._structure_response(response.data))
+                self._flow = ResultsCollection(self._structure_flow_records(response.data))
                 self._flow._table = "flow_timeseries"
         return self._flow
 
