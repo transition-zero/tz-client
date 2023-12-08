@@ -89,8 +89,18 @@ def test_results_edge_collection_capacities(run_fixture_with_chart_data):
 
 
 def test_results_collection_production(run_fixture_with_chart_data):
-    pass
+    # structure should be:
+    # node,   technology, commodity, year, value,
+    # IDN-AC  BAT         ELEC       2046  36.499
+    columns = ["node", "technology", "commodity", "year", "value"]
+    assert [c for c in run_fixture_with_chart_data.results.production.columns] == columns
+    assert len(run_fixture_with_chart_data.results.production) > 0
 
 
 def test_results_collection_flow(run_fixture_with_chart_data):
-    pass
+    # structure should be:
+    # node,   technology, commodity, year, value,
+    # IDN-AC  BAT         ELEC       2046  36.499
+    columns = ["source_node", "target_node", "commodity", "flow_type", "year", "value"]
+    assert [c for c in run_fixture_with_chart_data.results.flow.columns] == columns
+    assert len(run_fixture_with_chart_data.results.flow) > 0
