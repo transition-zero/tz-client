@@ -14,12 +14,13 @@ class TestAsset:
         assert isinstance(items, list)
         assert all(isinstance(asset, Asset) for asset in items)
 
-    @pytest.mark.skip(reason="edge case bug not resolved yet")  # FIXME
     def test_search_pagination(self):
         PAGE_LIMIT = 5
         items1 = Asset.search(alias="Rooppur nuclear power plant", limit=PAGE_LIMIT, page=0)
         assert len(items1) == PAGE_LIMIT
         items2 = Asset.search(alias="Rooppur nuclear power plant", limit=PAGE_LIMIT, page=1)
+        assert len(items2) == PAGE_LIMIT
+        items3 = Asset.search(alias="Rooppur nuclear power plant", limit=PAGE_LIMIT, page=2)
         assert len(items2) == PAGE_LIMIT
 
         # assert that no items are returned when page number is too high
@@ -28,8 +29,12 @@ class TestAsset:
 
         ids1 = {item.id for item in items1}
         ids2 = {item.id for item in items2}
-        # assert that items on different pages are all different
+        ids3 = {item.id for item in items3}
+
+        # check that there is no intersection between the sets by trying to find any matching ids
         assert ids1.intersection(ids2) == set()
+        assert ids2.intersection(ids3) == set()
+        assert ids1.intersection(ids3) == set()
 
     def test_search_with_sector(self):
         items = Asset.search(alias="Rooppur nuclear power plant", sector="power")
