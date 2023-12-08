@@ -19,7 +19,7 @@ def run_fixture_with_chart_data():
     if utils.ENVIRONMENT == "staging":
         run_result = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
     elif utils.ENVIRONMENT == "production":
-        run_result = Run.from_id("feo-global-indonesia:coal-retirement:main")
+        run_result = Run.from_id("feo-global-indonesia:baseline:main")
     else:
         raise ValueError("Unknown environment")
     return run_result
@@ -86,3 +86,11 @@ def test_results_edge_collection_capacities(run_fixture_with_chart_data):
     columns = ["node_id", "technology_type", "timestamp", "value", "commodity"]
     assert [c for c in run_fixture_with_chart_data.results.edge_capacity.columns] == columns
     assert len(run_fixture_with_chart_data.results.edge_capacity) > 0
+
+
+def test_results_collection_production(run_fixture_with_chart_data):
+    pass
+
+
+def test_results_collection_flow(run_fixture_with_chart_data):
+    pass
