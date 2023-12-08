@@ -69,7 +69,22 @@ class RunResults(schemas.PydanticBaseModel):
         return records
 
     def _structure_flow_records(self, data: dict) -> list:
-        records = []
+        records = [
+            {
+                "source_node": node1,
+                "target_node": node2,
+                "commodity": commodity,
+                "flow_type": flow_type,
+                "year": year,
+                "value": value,
+            }
+            for node1, node2s in data.items()
+            for node2, commodities in node2s.items()
+            for commodity, flow_types in commodities.items()
+            for flow_type, records in flow_types.items()
+            for year in records["x"]
+            for value in records["y"]
+        ]
         return records
 
     @property
