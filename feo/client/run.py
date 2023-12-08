@@ -63,8 +63,8 @@ class RunResults(schemas.PydanticBaseModel):
             for node, techs in data.items()
             for tech, commodities in techs.items()
             for commodity, values in commodities.items()
-            for year in values["x"]
-            for value in values["y"]
+            for year in values.x
+            for value in values.y
         ]
         return records
 
@@ -82,8 +82,8 @@ class RunResults(schemas.PydanticBaseModel):
             for node2, commodities in node2s.items()
             for commodity, flow_types in commodities.items()
             for flow_type, records in flow_types.items()
-            for year in records["x"]
-            for value in records["y"]
+            for year in records.x
+            for value in records.y
         ]
         return records
 
