@@ -28,8 +28,7 @@ class RunResults(schemas.PydanticBaseModel):
     _node_capacity: Optional[ResultsCollection] = None
     _edge_capacity: Optional[ResultsCollection] = None
     _production: Optional[ResultsCollection] = None
-    _node_flow: Optional[ResultsCollection] = None
-    _edge_flow: Optional[ResultsCollection] = None
+    _flow: Optional[ResultsCollection] = None
 
     def _structure_series(self, series, node_id, tech_type, commodity=None) -> list:
         series_data = []
@@ -57,6 +56,36 @@ class RunResults(schemas.PydanticBaseModel):
                     series_data = self._structure_series(series_data, node_id, tech_type)
                     restructured_data += series_data
         return restructured_data
+
+    def _structure_production_records(self, data: dict) -> list:
+        records = [
+            {"node": node, "technology": tech, "commodity": commodity, "year": year, "value": value}
+            for node, techs in data.items()
+            for tech, commodities in techs.items()
+            for commodity, values in commodities.items()
+            for year in values.x
+            for value in values.y
+        ]
+        return records
+
+    def _structure_flow_records(self, data: dict) -> list:
+        records = [
+            {
+                "source_node": node1,
+                "target_node": node2,
+                "commodity": commodity,
+                "flow_type": flow_type,
+                "year": year,
+                "value": value,
+            }
+            for node1, node2s in data.items()
+            for node2, commodities in node2s.items()
+            for commodity, flow_types in commodities.items()
+            for flow_type, records in flow_types.items()
+            for year in records.x
+            for value in records.y
+        ]
+        return records
 
     @property
     def node_capacity(self) -> Optional[ResultsCollection]:
@@ -87,6 +116,36 @@ class RunResults(schemas.PydanticBaseModel):
                 )
                 self._edge_capacity._table = "edge_capacity"
         return self._edge_capacity
+
+    @property
+    def production(self) -> Optional[ResultsCollection]:
+        if self._production is None:
+            response = api.runs.get_chart_data(
+                fullslug=self.id,
+                attribute="production_timeseries",
+                chart_type="Production",
+                node_or_edge="node",
+            )
+            if response.data is not None:
+                self._production = ResultsCollection(
+                    self._structure_production_records(response.data)
+                )
+                self._production._table = "production_timeseries"
+        return self._production
+
+    @property
+    def flow(self) -> Optional[ResultsCollection]:
+        if self._flow is None:
+            response = api.runs.get_chart_data(
+                fullslug=self.id,
+                attribute="flow_timeseries",
+                chart_type="Flow",
+                node_or_edge="edge",
+            )
+            if response.data is not None:
+                self._flow = ResultsCollection(self._structure_flow_records(response.data))
+                self._flow._table = "flow_timeseries"
+        return self._flow
 
 
 class Run(schemas.RunBase):
