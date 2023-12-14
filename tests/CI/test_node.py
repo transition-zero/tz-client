@@ -1,4 +1,5 @@
 import pytest
+from httpx import HTTPStatusError
 
 from feo.client import AssetCollection, Geometry, Node
 
@@ -43,8 +44,8 @@ def test_search_pagination():
     assert len(items2) == PAGE_LIMIT
 
     # assert that no items are returned when page number is too high
-    items_bad = Node.search("power plant", limit=PAGE_LIMIT, page=10000)
-    assert len(items_bad) == 0
+    with pytest.raises(HTTPStatusError):
+        Node.search("power plant", limit=PAGE_LIMIT, page=10000)
 
     ids1 = {item.id for item in items1}
     ids2 = {item.id for item in items2}
