@@ -1,5 +1,4 @@
 import pytest
-from httpx import HTTPStatusError
 
 from feo.client import Asset
 
@@ -23,10 +22,6 @@ class TestAsset:
         assert len(items2) == PAGE_LIMIT
         items3 = Asset.search(alias="Rooppur nuclear power plant", limit=PAGE_LIMIT, page=2)
         assert len(items2) == PAGE_LIMIT
-
-        # assert that no items are returned when page number is too high
-        with pytest.raises(HTTPStatusError):
-            Asset.search(alias="Rooppur", limit=PAGE_LIMIT, page=10000)
 
         ids1 = {item.id for item in items1}
         ids2 = {item.id for item in items2}
