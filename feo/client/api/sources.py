@@ -65,7 +65,7 @@ class SourceAPI(BaseAPI):
         license: str | None = None,
     ):
         """
-        Sends a POST request to create a new source.
+        POST a new source to the API.
 
         Args:
             name (str): The name of the source.
@@ -89,6 +89,7 @@ class SourceAPI(BaseAPI):
 
         Raises:
             requests.HTTPError: If the API request fails.
+            TypeError: If any of the arguments are not of the correct type.
         """
 
         # Check types
