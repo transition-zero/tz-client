@@ -44,7 +44,6 @@ def test_source_get_publisher():
 )
 def test_publisher_post(name, short_name, organisation_type, url, public, slug):
     with mock.patch.object(api.publishers.client, "post") as mock_post:
-        # Set up the mock response
         mock_response = mock.Mock()
         mock_response.json.return_value = {"status": "success"}
         mock_post.return_value = mock_response
@@ -58,7 +57,6 @@ def test_publisher_post(name, short_name, organisation_type, url, public, slug):
             slug=slug,
         )
 
-        # Assert the expected behavior
         assert result == {"status": "success"}
         mock_post.assert_called_once_with(
             "/publishers",
