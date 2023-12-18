@@ -57,7 +57,7 @@ class RecordsAPI(BaseAPI):
             source_slug (str): The slug of the data source.
 
         Returns:
-            dict: The JSON response from the api.
+            dict: The JSON response from the API.
 
         Raises:
             requests.HTTPError: If the server returns an error status code.
