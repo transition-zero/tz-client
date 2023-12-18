@@ -19,6 +19,16 @@ RECORD_GET_CASES = [
         dict(value=1570.5),
     ),
 ]
+RECORD_POST_CSV_CASES = [
+    (
+        dict(
+            csv_path="tmp.csv",
+            publisher_slug="feo-global-indonesia",
+            source_slug="feo-indonesia-current-policies",
+        ),
+        dict(status="success"),
+    ),
+]
 
 
 @pytest.mark.parametrize("record_get_cases", RECORD_GET_CASES)
@@ -34,24 +44,24 @@ def test_api_records_get(record_get_cases):
             assert getattr(record, k) == v
 
 
-@pytest.mark.parametrize(
-    "csv_path, publisher_slug, source_slug",
-    [
-        ("tmp.csv", "pub1", "source1"),
-    ],
-)
-def test_post_csv(api, csv_path, publisher_slug, source_slug):
+@pytest.mark.parametrize("record_post_csv_cases", RECORD_POST_CSV_CASES)
+def test_post_csv(record_post_csv_cases):
+    params, expected_result = record_post_csv_cases
+    csv_path = params["csv_path"]
+    publisher_slug = params["publisher_slug"]
+    source_slug = params["source_slug"]
+
     with mock.patch.object(api.records.client, "post") as mock_post:
         mock_response = mock.Mock()
-        mock_response.json.return_value = {"status": "success"}
+        mock_response.json.return_value = expected_result
         mock_post.return_value = mock_response
 
         # POST dummy CSV file
         with open(csv_path, "w") as f:
             f.write("a,b,c")
-        result = api.post_csv(csv_path, publisher_slug, source_slug)
+        result = api.records._post_csv(csv_path, publisher_slug, source_slug)
 
-        assert result == {"status": "success"}
+        assert result == expected_result
         with open(csv_path, "rb") as f:
             mock_post.assert_called_once_with(
                 f"/records/{publisher_slug}:{source_slug}/data",
@@ -68,6 +78,6 @@ def test_post_csv(api, csv_path, publisher_slug, source_slug):
         (1, "pub1", "source1"),
     ],
 )
-def test_post_type_errors(api, csv_path, publisher_slug, source_slug):
+def test_post_type_errors(csv_path, publisher_slug, source_slug):
     with pytest.raises(TypeError):
-        api.post_csv(csv_path, publisher_slug, source_slug)
+        api.records._post_csv(csv_path, publisher_slug, source_slug)
