@@ -43,6 +43,7 @@ from feo.client.technology import Technology
 
 Publisher.model_rebuild()
 Source.model_rebuild()
+Asset.model_rebuild()
 
 __version__ = version("feo-client")
 
