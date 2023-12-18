@@ -42,7 +42,7 @@ def test_source_get_publisher():
         ("Publisher 2", "pub2", "Type 2", None, False, None),
     ],
 )
-def test_post(name, short_name, organisation_type, url, public, slug):
+def test_publisher_post(name, short_name, organisation_type, url, public, slug):
     with mock.patch.object(api.publishers.client, "post") as mock_post:
         # Set up the mock response
         mock_response = mock.Mock()
@@ -79,7 +79,7 @@ def test_post(name, short_name, organisation_type, url, public, slug):
         ("Publisher 3", "pub3", "Type 3", None, None, None),
     ],
 )
-def test_post_http_error(name, short_name, organisation_type, url, public, slug):
+def test_publisher_post_http_error(name, short_name, organisation_type, url, public, slug):
     with mock.patch.object(api.publishers.client, "post") as mock_post:
         mock_response = mock.Mock()
         mock_response.raise_for_status.side_effect = HTTPError("HTTP Error")
@@ -119,7 +119,7 @@ def test_post_http_error(name, short_name, organisation_type, url, public, slug)
         ("Publisher", "pub", "Type", None, None, 123),
     ],
 )
-def test_post_type_errors(name, short_name, organisation_type, url, public, slug):
+def test_publisher_post_type_errors(name, short_name, organisation_type, url, public, slug):
     with pytest.raises(TypeError):
         api.publishers._post(
             name=name,
