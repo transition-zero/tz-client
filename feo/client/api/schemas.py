@@ -45,7 +45,7 @@ class NodeBase(PydanticBaseModel):
     name_primary_en: str | None = None
     public: bool = True
     is_asset: bool | None = None
-    source_slugs: list | None = Field(None, alias="sources")
+    source_objs: list | None = Field(None, alias="sources")
     properties: dict | None = None
     sector: str | None = None
     asset_properties: Optional[PowerUnit] = None

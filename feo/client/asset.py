@@ -2,7 +2,7 @@ from typing import ForwardRef, List, Optional
 
 import pandas as pd
 
-from feo.client import api, factory
+from feo.client import api
 from feo.client.api import schemas
 
 
@@ -58,13 +58,10 @@ class Asset(schemas.NodeBase):
     @property
     def sources(self):
         if self._source_objects is None:
-            if self.source_slugs is not None:
-                self._source_objects = [
-                    factory.source(**api.sources.get(slug=source_slug).model_dump())
-                    for source_slug in self.source_slugs
-                ]
-            else:
-                self._source_objects = None
+            asset = api.assets.get(ids=self.id, includes="sources")[0]
+            self._source_objects = [
+                schemas.Source(**source.model_dump()) for source in asset.source_objs
+            ]
         return self._source_objects
 
     def __str__(self) -> str:
