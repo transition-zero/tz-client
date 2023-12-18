@@ -1,12 +1,14 @@
-from typing import List
+from typing import ForwardRef, List, Optional
 
 import pandas as pd
 
-from feo.client import api
+from feo.client import api, factory
 from feo.client.api import schemas
 
 
 class Asset(schemas.NodeBase):
+    _source_objects: Optional[List[ForwardRef("Source")]] = None  # type: ignore[valid-type] # noqa
+
     @classmethod
     def from_id(cls, id: str):
         """Initialise Asset from `id` as a positional argument"""
@@ -52,6 +54,18 @@ class Asset(schemas.NodeBase):
             cls(**alias.node.model_dump())  # type: ignore[union-attr, misc]
             for alias in search_results.aliases
         ]
+
+    @property
+    def sources(self):
+        if self._source_objects is None:
+            if self.source_ids is not None:
+                self._source_objects = [
+                    factory.source(**api.sources.get(slug=source_slug).model_dump())
+                    for source_slug in self.source_ids
+                ]
+            else:
+                self._source_objects = None
+        return self._source_objects
 
     def __str__(self) -> str:
         return f"Asset: {self.name_primary_en} (id={self.id})"

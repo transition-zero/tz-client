@@ -1,6 +1,6 @@
 import pytest
 
-from feo.client import Asset
+from feo.client import Asset, Source
 
 
 @pytest.fixture
@@ -40,6 +40,11 @@ class TestAsset:
     def test_properties(self, asset):
         assert asset.id == "PWRURNBGDA0U0"
         assert isinstance(asset.properties, dict | None)
+
+    def test_sources(self, asset):
+        sources = asset.sources
+        assert isinstance(sources, list)
+        assert isinstance(sources[0], Source)
 
     def test_str(self, asset):
         assert str(asset) == "Asset: Rooppur nuclear power plant - 2 (id=PWRURNBGDA0U0)"
