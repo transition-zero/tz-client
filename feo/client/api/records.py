@@ -47,7 +47,7 @@ class RecordsAPI(BaseAPI):
 
         return RecordsResponse(**resp.json()).records
 
-    def post_csv(self, csv_path: str, publisher_slug: str, source_slug: str) -> dict:
+    def __post_csv(self, csv_path: str, publisher_slug: str, source_slug: str) -> dict:
         """
         POST a CSV file to the records API.
 
