@@ -58,10 +58,10 @@ class Asset(schemas.NodeBase):
     @property
     def sources(self):
         if self._source_objects is None:
-            if self.source_ids is not None:
+            if self.source_slugs is not None:
                 self._source_objects = [
                     factory.source(**api.sources.get(slug=source_slug).model_dump())
-                    for source_slug in self.source_ids
+                    for source_slug in self.source_slugs
                 ]
             else:
                 self._source_objects = None
