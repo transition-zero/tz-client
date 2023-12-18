@@ -49,7 +49,7 @@ class RecordsAPI(BaseAPI):
 
     def post_csv(self, csv_path: str, publisher_slug: str, source_slug: str) -> dict:
         """
-        Uploads a CSV file to the server and returns the response as JSON.
+        POST a CSV file to the records API.
 
         Args:
             csv_path (str): The path to the CSV file.
@@ -57,13 +57,14 @@ class RecordsAPI(BaseAPI):
             source_slug (str): The slug of the data source.
 
         Returns:
-            dict: The JSON response from the server.
+            dict: The JSON response from the api.
 
         Raises:
             requests.HTTPError: If the server returns an error status code.
-
-        Raises a TypeError if any of the arguments are not of type str.
+            TypeError: If any of the arguments are not of the correct type.
         """
+
+        # Validate arguments
         if not isinstance(csv_path, str):
             raise TypeError("csv_path must be a string")
         if not isinstance(publisher_slug, str):
@@ -71,10 +72,10 @@ class RecordsAPI(BaseAPI):
         if not isinstance(source_slug, str):
             raise TypeError("source_slug must be a string")
 
+        # POST the CSV file
         provenance_slug = f"{publisher_slug}:{source_slug}"
         with open(csv_path, "rb") as f:
             files = {"file": (csv_path, f)}
-
             resp = self.client.post(
                 f"/records/{provenance_slug}/data",
                 files=files,
