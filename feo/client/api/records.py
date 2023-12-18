@@ -47,7 +47,7 @@ class RecordsAPI(BaseAPI):
 
         return RecordsResponse(**resp.json()).records
 
-    def post_csv(self, csv_path: str, publisher_slug: str, source_slug: str) -> int:
+    def post_csv(self, csv_path: str, publisher_slug: str, source_slug: str) -> dict:
         """
         Uploads a CSV file to the server and returns the response as JSON.
 
