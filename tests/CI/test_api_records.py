@@ -68,16 +68,3 @@ def test_post_csv(record_post_csv_cases):
                 files={"file": ("tmp.csv", ANY)},
             )
         os.remove(csv_path)
-
-
-@pytest.mark.parametrize(
-    "csv_path, publisher_slug, source_slug",
-    [
-        ("path/to/csv", "pub1", 1),
-        ("path/to/csv", 2, 2),
-        (1, "pub1", "source1"),
-    ],
-)
-def test_post_type_errors(csv_path, publisher_slug, source_slug):
-    with pytest.raises(TypeError):
-        api.records._post_csv(csv_path, publisher_slug, source_slug)

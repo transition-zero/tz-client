@@ -59,7 +59,7 @@ class SourceAPI(BaseAPI):
         quarter: int | None = None,
         license_abbrv: str | None = None,
         publisher_slug: str | None = None,
-        source_slug: str | None = None,
+        slug: str | None = None,
         links: list | None = None,
         nodes: list | None = None,
         license: str | None = None,
@@ -78,7 +78,7 @@ class SourceAPI(BaseAPI):
             quarter (int, optional): The quarter of the source.
             license_abbrv (str, optional): License for the source.
             publisher_slug (str, optional): The slug of the publisher for the source.
-            source_slug (str, optional): The slug of the source.
+            slug (str, optional): The slug of the source.
             l_abbrv (str, optional): The abbreviation of the license.
             publisher_slug (str, optional): The slug of the publisher.
             links (list, optional): The links of the source.
@@ -113,8 +113,8 @@ class SourceAPI(BaseAPI):
             raise TypeError("license_abbrv must be a string or None")
         if publisher_slug is not None and not isinstance(publisher_slug, str):
             raise TypeError("publisher_slug must be a string or None")
-        if source_slug is not None and not isinstance(source_slug, str):
-            raise TypeError("source_slug must be a string or None")
+        if slug is not None and not isinstance(slug, str):
+            raise TypeError("slug must be a string or None")
         if links is not None and not isinstance(links, list):
             raise TypeError("links must be a list or None")
         if nodes is not None and not isinstance(nodes, list):
@@ -126,14 +126,14 @@ class SourceAPI(BaseAPI):
             "name": name,
             "short_name": short_name,
             "public": public,
+            "description": description,
             "year": year,
             "month": month,
             "day": day,
             "quarter": quarter,
-            "description": description,
             "license_abbrv": license_abbrv,
             "publisher_slug": publisher_slug,
-            "slug": source_slug,
+            "slug": slug,
             "links": links,
             "nodes": nodes,
             "license": license,
