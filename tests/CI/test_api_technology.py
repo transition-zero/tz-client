@@ -7,15 +7,17 @@ from feo.client import api
 
 EXAMPLE_TECHNOLOGY = "coal"
 TECHNOLOGY_POST_CASES = [
-    dict(
-        name="example_name",
-        slug="example_slug",
-        public=True,
-        properties={"key": "value"},
-        parents=["parent1", "parent2"],
-        children=["child1", "child2"],
-    ),
-    dict(status="success"),
+    (
+        dict(
+            name="example_name",
+            slug="example_slug",
+            public=True,
+            properties={"key": "value"},
+            parents=["parent1", "parent2"],
+            children=["child1", "child2"],
+        ),
+        dict(status="success"),
+    )
 ]
 
 
@@ -33,7 +35,7 @@ def test_model_get():
 @pytest.mark.parametrize("technology_post_cases", TECHNOLOGY_POST_CASES)
 def test_technology_post(technology_post_cases):
     params, expected_result = technology_post_cases
-    with mock.patch.object(api.sources.client, "post") as mock_post:
+    with mock.patch.object(api.technologies.client, "post") as mock_post:
         mock_response = mock.Mock()
         mock_response.json.return_value = expected_result
         mock_post.return_value = mock_response
@@ -52,13 +54,13 @@ def test_technology_post(technology_post_cases):
 @pytest.mark.parametrize("technology_post_cases", TECHNOLOGY_POST_CASES)
 def test_technology_post_http_error(technology_post_cases):
     params, _ = technology_post_cases
-    with mock.patch.object(api.sources.client, "post") as mock_post:
+    with mock.patch.object(api.technologies.client, "post") as mock_post:
         mock_response = mock.Mock()
         mock_response.raise_for_status.side_effect = HTTPError("HTTP Error")
         mock_post.return_value = mock_response
 
         with pytest.raises(HTTPError):
-            api.sources._post(
+            api.technologies._post(
                 **params,
             )
 
