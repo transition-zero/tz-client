@@ -60,7 +60,7 @@ class Asset(schemas.NodeBase):
         if self._source_objects is None:
             asset = api.assets.get(ids=self.id, includes="sources")[0]
             self._source_objects = [
-                schemas.Source(**source.model_dump()) for source in asset.source_objs
+                schemas.Source(**source.model_dump()) for source in asset.base_sources
             ]
         return self._source_objects
 
