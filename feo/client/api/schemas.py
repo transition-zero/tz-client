@@ -1,4 +1,5 @@
 import json
+import typing
 from datetime import date, datetime
 from typing import Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
 from warnings import warn
@@ -45,7 +46,9 @@ class NodeBase(PydanticBaseModel):
     name_primary_en: str | None = None
     public: bool = True
     is_asset: bool | None = None
-    base_sources: List[Union[str, "Source"]] | None = Field(None, alias="sources")
+    base_sources: List[typing.ForwardRef("Source")] | None = Field(
+        None, alias="sources"
+    )  # type: ignore[valid-type]
     properties: dict | None = None
     sector: str | None = None
     asset_properties: Optional[PowerUnit] = None
