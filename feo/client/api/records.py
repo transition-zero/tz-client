@@ -46,3 +46,51 @@ class RecordsAPI(BaseAPI):
         resp.raise_for_status()
 
         return RecordsResponse(**resp.json()).records
+
+    def post_csv(self, csv_path: str, publisher_slug: str, source_slug: str) -> dict:
+        """
+        POST a CSV file of records to the records API.
+        The CSV file must have a header row with the following columns:
+
+        - "public": bool
+        - "node_id": str, optional
+        - "source_node_id": str, optional
+        - "target_node_id": str, optional
+        - "timestamp": datetime
+        - "valid_timestamp_start": datetime
+        - "valid_timestamp_end": datetime
+        - "datum_type": str
+        - "datum_detail": str
+        - "value": float
+        - "unit": str
+        - "properties": dict, optional
+        - "technology_slug": dict, optional
+
+        Args:
+            csv_path (str): The path to the CSV file.
+            publisher_slug (str): The slug of the publisher.
+            source_slug (str): The slug of the data source.
+
+        Returns:
+            dict: The JSON response from the API.
+
+        Raises:
+            RefreshTokenError: If the refresh token is invalid.
+            HTTPError: If the POST request fails. Note that if the
+            error code is 401, this is likely due to invalid credentials.
+        """
+
+        provenance_slug = f"{publisher_slug}:{source_slug}"
+        with open(csv_path, "rb") as f:
+            files = {"file": (csv_path, f)}
+            resp = self.client.post(
+                f"/records/{provenance_slug}/data",
+                files=files,
+            )
+        resp.raise_for_status()
+
+        return resp.json()
+
+        """
+
+        """

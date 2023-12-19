@@ -42,3 +42,44 @@ class TechnologyAPI(BaseAPI):
         resp.raise_for_status()
 
         return TechnologyQueryResponse(**resp.json()).technologies
+
+    def post(
+        self,
+        name: str,
+        slug: str,
+        public: bool,
+        properties: dict | None = None,
+        parents: list[str] | None = None,
+        children: list[str] | None = None,
+    ):
+        """
+        POST a new technology to the API.
+
+        Args:
+            name (str): The name of the technology.
+            slug (str): The slug of the technology.
+            public (bool): Whether the technology is public or not.
+            properties (dict, optional): Additional properties of the technology.
+            parents (list[str], optional): The id of the parents of the technology.
+            children (list[str], optional): The id of the children of the technology.
+
+        Returns:
+            dict: The JSON response from the API.
+
+        Raises:
+            RefreshTokenError: If the refresh token is invalid.
+            HTTPError: If the POST request fails. Note that if the
+            error code is 401, this is likely due to invalid credentials.
+        """
+
+        technology_data = {
+            "name": name,
+            "slug": slug,
+            "public": public,
+            "properties": properties,
+            "parents": parents,
+            "children": children,
+        }
+        resp = self.client.post("/technologies", json=technology_data)
+        resp.raise_for_status()
+        return resp.json()
