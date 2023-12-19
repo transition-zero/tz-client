@@ -19,7 +19,7 @@ class AssetAPI(BaseAPI):
 
         params = dict(
             id=ids,
-            parent_node_id=parent_node_id,
+            parent_node=parent_node_id,
             sector=sector,
             limit=limit,
             page=page,
