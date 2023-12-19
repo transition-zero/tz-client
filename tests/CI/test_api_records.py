@@ -59,7 +59,7 @@ def test_post_csv(record_post_csv_cases):
         # POST dummy CSV file
         with open(csv_path, "w") as f:
             f.write("a,b,c")
-        result = api.records._post_csv(csv_path, publisher_slug, source_slug)
+        result = api.records.post_csv(csv_path, publisher_slug, source_slug)
 
         assert result == expected_result
         with open(csv_path, "rb") as f:

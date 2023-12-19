@@ -78,7 +78,7 @@ def test_publisher_post(publisher_post_cases):
         mock_response.json.return_value = expected_result
         mock_post.return_value = mock_response
 
-        result = api.publishers._post(**params)
+        result = api.publishers.post(**params)
 
         assert result == expected_result
         mock_post.assert_called_once_with(
@@ -96,7 +96,7 @@ def test_publisher_post_http_error(publisher_post_cases):
         mock_post.return_value = mock_response
 
         with pytest.raises(HTTPError):
-            api.publishers._post(
+            api.publishers.post(
                 **params,
             )
 
@@ -114,7 +114,7 @@ def test_source_post(source_post_cases):
         mock_response.json.return_value = expected_result
         mock_post.return_value = mock_response
 
-        result = api.sources._post(
+        result = api.sources.post(
             **params,
         )
 
@@ -134,7 +134,7 @@ def test_source_post_http_error(source_post_cases):
         mock_post.return_value = mock_response
 
         with pytest.raises(HTTPError):
-            api.sources._post(
+            api.sources.post(
                 **params,
             )
 

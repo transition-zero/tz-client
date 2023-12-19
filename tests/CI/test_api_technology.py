@@ -40,7 +40,7 @@ def test_technology_post(technology_post_cases):
         mock_response.json.return_value = expected_result
         mock_post.return_value = mock_response
 
-        result = api.technologies._post(
+        result = api.technologies.post(
             **params,
         )
 
@@ -60,7 +60,7 @@ def test_technology_post_http_error(technology_post_cases):
         mock_post.return_value = mock_response
 
         with pytest.raises(HTTPError):
-            api.technologies._post(
+            api.technologies.post(
                 **params,
             )
 

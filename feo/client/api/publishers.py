@@ -36,7 +36,7 @@ class PublisherAPI(BaseAPI):
 
         return PublisherQueryResponse(**resp.json()).publishers
 
-    def _post(
+    def post(
         self,
         name: str,
         short_name: str,

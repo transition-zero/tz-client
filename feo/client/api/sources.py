@@ -47,7 +47,7 @@ class SourceAPI(BaseAPI):
 
         return SourceQueryResponse(**resp.json()).sources
 
-    def _post(
+    def post(
         self,
         name: str,
         short_name: str,

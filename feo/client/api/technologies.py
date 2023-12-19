@@ -43,7 +43,7 @@ class TechnologyAPI(BaseAPI):
 
         return TechnologyQueryResponse(**resp.json()).technologies
 
-    def _post(
+    def post(
         self,
         name: str,
         slug: str,
