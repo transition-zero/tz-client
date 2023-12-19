@@ -64,18 +64,6 @@ class PublisherAPI(BaseAPI):
             HTTPError: If the POST request fails. Note that if the
             error code is 401, this is likely due to invalid credentials.
         """
-        if not isinstance(name, str):
-            raise TypeError("name must be a string")
-        if not isinstance(short_name, str):
-            raise TypeError("short_name must be a string")
-        if not isinstance(organisation_type, str):
-            raise TypeError("organisation_type must be a string")
-        if url is not None and not isinstance(url, str):
-            raise TypeError("url must be a string or None")
-        if public is not None and not isinstance(public, bool):
-            raise TypeError("public must be boolean or None")
-        if slug is not None and not isinstance(slug, str):
-            raise TypeError("slug must be a string or None")
 
         publisher_data = {
             "name": name,

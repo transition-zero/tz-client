@@ -93,36 +93,6 @@ class SourceAPI(BaseAPI):
             error code is 401, this is likely due to invalid credentials.
         """
 
-        # Check types
-        if not isinstance(name, str):
-            raise TypeError("name must be a string")
-        if not isinstance(short_name, str):
-            raise TypeError("short_name must be a string")
-        if not isinstance(public, bool):
-            raise TypeError("public must be a boolean")
-        if not isinstance(description, str):
-            raise TypeError("description must be a string")
-        if year is not None and not isinstance(year, int):
-            raise TypeError("year must be an integer or None")
-        if month is not None and not isinstance(month, int):
-            raise TypeError("month must be an integer or None")
-        if day is not None and not isinstance(day, int):
-            raise TypeError("day must be an integer or None")
-        if quarter is not None and not isinstance(quarter, int):
-            raise TypeError("quarter must be an integer or None")
-        if license_abbrv is not None and not isinstance(license_abbrv, str):
-            raise TypeError("license_abbrv must be a string or None")
-        if publisher_slug is not None and not isinstance(publisher_slug, str):
-            raise TypeError("publisher_slug must be a string or None")
-        if slug is not None and not isinstance(slug, str):
-            raise TypeError("slug must be a string or None")
-        if links is not None and not isinstance(links, list):
-            raise TypeError("links must be a list or None")
-        if nodes is not None and not isinstance(nodes, list):
-            raise TypeError("nodes must be a list or None")
-        if license is not None and not isinstance(license, str):
-            raise TypeError("license must be a string or None")
-
         source_data = {
             "name": name,
             "short_name": short_name,

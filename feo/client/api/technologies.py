@@ -72,19 +72,6 @@ class TechnologyAPI(BaseAPI):
             error code is 401, this is likely due to invalid credentials.
         """
 
-        if not isinstance(name, str):
-            raise TypeError("name must be a string")
-        if not isinstance(slug, str):
-            raise TypeError("slug must be a string")
-        if not isinstance(public, bool):
-            raise TypeError("public must be a boolean")
-        if properties is not None and not isinstance(properties, dict):
-            raise TypeError("properties must be a dictionary")
-        if parents is not None and not isinstance(parents, list):
-            raise TypeError("parents must be a list")
-        if children is not None and not isinstance(children, list):
-            raise TypeError("children must be a list")
-
         technology_data = {
             "name": name,
             "slug": slug,

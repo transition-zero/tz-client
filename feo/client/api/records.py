@@ -65,15 +65,6 @@ class RecordsAPI(BaseAPI):
             error code is 401, this is likely due to invalid credentials.
         """
 
-        # Validate arguments
-        if not isinstance(csv_path, str):
-            raise TypeError("csv_path must be a string")
-        if not isinstance(publisher_slug, str):
-            raise TypeError("publisher_slug must be a string")
-        if not isinstance(source_slug, str):
-            raise TypeError("source_slug must be a string")
-
-        # POST the CSV file
         provenance_slug = f"{publisher_slug}:{source_slug}"
         with open(csv_path, "rb") as f:
             files = {"file": (csv_path, f)}
