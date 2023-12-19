@@ -1,7 +1,6 @@
 import pytest
 
-from feo.client import Asset
-from feo.client.api import schemas
+from feo.client import Asset, Source
 
 
 @pytest.fixture
@@ -45,7 +44,7 @@ class TestAsset:
     def test_sources(self, asset):
         sources = asset.sources
         assert isinstance(sources, list)
-        assert all(isinstance(source, schemas.Source) for source in sources)
+        assert all(isinstance(source, Source) for source in sources)
 
     def test_str(self, asset):
         assert str(asset) == "Asset: Rooppur nuclear power plant - 2 (id=PWRURNBGDA0U0)"

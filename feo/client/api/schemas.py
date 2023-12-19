@@ -46,7 +46,7 @@ class NodeBase(PydanticBaseModel):
     name_primary_en: str | None = None
     public: bool = True
     is_asset: bool | None = None
-    base_sources: List[
+    base_sources: List[  # type: ignore[valid-type]
         typing.ForwardRef("Source")  # type: ignore[valid-type] # noqa
     ] | None = Field(None, alias="sources")
     properties: dict | None = None
