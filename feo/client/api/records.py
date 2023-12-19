@@ -49,7 +49,22 @@ class RecordsAPI(BaseAPI):
 
     def post_csv(self, csv_path: str, publisher_slug: str, source_slug: str) -> dict:
         """
-        POST a CSV file to the records API.
+        POST a CSV file of records to the records API.
+        The CSV file must have a header row with the following columns:
+
+        - "public": bool
+        - "node_id": str, optional
+        - "source_node_id": str, optional
+        - "target_node_id": str, optional
+        - "timestamp": datetime
+        - "valid_timestamp_start": datetime
+        - "valid_timestamp_end": datetime
+        - "datum_type": str
+        - "datum_detail": str
+        - "value": float
+        - "unit": str
+        - "properties": dict, optional
+        - "technology_slug": dict, optional
 
         Args:
             csv_path (str): The path to the CSV file.
@@ -75,3 +90,7 @@ class RecordsAPI(BaseAPI):
         resp.raise_for_status()
 
         return resp.json()
+
+        """
+
+        """
