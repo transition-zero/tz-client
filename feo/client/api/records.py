@@ -60,8 +60,9 @@ class RecordsAPI(BaseAPI):
             dict: The JSON response from the API.
 
         Raises:
-            requests.HTTPError: If the server returns an error status code.
-            TypeError: If any of the arguments are not of the correct type.
+            RefreshTokenError: If the refresh token is invalid.
+            HTTPError: If the POST request fails. Note that if the
+            error code is 401, this is likely due to invalid credentials.
         """
 
         # Validate arguments

@@ -67,8 +67,9 @@ class TechnologyAPI(BaseAPI):
             dict: The JSON response from the API.
 
         Raises:
-            HTTPError: If the POST request fails.
-            TypeError: If user input is invalid.
+            RefreshTokenError: If the refresh token is invalid.
+            HTTPError: If the POST request fails. Note that if the
+            error code is 401, this is likely due to invalid credentials.
         """
 
         if not isinstance(name, str):

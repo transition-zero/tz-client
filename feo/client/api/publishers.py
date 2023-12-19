@@ -60,8 +60,9 @@ class PublisherAPI(BaseAPI):
             dict: The JSON response from the API.
 
         Raises:
-            requests.HTTPError: If the API request fails.
-            TypeError: If any of the arguments are not of the correct type.
+            RefreshTokenError: If the refresh token is invalid.
+            HTTPError: If the POST request fails. Note that if the
+            error code is 401, this is likely due to invalid credentials.
         """
         if not isinstance(name, str):
             raise TypeError("name must be a string")
