@@ -86,7 +86,7 @@ class TechnologyAPI(BaseAPI):
 
     def delete(self, slug: str):
         """
-        DELETE a technology from the API.
+        DELETE a technology via the API.
 
         Args:
             slug (str): The slug of the technology to delete.
@@ -96,6 +96,6 @@ class TechnologyAPI(BaseAPI):
             HTTPError: If the DELETE request fails. Note that if the
             error code is 401, this is likely due to invalid credentials.
         """
-        resp = self.client.delete(f"/technologies/{slug}")
+        resp = self.client.delete("/technologies", json={"slug": slug})
         resp.raise_for_status()
         return resp.json()

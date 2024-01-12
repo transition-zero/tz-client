@@ -37,3 +37,8 @@ def test_technology_projections():
     assert len(gas_combined_cycle.projections) > 0
     record = gas_combined_cycle.projections.iloc[0].to_records()
     assert isinstance(record, Record)
+
+
+def test_technology_delete(technology):
+    technology.delete()
+    assert Technology.from_id("coal") is None
