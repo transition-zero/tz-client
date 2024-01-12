@@ -115,6 +115,9 @@ class Client:
     def post(self, *args, **kwargs):
         return self.httpx_client.post(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        return self.httpx_client.delete(*args, **kwargs)
+
     @classmethod
     def catch_errors(cls, r):
         r.raise_for_status()
