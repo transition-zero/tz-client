@@ -68,3 +68,16 @@ def test_technology_post_http_error(technology_post_cases):
             "/technologies",
             json=params,
         )
+
+
+def test_technology_delete():
+    technology_slug = "test_slug"
+
+    with mock.patch.object(api.technologies.client, "delete") as mock_delete:
+        mock_response = mock.Mock()
+        mock_response.json.return_value = {"status": "success"}
+        mock_delete.return_value = mock_response
+
+        result = api.technologies.delete(slug=technology_slug)
+        assert result == {"status": "success"}
+        mock_delete.assert_called_once_with("/technologies", json={"slug": technology_slug})

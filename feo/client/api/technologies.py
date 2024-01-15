@@ -83,3 +83,19 @@ class TechnologyAPI(BaseAPI):
         resp = self.client.post("/technologies", json=technology_data)
         resp.raise_for_status()
         return resp.json()
+
+    def delete(self, slug: str):
+        """
+        DELETE a technology via the API.
+
+        Args:
+            slug (str): The slug of the technology to delete.
+
+        Raises:
+            RefreshTokenError: If the refresh token is invalid.
+            HTTPError: If the DELETE request fails. Note that if the
+            error code is 401, this is likely due to invalid credentials.
+        """
+        resp = self.client.delete("/technologies", json={"slug": slug})
+        resp.raise_for_status()
+        return resp.json()
