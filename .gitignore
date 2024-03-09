@@ -133,3 +133,7 @@ dmypy.json
 # VSCode settings
 .vscode/
 .dev.*
+
+# Nix
+.direnv/
+result
