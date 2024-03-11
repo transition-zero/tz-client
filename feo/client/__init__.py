@@ -28,7 +28,7 @@
 """
 
 
-from importlib.metadata import version
+from importlib.metadata import PackageNotFoundError, version
 
 from feo.client.asset import Asset, AssetCollection
 from feo.client.geospatial import Features, Geometry
@@ -46,7 +46,10 @@ Source.model_rebuild()
 Asset.model_rebuild()
 Node.model_rebuild()
 
-__version__ = version("feo-client")
+try:
+    __version__ = version("feo-client")
+except PackageNotFoundError:
+    pass
 
 __all__ = [
     "Node",

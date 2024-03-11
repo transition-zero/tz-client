@@ -4,7 +4,7 @@ If you are simply looking to start working with the codebase, navigate to the Gi
 
 Feel free to ask questions on the mailing list or on Slack.
 
-As contributors and maintainers to this project, you are expected to abide by TransitionZero's code of conduct. More information can be found at: Contributor Code of Conduct
+As contributors and maintainers to this project, you are expected to abide by TransitionZero's code of conduct. More information can be found in the [Code of Conduct](./CODE-OF-CONDUCT.md).
 
 ## Installing dev dependencies
 
