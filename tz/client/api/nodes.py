@@ -1,23 +1,20 @@
-from typing import List, Union
+from typing import Union
 
 from tz.client.api.base import BaseAPI
-from tz.client.api.schemas import Node, NodeResponse
+from tz.client.api.generated_schema import Node
 
 
 class NodeAPI(BaseAPI):
     def get(
         self,
-        ids: Union[str, List[str]],
+        slug: str,
         includes: Union[str, None] = None,
-    ) -> List[Node]:
+    ) -> Node:
         params = dict(
             includes=includes,
         )
 
-        if isinstance(ids, list):
-            ids = ",".join(ids)
-
-        resp = self.client.get(f"/nodes/{ids}", params=params)
+        resp = self.client.get(f"/nodes/{slug}", params=params)
         resp.raise_for_status()
 
-        return NodeResponse(**resp.json()).nodes
+        return Node(**resp.json())

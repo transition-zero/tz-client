@@ -1,14 +1,11 @@
-from typing import Dict, Optional
+from typing import Optional
 
 from tz.client import api
-from tz.client.api import schemas
-from tz.client.asset import AssetCollection
+from tz.client.api import generated_schema
 from tz.client.geospatial import Geometry
 
-# use property decorator to facilitate getting and setting property
 
-
-class Node(schemas.NodeBase):
+class Node(generated_schema.Node):
 
     """
     <!--
@@ -19,24 +16,22 @@ class Node(schemas.NodeBase):
     it can easily be used to design and validate systems models.
     -->
 
-    Nodes can be loaded directly with their id:
+    Nodes can be loaded directly with their slug:
 
     ```python
-    germany = Node.from_id("DEU")
+    germany = Node.from_slug("DEU")
     ```
 
     """
 
     _geometry: Optional[Geometry] = None
-    _assets: Optional[AssetCollection] = None
-    _children: Optional[list["Node"]] = None
-    _parents: Optional[list["Node"]] = None
-    _gross_capacity: Optional[Dict[str, Dict[str, Dict[str, float]]]] = None
+    # _assets: Optional[AssetCollection] = None
+    # _gross_capacity: Optional[Dict[str, Dict[str, Dict[str, float]]]] = None
 
     @classmethod
-    def from_id(cls, id: str) -> "Node":
-        """Initialise Node from `id` as a positional argument"""
-        node = api.nodes.get(ids=id)[0]
+    def from_slug(cls, slug: str) -> "Node":
+        """Initialise Node from `slug` as a positional argument"""
+        node = api.nodes.get(slug=slug)
         return cls(**node.model_dump())
 
     @classmethod
@@ -80,51 +75,52 @@ class Node(schemas.NodeBase):
             for alias in search_results.aliases
         ]
 
-    @property
-    def assets(self) -> AssetCollection:
-        """An collection of assets located in (or connected to) this node."""
-        if self._assets is None:
-            self._assets = AssetCollection.from_parent_node(node_id=self.id)
-        return self._assets
+    # @property
+    # def assets(self) -> AssetCollection:
+    #     """An collection of assets located in (or connected to) this node."""
+    #     if self._assets is None:
+    #         self._assets = AssetCollection.from_parent_node(node_id=self.id)
+    #     return self._assets
 
-    @classmethod
-    def _get_children(cls, ids):
-        node_data = api.nodes.get(ids=ids, includes="children")
-        return [cls(**child.model_dump()) for child in node_data[0].children]
+    # @classmethod
+    # def _get_children(cls, ids):
+    #     node_data = api.nodes.get(ids=ids, includes="children")
+    #     return [cls(**child.model_dump()) for child in node_data[0].children]
 
-    @classmethod
-    def _get_parents(cls, ids):
-        node_data = api.nodes.get(ids=ids, includes="parents")
-        return [cls(**parent.model_dump()) for parent in node_data[0].parents]
+    # @classmethod
+    # def _get_parents(cls, ids):
+    #     node_data = api.nodes.get(ids=ids, includes="parents")
+    #     return [cls(**parent.model_dump()) for parent in node_data[0].parents]
 
-    @property
-    def children(self) -> list["Node"]:
-        """A set of nodes which are the heirarchical children of this node."""
-        if self._children is None:
-            self._children = self._get_children(self.id)
-            return self._children
-        return self._children
+    # @property
+    # def children(self) -> list["Node"]:
+    #     """A set of nodes which are the heirarchical children of this node."""
+    #     if self._children is None:
+    #         self._children = self._get_children(self.id)
+    #         return self._children
+    #     return self._children
 
-    @property
-    def parents(self) -> list["Node"]:
-        """A set of nodes which are the heirarchical ancestors of this node."""
-        if self._parents is None:
-            self._parents = self._get_parents(self.id)
-            return self._parents
-        return self._parents
+    # @property
+    # def parents(self) -> list["Node"]:
+    #     """A set of nodes which are the heirarchical ancestors of this node."""
+    #     if self._parents is None:
+    #         self._parents = self._get_parents(self.id)
+    #         return self._parents
+    #     return self._parents
 
-    @classmethod
-    def _get_geometry(cls, ids) -> Geometry:
-        return Geometry.get(ids)
+    # @classmethod
+    # def _get_geometry(cls, ids) -> Geometry:
+    #     return Geometry.get(ids)
 
-    @property
-    def geometry(self) -> Geometry:
-        """The node's geometry in WGS84 coordinate reference system."""
-        if self._geometry is None:
-            self._geometry = self._get_geometry(self.id)
-            return self._geometry
-        else:
-            return self._geometry
+    # @property
+    # def geometry(self) -> Geometry:
+    #     """The node's geometry in WGS84 coordinate reference system."""
+    #     if self._geometry is None:
+    #         self._geometry = self._get_geometry(self.id)
+    #         return self._geometry
+    #     else:
+    #         return self._geometry
 
     def __str__(self) -> str:
-        return f"Node: {self.name_primary_en} (id={self.id})"
+        # TODO: Work back from the 'slug' to 'Germany' ?
+        return f"Node: {self.slug} (id={self.slug})"

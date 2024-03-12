@@ -137,3 +137,10 @@ dmypy.json
 # Nix
 .envrc
 .direnv/
+
+# Schema-generation
+.temp-openapi-schema.json
+
+# Nix
+.envrc
+.direnv/

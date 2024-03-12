@@ -38,6 +38,7 @@ dev = [
   "coverage",
   "types-requests",
   "pandas-stubs",
+  "python-dotenv",
   ]
 
 geo = [
