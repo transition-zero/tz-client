@@ -5,11 +5,11 @@ from tz.client import AssetCollection, Geometry, Node
 
 @pytest.fixture
 def node():
-    return Node.from_id("DEU")
+    return Node.from_slug("DEU")
 
 
 def test_node_initialization(node):
-    assert node.id == "DEU"
+    assert node.slug == "DEU"
 
 
 def test_node_search():
