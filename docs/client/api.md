@@ -1,4 +1,4 @@
 # API
 
-## ::: feo.client.api
+## ::: tz.client.api
     handler: python
