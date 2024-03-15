@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import List, Optional
 
 import pandas as pd
-
 from feo.client import api
 from feo.client.api import schemas
 

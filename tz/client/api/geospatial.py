@@ -1,9 +1,8 @@
 from typing import List, Optional, Union
 
-from httpx import ReadTimeout
-
 from feo.client.api.base import BaseAPI
 from feo.client.api.schemas import FeatureCollection, Geometry
+from httpx import ReadTimeout
 
 FEATURES_TIMEOUT = 30
 

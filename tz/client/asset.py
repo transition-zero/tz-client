@@ -1,7 +1,6 @@
 from typing import ForwardRef, List
 
 import pandas as pd
-
 from feo.client import api
 from feo.client.api import schemas
 from feo.client.source import Source

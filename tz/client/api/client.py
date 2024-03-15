@@ -4,10 +4,9 @@ import threading
 from typing import Generator
 
 import httpx
-from httpx._models import Request, Response
-
 from feo.client.api.schemas import AuthToken
 from feo.client.auth import AUTH0_CLIENT_ID, AUTH0_DOMAIN, TOKEN_PATH
+from httpx._models import Request, Response
 
 CLIENT_TIMEOUT = 10
 LOGIN_EXAMPLE = """from feo.client.auth import login

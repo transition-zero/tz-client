@@ -3,7 +3,6 @@ import os
 
 import click
 import requests
-
 from feo.client.auth import login as auth_login
 from feo.client.cli.cli import root
 

@@ -3,7 +3,6 @@ import os
 import time
 
 import requests
-
 from feo.client.core import logger
 
 AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID", "HhT6aGS8u3Pg4PkVQ8sKUtnrtg0x7nUk")

@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING, List, Optional
 
 import pandas as pd
-
 from feo.client import api, factory
 from feo.client.api import schemas
 
