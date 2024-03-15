@@ -1,12 +1,13 @@
 from typing import TYPE_CHECKING, List, Optional
 
 import pandas as pd
-from feo.client import api, factory
-from feo.client.api import schemas
+
+from tz.client import api, factory
+from tz.client.api import schemas
 
 if TYPE_CHECKING:
-    from feo.client.model import Model
-    from feo.client.scenario import Scenario
+    from tz.client.model import Model
+    from tz.client.scenario import Scenario
 
 
 class ResultsCollection(pd.DataFrame):

@@ -4,12 +4,13 @@ import threading
 from typing import Generator
 
 import httpx
-from feo.client.api.schemas import AuthToken
-from feo.client.auth import AUTH0_CLIENT_ID, AUTH0_DOMAIN, TOKEN_PATH
 from httpx._models import Request, Response
 
+from tz.client.api.schemas import AuthToken
+from tz.client.auth import AUTH0_CLIENT_ID, AUTH0_DOMAIN, TOKEN_PATH
+
 CLIENT_TIMEOUT = 10
-LOGIN_EXAMPLE = """from feo.client.auth import login
+LOGIN_EXAMPLE = """from tz.client.auth import login
 login()"""
 
 
@@ -95,9 +96,9 @@ class ClientAuth(httpx.Auth):
 
 class Client:
     base_url = (
-        os.environ.get("FEO_API_URL", "https://api.feo.transitionzero.org")
+        os.environ.get("TZ_API_URL", "https://api.feo.transitionzero.org")
         + "/"
-        + os.environ.get("FEO_API_VERSION", "v1")
+        + os.environ.get("TZ_API_VERSION", "v1")
     )
 
     headers = {}

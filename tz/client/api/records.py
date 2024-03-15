@@ -1,8 +1,8 @@
 import datetime
 from typing import List
 
-from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Record, RecordsResponse
+from tz.client.api.base import BaseAPI
+from tz.client.api.schemas import Record, RecordsResponse
 
 
 class RecordsAPI(BaseAPI):

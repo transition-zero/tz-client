@@ -2,8 +2,9 @@ from datetime import datetime
 from typing import List, Optional
 
 import pandas as pd
-from feo.client import api
-from feo.client.api import schemas
+
+from tz.client import api
+from tz.client.api import schemas
 
 
 class Record(schemas.RecordBase):
@@ -62,7 +63,7 @@ class RecordCollection(pd.DataFrame):
             limit (int): The maximum number of search results to return.
             page (int): The page number of search results to return.
         Returns:
-            RecordCollection: A pandas-dataframe extension for FEO records.
+            RecordCollection: A pandas-dataframe extension for TZ records.
         """
         records = api.records.get(
             node_id=node_id,
@@ -78,13 +79,13 @@ class RecordCollection(pd.DataFrame):
             page=page,
         )
 
-        obj = cls.from_feo_records(records)  # type: ignore[arg-type]
+        obj = cls.from_tz_records(records)  # type: ignore[arg-type]
         obj._scope = schemas.CollectionScope(node_id=node_id)
         obj._page = 0
         return obj
 
     @classmethod
-    def from_feo_records(cls, records: List[Record]):
+    def from_tz_records(cls, records: List[Record]):
         """Instiate an RecordCollection from a list of Records."""
         # pd.DataFrame.from_records
         return cls.from_records([record.model_dump() for record in records])
@@ -96,7 +97,7 @@ class RecordCollection(pd.DataFrame):
         """
         if not self._scope:
             raise ValueError("Cant iterate an unscoped RecordCollection")
-        new_collection = self.__class__.from_feo_records(
+        new_collection = self.__class__.from_tz_records(
             api.records.get(node_id=self._scope.node_id, page=self._page + 1)
         )
         self._page += 1
@@ -104,7 +105,7 @@ class RecordCollection(pd.DataFrame):
         self.__dict__.update(pd.concat([self, new_collection], ignore_index=True).__dict__)
         return len(new_collection)
 
-    def to_feo_records(self):
+    def to_tz_records(self):
         """Instantiate a list of Records from an RecordCollection."""
         return [Record(**row) for idx, row in self.iterrows()]
 

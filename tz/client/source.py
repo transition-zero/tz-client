@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING, ForwardRef, Optional
 
-from feo.client import api, factory
-from feo.client.api import schemas
-from feo.client.utils import parse_slug
+from tz.client import api, factory
+from tz.client.api import schemas
+from tz.client.utils import parse_slug
 
 if TYPE_CHECKING:
-    from feo.client.publisher import Publisher
+    from tz.client.publisher import Publisher
 
 
 class Source(schemas.Source):

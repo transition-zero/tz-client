@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING, List, Optional
 
-from feo.client import api, factory
-from feo.client.api import schemas
+from tz.client import api, factory
+from tz.client.api import schemas
 
 if TYPE_CHECKING:
-    from feo.client.model import Model
-    from feo.client.run import Run
+    from tz.client.model import Model
+    from tz.client.run import Run
 
 
 class Scenario(schemas.ScenarioBase):

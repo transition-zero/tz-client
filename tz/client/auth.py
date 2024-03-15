@@ -3,14 +3,15 @@ import os
 import time
 
 import requests
-from feo.client.core import logger
+
+from tz.client.core import logger
 
 AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID", "HhT6aGS8u3Pg4PkVQ8sKUtnrtg0x7nUk")
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "prod-feo-tz.eu.auth0.com")
 AUTH0_AUDIENCE = os.environ.get("AUTH0_AUDIENCE", "https://api.feo.transitionzero.org")
 ALGORITHMS = ["RS256"]
-DEFAULT_TOKEN_PATH = os.path.join(os.path.expanduser("~"), ".tz-feo", "token.json")
-DEFAULT_TOKEN_ENV = "FEO_TOKEN_PATH"  # nosec
+DEFAULT_TOKEN_PATH = os.path.join(os.path.expanduser("~"), ".tz", "token.json")
+DEFAULT_TOKEN_ENV = "TZ_TOKEN_PATH"  # nosec
 TOKEN_PATH = os.environ.get(DEFAULT_TOKEN_ENV, DEFAULT_TOKEN_PATH)
 
 

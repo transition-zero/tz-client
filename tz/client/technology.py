@@ -1,7 +1,7 @@
 from typing import ForwardRef, Optional
 
-from feo.client import RecordCollection, api
-from feo.client.api import schemas
+from tz.client import RecordCollection, api
+from tz.client.api import schemas
 
 
 class Technology(schemas.TechnologyBase):

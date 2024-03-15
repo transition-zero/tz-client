@@ -3,8 +3,9 @@ import os
 
 import click
 import requests
-from feo.client.auth import login as auth_login
-from feo.client.cli.cli import root
+
+from tz.client.auth import login as auth_login
+from tz.client.cli.cli import root
 
 
 @root.group()
@@ -28,7 +29,7 @@ def login(config):
 @click.pass_obj
 def test(config):
     URL = "https://power-legacy.feo.transitionzero.org"
-    token = json.load(open(os.path.join(os.path.expanduser("~"), ".tz-feo", "token.json")))
+    token = json.load(open(os.path.join(os.path.expanduser("~"), ".tz", "token.json")))
 
     headers = {"Authorization": "Bearer {}".format(token["access_token"])}
 

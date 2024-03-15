@@ -1,12 +1,10 @@
 from typing import TYPE_CHECKING, ForwardRef, List, Optional
 
-from feo.client import api, factory
-from feo.client.api import schemas
-
-# from feo.client.source import factory as source_factory
+from tz.client import api, factory
+from tz.client.api import schemas
 
 if TYPE_CHECKING:
-    from feo.client.source import Source
+    from tz.client.source import Source
 
 
 class Publisher(schemas.Publisher):

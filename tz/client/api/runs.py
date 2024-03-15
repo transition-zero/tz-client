@@ -1,9 +1,9 @@
 from datetime import datetime
 from typing import List
 
-from feo.client.api.base import BaseAPI
-from feo.client.api.constants import CHART_TYPES
-from feo.client.api.schemas import ChartData, Run, RunQueryResult
+from tz.client.api.base import BaseAPI
+from tz.client.api.constants import CHART_TYPES
+from tz.client.api.schemas import ChartData, Run, RunQueryResult
 
 
 class RunAPI(BaseAPI):

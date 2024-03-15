@@ -1,7 +1,7 @@
 from typing import List
 
-from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Model, ModelQueryResult
+from tz.client.api.base import BaseAPI
+from tz.client.api.schemas import Model, ModelQueryResult
 
 
 class ModelAPI(BaseAPI):

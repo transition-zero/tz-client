@@ -1,7 +1,7 @@
 from typing import List, Union
 
-from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import AssetResponse, Node
+from tz.client.api.base import BaseAPI
+from tz.client.api.schemas import AssetResponse, Node
 
 
 class AssetAPI(BaseAPI):

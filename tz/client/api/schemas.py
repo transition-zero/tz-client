@@ -17,7 +17,7 @@ except ImportError:
     warn(
         "Failed to locate 'geo' dependencies. Geospatial functionality will be limited."
         " For full geospatial support please install the 'geo' requirements:"
-        " pip install feo-client[geo]"
+        " pip install tz-client[geo]"
     )
 
 
@@ -183,7 +183,7 @@ class FeatureCollection(PydanticBaseModel):
             raise NotImplementedError(
                 "Full geospatial support not available."
                 " Please install 'geo' depencencies to use this method:"
-                " pip install feo-client[geo]"
+                " pip install tz-client[geo]"
             )
 
 

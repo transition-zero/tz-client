@@ -1,7 +1,7 @@
 from typing import Union
 
-from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import AliasResponse
+from tz.client.api.base import BaseAPI
+from tz.client.api.schemas import AliasResponse
 
 
 class AliasAPI(BaseAPI):

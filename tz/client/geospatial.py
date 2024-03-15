@@ -1,8 +1,8 @@
 from typing import List, Optional, Union
 
-from feo.client import api
-from feo.client.api import schemas
-from feo.client.api.geospatial import FEATURES_TIMEOUT
+from tz.client import api
+from tz.client.api import schemas
+from tz.client.api.geospatial import FEATURES_TIMEOUT
 
 
 class Features(schemas.FeatureCollection):

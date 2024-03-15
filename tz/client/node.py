@@ -1,10 +1,9 @@
 from typing import Dict, Optional
 
-# from feo.client.base import Base
-from feo.client import api
-from feo.client.api import schemas
-from feo.client.asset import AssetCollection
-from feo.client.geospatial import Geometry
+from tz.client import api
+from tz.client.api import schemas
+from tz.client.asset import AssetCollection
+from tz.client.geospatial import Geometry
 
 # use property decorator to facilitate getting and setting property
 

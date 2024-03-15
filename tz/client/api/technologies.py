@@ -1,7 +1,7 @@
 from typing import List, Union
 
-from feo.client.api.base import BaseAPI
-from feo.client.api.schemas import Technology, TechnologyQueryResponse
+from tz.client.api.base import BaseAPI
+from tz.client.api.schemas import Technology, TechnologyQueryResponse
 
 
 class TechnologyAPI(BaseAPI):
