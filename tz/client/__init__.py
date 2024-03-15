@@ -1,47 +1,45 @@
 """
-    `feo` stands for the Future Energy Outlook, by TransitionZero.
-    The Future Energy Outlook gives users the ability to explore historic energy
+    The TransitionZero platform gives users the ability to explore historic energy
     data, and to ask research questions about the energy future,
     using TransitionZero's 'batteries-included' systems modelling platform.
-    This package, `feo-client`, allows users to interact with the platform via
+    This package, `tz-client`, allows users to interact with the platform via
     both a low-level api wrapper, and a set of higher-order class objects.
 
-    To import the feo client library:
+    To import the tz client library:
     ```python
-    from feo import client
+    from tz import client
     ```
 
     Authenticate via the command line with
     ```
-    feo auth login
+    tz auth login
     ```
 
     To use the lower-level api wrapper:
     ```python
-    from feo.client import api
+    from tz.client import api
     ```
 
     To use the high-level objects:
     ```python
-    from feo.client import Node, Model, Scenario
+    from tz.client import Node, Model, Scenario
     ```
 """
 
 
 from importlib.metadata import PackageNotFoundError, version
-
 from dotenv import load_dotenv
 
-from feo.client.asset import Asset, AssetCollection
-from feo.client.geospatial import Features, Geometry
-from feo.client.model import Model
-from feo.client.node import Node
-from feo.client.publisher import Publisher
-from feo.client.record import Record, RecordCollection
-from feo.client.run import Run
-from feo.client.scenario import Scenario
-from feo.client.source import Source
-from feo.client.technology import Technology
+from tz.client.asset import Asset, AssetCollection
+from tz.client.geospatial import Features, Geometry
+from tz.client.model import Model
+from tz.client.node import Node
+from tz.client.publisher import Publisher
+from tz.client.record import Record, RecordCollection
+from tz.client.run import Run
+from tz.client.scenario import Scenario
+from tz.client.source import Source
+from tz.client.technology import Technology
 
 load_dotenv()
 
@@ -51,7 +49,7 @@ Asset.model_rebuild()
 Node.model_rebuild()
 
 try:
-    __version__ = version("feo-client")
+    __version__ = version("tz-client")
 except PackageNotFoundError:
     pass
 

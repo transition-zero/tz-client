@@ -1,9 +1,10 @@
 from typing import ForwardRef, List
 
 import pandas as pd
-from feo.client import api
-from feo.client.api import schemas
-from feo.client.source import Source
+
+from tz.client import api
+from tz.client.api import schemas
+from tz.client.source import Source
 
 
 class Asset(schemas.NodeBase):
@@ -97,7 +98,7 @@ class AssetCollection(pd.DataFrame):
             sector (str): the name of the sector to retireve assets for.
 
         Returns:
-            AssetCollection: A pandas-dataframe extension for FEO assets.
+            AssetCollection: A pandas-dataframe extension for TransitionZero assets.
         """
 
         obj = cls.from_assets(

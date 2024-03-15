@@ -1,8 +1,8 @@
-from feo.client import model as _model
-from feo.client import publisher as _publisher
-from feo.client import run as _run
-from feo.client import scenario as _scenario
-from feo.client import source as _source
+from tz.client import model as _model
+from tz.client import publisher as _publisher
+from tz.client import run as _run
+from tz.client import scenario as _scenario
+from tz.client import source as _source
 
 
 def model(**kwargs):

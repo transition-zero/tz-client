@@ -5,12 +5,12 @@
 
     First authenticate via the command line
     ```
-    feo auth login
+    tz auth login
     ```
 
-    To import the feo api:
+    To import the tz api:
     ```python
-    from feo.client import api
+    from tz.client import api
     ```
 
     Calls to underlying data tables can then be made using the api:
