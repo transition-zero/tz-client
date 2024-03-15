@@ -37,7 +37,7 @@ jobs:
 
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/feo-client
+      url: https://test.pypi.org/p/tz-client
 
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing

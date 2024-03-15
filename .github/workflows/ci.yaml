@@ -23,7 +23,7 @@ jobs:
       TEST_USER: ${{ vars.TEST_USER}}
       TEST_PW: ${{ vars.TEST_PW}}
       GIST_ID: ${{ vars.GIST_ID}}
-      FEO_API_URL: ${{ vars.FEO_API_URL}}
+      TZ_API_URL: ${{ vars.TZ_API_URL}}
 
 
     steps:
@@ -43,12 +43,12 @@ jobs:
         echo "TEST_USER: ${{ vars.TEST_USER }}"
         echo "TEST_PW: ${{ vars.TEST_PW}}"
         echo "GIST_ID: ${{ vars.GIST_ID}}"
-        echo "FEO_API_URL: ${{ vars.FEO_API_URL}}"
+        echo "TZ_API_URL: ${{ vars.Z_API_URL}}"
         echo "HOME: $HOME"
 
     - name: mkdir token
       run: |
-        mkdir $HOME/.tz-feo
+        mkdir $HOME/.tz
 
     - name: cURL an access token
       id: curlToken
@@ -73,7 +73,7 @@ jobs:
 
     - name: parse token from curl request
       run: |
-        echo "$(jq '.data' $HOME/tmp.json)" > $HOME/.tz-feo/token.json
+        echo "$(jq '.data' $HOME/tmp.json)" > $HOME/.tz/token.json
 
     - name: Install dependencies
       run: |
@@ -90,7 +90,7 @@ jobs:
 
     - name: Test with pytest and capture coverage
       run: |
-        pytest --cov=feo --cov-report=json:coverage.json
+        pytest --cov=tz --cov-report=json:coverage.json
 
     - name: parse coverage report
       id: show_coverage_val
