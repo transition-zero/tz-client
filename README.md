@@ -5,7 +5,7 @@
 </picture>
 
 
-# Future Energy Outlook Python Client
+# TransitionZero Python Client
 
 <!-- badges-begin -->
 
@@ -20,7 +20,7 @@
 [license]: https://opensource.org/licenses/Apache-2.0
 
 [contributor covenant badge]: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
-[code of conduct]: https://github.com/transition-zero/feo-client/blob/main/CODE-OF-CONDUCT.md
+[code of conduct]: https://github.com/transition-zero/tz-client/blob/main/CODE-OF-CONDUCT.md
 
 [tests badge]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Lkruitwagen/feffb38d46c750cad5402dca5dd54bf9/raw/tests_passing.json
 
@@ -36,12 +36,12 @@
 
 **API Reference**: <a href="https://api.feo.transitionzero.org/latest/docs" target="_blank">https://api.feo.transitionzero.org/latest/docs</a>
 
-**Future Energy Outlook**: <a href="https://feo.transitionzero.org" target="_blank">https://feo.transitionzero.org</a>
+**Model Builder**: <a href="https://feo.transitionzero.org" target="_blank">https://feo.transitionzero.org</a>
 
 ---
 
-The _Future Energy Outlook_ (FEO) is TransitionZero's open-access energy transition research platform.
-This Python Client gives programmatic access to all the functionality of the FEO platform:
+TransitionZero is building an open-access energy transition research platform.
+This Python Client gives programmatic access to all the functionality of the TransitionZero platform:
 
 * **Open Data**: Asset-level and historical data free to access, forever.
 * **No-barriers Systems Modelling**: Begin asking your energy transition research questions with a simple UI or a few lines of code.
@@ -56,42 +56,42 @@ This Python Client gives programmatic access to all the functionality of the FEO
 
 ## Installation
 
-The latest release of the FEO Python Client can be installed via `pip`.
+The latest release of the TZ Python Client can be installed via `pip`.
 
-    pip install feo-client
+    pip install tz-client
 
 The client can also be installed from this repo, for any features not yet available via the Python Package Index:
 
-    pip install git+https://github.com/transition-zero/feo-client.git@main
+    pip install git+https://github.com/transition-zero/tz-client.git@main
 
 ## Authentication
 
-To access resources via the Python Client you must have a (free) FEO account. An account can be created [here](https://feo.transitionzero.org).
+To access resources via the Python Client you must have a (free) account. An account can be created [here](https://feo.transitionzero.org).
 
-To log in for programmatic access, use the feo command-line tool:
+To log in for programmatic access, use the tz command-line tool:
 
-    feo auth login
+    tz auth login
 
 You'll be invited to login via a browser, verify a device code and then will be redirected to your terminal.
-An access token will be stored in your machine's home directory at `.tz-feo/token.json`.
+An access token will be stored in your machine's home directory at `.tz/token.json`.
 
-The feo login can also be called directly (for example via a Jupyter notebook):
+The tz login can also be called directly (for example via a Jupyter notebook):
 
-    from feo.client.auth import login
+    from tz.client.auth import login
     login()
 
 ## Quickstart
 
-The FEO client provides object-level interfaces to the main FEO building blocks. Users may also use the underlying API wrapper.
+The TZ client provides object-level interfaces to the main TZ building blocks. Users may also use the underlying API wrapper.
 
 ### Accessing node-level data
 
-In the FEO platform, all data is indexed to a `Node`. Nodes are used to represent useful physical and administrative boundaries - ranging from individual physical assets through to entire countries and continents. This flexibility allows FEO users to access data at all levels of aggregation via the FEO platform .
+In the TZ platform, all data is indexed to a `Node`. Nodes are used to represent useful physical and administrative boundaries - ranging from individual physical assets through to entire countries and continents. This flexibility allows TZ users to access data at all levels of aggregation via the TZ platform .
 
 In the physics of systems modelling, Nodes are discrete units around which the continuity of energy and materials is constrained. In other words, at every node in a systems model, the input plus supply to the node must equal the output plus demand.
 To begin, import the `Node` client.
 ```
-from feo.client import Node
+from tz.client import Node
 ```
 
 The `Node.search` method can be used to search for Nodes.
@@ -112,11 +112,11 @@ IDN.id, IDN.name_primary_en
 
 ### Accessing asset-level data
 
-In the FEO platform, `Assets` are a subset of Nodes. Assets are Nodes which correspond to physical plant and equipment like power stations and steelworks.
+In the TZ platform, `Assets` are a subset of Nodes. Assets are Nodes which correspond to physical plant and equipment like power stations and steelworks.
 
 To begin, import the Asset client.
 ```
-from feo.client import Asset
+from tz.client import Asset
 ```
 
 Like nodes, assets can be searched for:
@@ -138,7 +138,7 @@ asset.id, asset.name_primary_en
 
 System Models are representations of energy and material flows, usually optimised by economic logic like least-costs-minimisation.
 
-System models in FEO are composed of three objects - Models, Scenarios, and Runs.
+System models in the TransitionZero platform are composed of three objects - Models, Scenarios, and Runs.
 
 - **Models** describe the geographic, temporal, and sectoral scope of the systems model.
 - **Scenarios** are narrative counter-factuals of the future, which may be accompanied by numeric projections
@@ -146,7 +146,7 @@ System models in FEO are composed of three objects - Models, Scenarios, and Runs
 
 Models, Scenarios, and Runs can be imported from the client:
 ```
-from feo.client import Model, Scenario, Run
+from tz.client import Model, Scenario, Run
 ```
 
 The `Model` client can be used to search and retrieve model objects.
@@ -175,7 +175,7 @@ run = idn_model.scenarios[0].runs
 
 ## Documentation
 
-The full documentation for FEO can be found here: <a href="https://docs.feo.transitionzero.org" target="_blank">https://docs.feo.transitionzero.org</a>
+The full documentation for the TZ platform can be found here: <a href="https://docs.feo.transitionzero.org" target="_blank">https://docs.feo.transitionzero.org</a>
 
 ## Contributing
 
