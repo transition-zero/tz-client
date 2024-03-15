@@ -1,7 +1,7 @@
 [project]
-name = "feo-client"
+name = "tz-client"
 dynamic = ["version"]
-description = "A Python Client for programmatic interactions with the Future Energy Outlook platform by TransitionZero"
+description = "A Python Client for programmatic interactions with the platform by TransitionZero"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
@@ -45,15 +45,15 @@ geo = [
   ]
 
 [project.urls]  # Optional
-"Homepage" = "https://github.com/transition-zero/feo-client"
-"Bug Reports" = "https://github.com/transition-zero/feo-client/issues"
+"Homepage" = "https://github.com/transition-zero/tz-client"
+"Bug Reports" = "https://github.com/transition-zero/tz-client/issues"
 "Funding" = "https://transitionzero.org"
-"Source" = "https://github.com/transition-zero/feo-client"
+"Source" = "https://github.com/transition-zero/tz-client"
 
-# The following would provide a command line executable called `feo`
+# The following would provide a command line executable called `tz`
 # which executes the function `main` from this package when invoked.
 [project.scripts]  # Optional
-feo = "feo.client.cli:main"
+tz = "tz.client.cli:main"
 
 # This is configuration specific to the `setuptools` build backend.
 # If you are using a different build backend, you will need to change this.
