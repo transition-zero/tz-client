@@ -1,4 +1,4 @@
-from feo.client import api
+from tz.client import api
 
 EXAMPLE_MODEL = "feo-global-indonesia"
 

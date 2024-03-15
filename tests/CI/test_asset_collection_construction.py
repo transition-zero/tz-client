@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import pandas as pd
 
-from feo.client import AssetCollection
+from tz.client import AssetCollection
 
 
 def test_asset_collection():

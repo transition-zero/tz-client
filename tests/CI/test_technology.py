@@ -1,6 +1,6 @@
 import pytest
 
-from feo.client import Record, RecordCollection, Technology
+from tz.client import Record, RecordCollection, Technology
 
 
 @pytest.fixture

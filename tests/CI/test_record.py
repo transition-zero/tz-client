@@ -1,4 +1,4 @@
-from feo.client.record import RecordCollection
+from tz.client.record import RecordCollection
 
 TEST_DATUM_DETAIL = "forest_landuse"
 

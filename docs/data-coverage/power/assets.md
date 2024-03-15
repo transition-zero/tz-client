@@ -1,6 +1,6 @@
 # Assets
 
-Asset level data for power units can be accessed on the FEO platform through the [Python Client](https://github.com/transition-zero/feo-client) and [API](https://api.feo.transitionzero.org/latest/docs).
+Asset level data for power units can be accessed on the TransitionZero platform through the [Python Client](https://github.com/transition-zero/tz-client) and [API](https://api.feo.transitionzero.org/latest/docs).
 
 This data is compiled from various sources to create a global dataset of power plant units.
 

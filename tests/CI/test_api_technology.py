@@ -3,7 +3,7 @@ from unittest import mock
 import pytest
 from requests.exceptions import HTTPError
 
-from feo.client import api
+from tz.client import api
 
 EXAMPLE_TECHNOLOGY = "coal"
 TECHNOLOGY_POST_CASES = [

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This documentation site is designed to facilitate easy access and understanding of the data available through TransitionZero’s Future Energy Outlook Python Client and API.
+This documentation site is designed to facilitate easy access and understanding of the data available through TransitionZero’s Python Client and API.
 
 ## Purpose
 

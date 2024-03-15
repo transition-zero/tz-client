@@ -1,4 +1,4 @@
-from feo.client import Model, Scenario, utils
+from tz.client import Model, Scenario, utils
 
 
 def test_model_init():

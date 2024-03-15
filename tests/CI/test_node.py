@@ -1,6 +1,6 @@
 import pytest
 
-from feo.client import AssetCollection, Geometry, Node
+from tz.client import AssetCollection, Geometry, Node
 
 
 @pytest.fixture

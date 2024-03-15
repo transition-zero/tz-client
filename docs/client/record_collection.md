@@ -1,4 +1,4 @@
 # Record Collection
 
-## ::: feo.client.record.RecordCollection
+## ::: tz.client.record.RecordCollection
     handler: python

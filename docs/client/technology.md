@@ -9,5 +9,5 @@ Technologies have a set of properties that describe, for example, their capital 
 To access data for technologies and their projections, you can use this [Jupyter Notebook on Github](https://github.com/transition-zero/feo-client-examples/blob/main/feo-client-examples/2_technology_projections.ipynb).
 
 
-## ::: feo.client.technology.Technology
+## ::: tz.client.technology.Technology
     handler: python
