@@ -1,5 +1,5 @@
 name: Feature Request
-description: Suggest an idea for feo-client
+description: Suggest an idea for tz-client
 title: "ENH: "
 labels: [Enhancement, Needs Triage]
 
@@ -11,19 +11,19 @@ body:
       description: Please check what type of feature request you would like to propose.
       options:
         - label: >
-            Adding new functionality to feo-client
+            Adding new functionality to tz-client
         - label: >
-            Changing existing functionality in feo-client
+            Changing existing functionality in tz-client
         - label: >
-            Removing existing functionality in feo-client
+            Removing existing functionality in tz-client
   - type: textarea
     id: description
     attributes:
       label: Problem Description
       description: >
-        Please describe what problem the feature would solve, e.g. "I wish I could use feo-client to ..."
+        Please describe what problem the feature would solve, e.g. "I wish I could use tz-client to ..."
       placeholder: >
-        I wish I could use feo-client to..
+        I wish I could use tz-client to..
     validations:
       required: true
   - type: textarea

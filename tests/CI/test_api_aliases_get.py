@@ -1,4 +1,4 @@
-from feo.client import api
+from tz.client import api
 
 
 def test_api_aliases_get(alias_get_cases):

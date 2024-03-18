@@ -1,4 +1,4 @@
-site_name: Future Energy Outlook Docs
+site_name: TransitionZero Platform Docs
 
 plugins:
     - search
@@ -31,11 +31,11 @@ nav:
         - Generation: data-coverage/power/generation.md
         - Assets: data-coverage/power/assets.md
       - Steel: data-coverage/steel/index.md
-    # - FEO-OSeMOSYS: '!import https://github.com/transition-zero/feo-esmod-osemosys'
+    # - FEO-OSeMOSYS: '!import https://github.com/transition-zero/tz-osemosys'
   - API Reference: redoc.md
   - Tutorials: '!import https://github.com/transition-zero/feo-client-examples?branch=main&docs_dir=feo-client-examples'
   - Tech Blog: https://transitionzero.medium.com/
-repo_url: https://github.com/transition-zero/feo-client
+repo_url: https://github.com/transition-zero/tz-client
 
 theme:
   name: material

@@ -2,8 +2,8 @@
 
 How to install?
 
-    pip install feo-client
+    pip install tz-client
 
 # Authorisation
 
-    feo auth login
+    tz auth login

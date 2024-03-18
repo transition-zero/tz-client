@@ -1,6 +1,6 @@
 import pytest
 
-from feo.client import Asset, Source
+from tz.client import Asset, Source
 
 
 @pytest.fixture

@@ -3,8 +3,8 @@ from unittest import mock
 import pytest
 from requests.exceptions import HTTPError
 
-from feo.client import Publisher, Source, api
-from feo.client.api import schemas
+from tz.client import Publisher, Source, api
+from tz.client.api import schemas
 
 TEST_SOURCE = "contributions"
 TEST_PUBLISHER = "tz"

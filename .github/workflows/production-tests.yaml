@@ -31,7 +31,7 @@ jobs:
 
     - name: mkdir token
       run: |
-        mkdir $HOME/.tz-feo
+        mkdir $HOME/.tz
 
     - name: cURL an access token
       id: curlToken
@@ -56,7 +56,7 @@ jobs:
 
     - name: parse token from curl request
       run: |
-        echo "$(jq '.data' $HOME/tmp.json)" > $HOME/.tz-feo/token.json
+        echo "$(jq '.data' $HOME/tmp.json)" > $HOME/.tz/token.json
 
     - name: Install dependencies and test
       run: |
@@ -69,6 +69,6 @@ jobs:
       with:
         status: ${{ job.status }} # required
         notify_when: "failure"
-        notification_title: "PANIC: feo-client prod tests are failing"
+        notification_title: "PANIC: tz-client prod tests are failing"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FEO_ALERTS }} # required

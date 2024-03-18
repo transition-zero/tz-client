@@ -1,8 +1,8 @@
 # Generation
 
-Generation data can be accessed on the FEO platform through the [Python Client](https://github.com/transition-zero/feo-client) and [API](https://api.feo.transitionzero.org/latest/docs).
+Generation data can be accessed on the TransionZero platform through the [Python Client](https://github.com/transition-zero/tz-client) and [API](https://api.feo.transitionzero.org/latest/docs).
 
-This data is continuously collected from various sources and can be accessed through any of FEO's designated Nodes.
+This data is continuously collected from various sources and can be accessed through any of TransitionZero's designated Nodes.
 
 ### Background
 
@@ -32,12 +32,12 @@ Earliest available date: December 6, 2014
 
 ## Methodology
 
-Generation data for individual power plant units is regularly collected from the ENTSO-E Transparency platform. The data is then cleaned and matched to the power units available in FEO. This allows the retrieval of generation data for a given asset in Europe.
+Generation data for individual power plant units is regularly collected from the ENTSO-E Transparency platform. The data is then cleaned and matched to the power units available in the TransitionZero platform. This allows the retrieval of generation data for a given asset in Europe.
 
 During the matching process, the name, capacity, fuel type, and location of units from ENTSO-E are compared to the corresponding fields in our power asset dataset by our analysts. In some cases, there is a many-to-one match between units in the two datasets due to different conflicting definitions of a single power “unit” in the source data. In the case of many-to-one matches, one of the following actions is taken:
 
-- If multiple ENTSO-E units map to a single FEO unit, the generation data is aggregated for these units.
-- In the special case where a single ENTSO-E unit is separated into multiple units in FEO's dataset, the given generation value is evenly split between these units in FEO.
+- If multiple ENTSO-E units map to a single TransitionZero unit, the generation data is aggregated for these units.
+- In the special case where a single ENTSO-E unit is separated into multiple units in TransitionZero's dataset, the given generation value is evenly split between these units in the TransitionZero platform.
 
 ### Coverage
 

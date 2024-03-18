@@ -2,7 +2,7 @@
 
 ---
 
-In the FEO platform, all data is indexed to a Node. Each node represents the geographic centroid of a modelled region. Nodes are used to represent useful physical and administrative boundaries and can range from individual physical assets through to entire countries and continents. This flexibility allows FEO users to access data at all levels of aggregation via the FEO platform .
+In the TransitionZero platform, all data is indexed to a Node. Each node represents the geographic centroid of a modelled region. Nodes are used to represent useful physical and administrative boundaries and can range from individual physical assets through to entire countries and continents. This flexibility allows TransitionZero users to access data at all levels of aggregation via the TransitionZero platform .
 
 ![OSeMOSYS Global: An open-source, open data global electricity system model generator](../assets/images/node.png)
 *The image shows how nodes represent the geographic centroid of a modeled region. The edges represent where there is interconnection between the nodes. Source: OSeMOSYS Global: An open-source, open data global electricity system model generator*
@@ -15,5 +15,5 @@ See also: [Geometry](./geometry.md)
 
 ---
 
-## ::: feo.client.node.Node
+## ::: tz.client.node.Node
     handler: python

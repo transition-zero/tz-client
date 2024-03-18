@@ -4,7 +4,7 @@ from unittest.mock import ANY
 
 import pytest
 
-from feo.client import api
+from tz.client import api
 
 FULLSLUG = "feo-global-indonesia:feo-indonesia-current-policies:demo"
 RECORD_GET_CASES = [

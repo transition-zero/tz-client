@@ -1,4 +1,4 @@
-from feo.client import api, utils
+from tz.client import api, utils
 
 if utils.ENVIRONMENT == "staging":
     EXAMPLE_SCENARIO = "feo-global-indonesia:feo-indonesia-current-policies"

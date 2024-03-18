@@ -1,6 +1,6 @@
 import pytest
 
-from feo.client import Model, Scenario, utils
+from tz.client import Model, Scenario, utils
 
 
 @pytest.fixture

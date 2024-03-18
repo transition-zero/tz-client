@@ -9,8 +9,8 @@ As contributors and maintainers to this project, you are expected to abide by Tr
 ## Installing dev dependencies
 
 ```console
-git clone https://github.com/transition-zero/feo-client.git
-cd feo-client
+git clone https://github.com/transition-zero/tz-client.git
+cd tz-client
 pip install ".[dev]"
 ```
 
@@ -23,7 +23,7 @@ pre-commit install
 Please also run mypy with
 
 ```console
-pip install ".[dev]" && mypy -p feo.client
+pip install ".[dev]" && mypy -p tz.client
 ```
 
 ## Authentication
@@ -31,7 +31,7 @@ pip install ".[dev]" && mypy -p feo.client
 Running our test suite first requires authentication
 
 ```console
-feo auth login
+tz auth login
 ```
 
 ## Running tests
