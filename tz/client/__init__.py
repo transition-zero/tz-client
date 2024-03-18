@@ -28,6 +28,7 @@
 
 
 from importlib.metadata import PackageNotFoundError, version
+
 from dotenv import load_dotenv
 
 from tz.client.asset import Asset, AssetCollection
