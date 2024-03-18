@@ -1,3 +1,4 @@
+import json
 import os
 import threading
 from typing import Generator
@@ -100,10 +101,13 @@ class Client:
         + os.environ.get("FEO_API_VERSION", "v1")
     )
 
+    headers = {}
+    maybe_headers = os.environ.get("TZ_HEADERS")
+    if maybe_headers:
+        headers = json.loads(maybe_headers)
+
     httpx_client = httpx.Client(
-        base_url=base_url,
-        auth=ClientAuth(),
-        timeout=CLIENT_TIMEOUT,
+        base_url=base_url, auth=ClientAuth(), timeout=CLIENT_TIMEOUT, headers=headers
     )
 
     def __init__(self):

@@ -30,6 +30,8 @@
 
 from importlib.metadata import PackageNotFoundError, version
 
+from dotenv import load_dotenv
+
 from feo.client.asset import Asset, AssetCollection
 from feo.client.geospatial import Features, Geometry
 from feo.client.model import Model
@@ -40,6 +42,8 @@ from feo.client.run import Run
 from feo.client.scenario import Scenario
 from feo.client.source import Source
 from feo.client.technology import Technology
+
+load_dotenv()
 
 Publisher.model_rebuild()
 Source.model_rebuild()
