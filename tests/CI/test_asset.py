@@ -1,5 +1,6 @@
 import pytest
-from z.client import Asset, Source
+
+from tz.client import Asset, Source
 
 
 @pytest.fixture
