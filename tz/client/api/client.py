@@ -1,4 +1,3 @@
-import json
 import os
 import threading
 from typing import Generator
@@ -100,7 +99,6 @@ class ClientAuth(httpx.Auth):
 
 
 class Client:
-    
     def __init__(self, headers: dict | None = None):
         base_url = (
             os.environ.get("TZ_API_URL", "https://api.feo.transitionzero.org")
@@ -111,7 +109,6 @@ class Client:
         self.httpx_client = httpx.Client(
             base_url=base_url, auth=ClientAuth(), timeout=CLIENT_TIMEOUT, headers=headers
         )
-
 
     def get(self, *args, **kwargs):
         return self.httpx_client.get(*args, **kwargs)
