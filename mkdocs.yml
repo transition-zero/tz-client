@@ -1,4 +1,5 @@
 site_name: TransitionZero Platform Docs
+site_url: ${BASE_URL}
 
 plugins:
     - search
