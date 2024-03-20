@@ -25,12 +25,16 @@ class ClientAuth(httpx.Auth):
 
     def __init__(self):
         self.token_path = TOKEN_PATH
+        self.no_token = str(os.environ.get("TZ_NO_TOKEN")).lower() == "true"
         self._sync_lock = threading.RLock()
-        try:
-            # Parse from local token file if it exists.
-            self.token = AuthToken.from_file(self.token_path)
-        except FileNotFoundError:
-            # Silently set token to None.
+        if not self.no_token:
+            try:
+                # Parse from local token file if it exists.
+                self.token = AuthToken.from_file(self.token_path)
+            except FileNotFoundError:
+                # Silently set token to None.
+                self.token = None
+        else:
             self.token = None
 
     def get_token(self):
@@ -79,11 +83,15 @@ class ClientAuth(httpx.Auth):
         return httpx.Request("POST", f"https://{AUTH0_DOMAIN}/oauth/token", data=token_payload)
 
     def sync_auth_flow(self, request: Request) -> Generator[Request, Response, None]:
-        self.get_token()
-        request.headers.update({"Authorization": f"Bearer {self.token.access_token}"})
+        if not self.no_token:
+            self.get_token()
+            request.headers.update({"Authorization": f"Bearer {self.token.access_token}"})
         response = yield request
 
         if response.status_code == 401:
+            # Auth failed - handle case of no_token
+            if self.no_token:
+                response.raise_for_status()
             # Auth failed - possible expired token
             # Send refresh token request and parse response
             refresh_response = yield self._refresh_token_request()
@@ -95,23 +103,30 @@ class ClientAuth(httpx.Auth):
 
 
 class Client:
-    base_url = (
-        os.environ.get("TZ_API_URL", "https://api.feo.transitionzero.org")
-        + "/"
-        + os.environ.get("TZ_API_VERSION", "v1")
-    )
+    def __init__(self, headers: dict | None = None):
+        base_url = (
+            os.environ.get("TZ_API_URL", "https://api.feo.transitionzero.org")
+            + "/"
+            + os.environ.get("TZ_API_VERSION", "v1")
+        )
 
-    headers = {}
-    maybe_headers = os.environ.get("TZ_HEADERS")
-    if maybe_headers:
-        headers = json.loads(maybe_headers)
+        # maybe load some headers from environment
+        maybe_base_headers = os.environ.get("TZ_HEADERS")
+        if maybe_base_headers:
+            base_headers = json.loads(maybe_base_headers)
+        else:
+            base_headers = {}
 
-    httpx_client = httpx.Client(
-        base_url=base_url, auth=ClientAuth(), timeout=CLIENT_TIMEOUT, headers=headers
-    )
+        # update any base_headers with instantiation headers
+        if headers is None:
+            headers = base_headers
+        else:
+            base_headers.update(headers)
+            headers = base_headers
 
-    def __init__(self):
-        pass
+        self.httpx_client = httpx.Client(
+            base_url=base_url, auth=ClientAuth(), timeout=CLIENT_TIMEOUT, headers=headers
+        )
 
     def get(self, *args, **kwargs):
         return self.httpx_client.get(*args, **kwargs)
