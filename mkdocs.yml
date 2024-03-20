@@ -1,5 +1,5 @@
 site_name: TransitionZero Platform Docs
-site_url: ${BASE_URL}
+site_url: https://docs.feo.transitionzero.org/
 
 plugins:
     - search
