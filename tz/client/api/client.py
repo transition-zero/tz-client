@@ -1,5 +1,5 @@
-import os
 import json
+import os
 import threading
 from typing import Generator
 
@@ -35,7 +35,7 @@ class ClientAuth(httpx.Auth):
                 # Silently set token to None.
                 self.token = None
         else:
-            self.token=None
+            self.token = None
 
     def get_token(self):
         """Get an AuthToken if instance does not already have one.
@@ -116,14 +116,13 @@ class Client:
             base_headers = json.loads(maybe_base_headers)
         else:
             base_headers = {}
-        
+
         # update any base_headers with instantiation headers
         if headers is None:
             headers = base_headers
         else:
             base_headers.update(headers)
             headers = base_headers
-
 
         self.httpx_client = httpx.Client(
             base_url=base_url, auth=ClientAuth(), timeout=CLIENT_TIMEOUT, headers=headers

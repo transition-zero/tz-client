@@ -1,5 +1,7 @@
 import json
+
 import pytest
+
 
 @pytest.fixture
 def mock_no_token(monkeypatch):
@@ -8,4 +10,4 @@ def mock_no_token(monkeypatch):
 
 @pytest.fixture
 def mock_some_header(monkeypatch):
-    monkeypatch.setenv("TZ_HEADERS",json.dumps({"x-some-header":"some-value"}))
+    monkeypatch.setenv("TZ_HEADERS", json.dumps({"x-some-header": "some-value"}))
