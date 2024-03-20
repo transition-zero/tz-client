@@ -25,6 +25,7 @@ from tz.client.api.aliases import AliasAPI
 from tz.client.api.assets import AssetAPI
 from tz.client.api.geospatial import VectorAPI
 from tz.client.api.models import ModelAPI
+from tz.client.api.node_aliases import NodeAliasAPI
 from tz.client.api.nodes import NodeAPI
 from tz.client.api.publishers import PublisherAPI
 from tz.client.api.records import RecordsAPI
@@ -34,6 +35,7 @@ from tz.client.api.sources import SourceAPI
 from tz.client.api.technologies import TechnologyAPI
 
 aliases = AliasAPI()
+node_aliases = NodeAliasAPI()
 nodes = NodeAPI()
 assets = AssetAPI()
 vectors = VectorAPI()

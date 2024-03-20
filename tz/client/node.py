@@ -25,14 +25,18 @@ class Node(generated_schema.Node):
     """
 
     _geometry: Optional[Geometry] = None
+    _primary_node_alias: Optional[generated_schema.NodeAlias] = None
     # _assets: Optional[AssetCollection] = None
     # _gross_capacity: Optional[Dict[str, Dict[str, Dict[str, float]]]] = None
 
     @classmethod
     def from_slug(cls, slug: str) -> "Node":
         """Initialise Node from `slug` as a positional argument"""
-        node = api.nodes.get(slug=slug)
-        return cls(**node.model_dump())
+        api_node = api.nodes.get(slug=slug)
+        node = cls(**api_node.model_dump())
+        # Also find the primary node_alias
+        node._primary_node_alias = api.node_aliases.get_primary(node.uuid)
+        return node
 
     @classmethod
     def search(
@@ -122,5 +126,5 @@ class Node(generated_schema.Node):
     #         return self._geometry
 
     def __str__(self) -> str:
-        # TODO: Work back from the 'slug' to 'Germany' ?
-        return f"Node: {self.slug} (id={self.slug})"
+        alias_str = self._primary_node_alias.alias if self._primary_node_alias else ""
+        return f"Node: {alias_str} (id={self.slug})"
