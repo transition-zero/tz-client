@@ -1,4 +1,5 @@
 import os
+import json
 import threading
 from typing import Generator
 
@@ -26,12 +27,15 @@ class ClientAuth(httpx.Auth):
         self.token_path = TOKEN_PATH
         self.no_token = str(os.environ.get("TZ_NO_TOKEN")).lower() == "true"
         self._sync_lock = threading.RLock()
-        try:
-            # Parse from local token file if it exists.
-            self.token = AuthToken.from_file(self.token_path)
-        except FileNotFoundError:
-            # Silently set token to None.
-            self.token = None
+        if not self.no_token:
+            try:
+                # Parse from local token file if it exists.
+                self.token = AuthToken.from_file(self.token_path)
+            except FileNotFoundError:
+                # Silently set token to None.
+                self.token = None
+        else:
+            self.token=None
 
     def get_token(self):
         """Get an AuthToken if instance does not already have one.
@@ -105,6 +109,21 @@ class Client:
             + "/"
             + os.environ.get("TZ_API_VERSION", "v1")
         )
+
+        # maybe load some headers from environment
+        maybe_base_headers = os.environ.get("TZ_HEADERS")
+        if maybe_base_headers:
+            base_headers = json.loads(maybe_base_headers)
+        else:
+            base_headers = {}
+        
+        # update any base_headers with instantiation headers
+        if headers is None:
+            headers = base_headers
+        else:
+            base_headers.update(headers)
+            headers = base_headers
+
 
         self.httpx_client = httpx.Client(
             base_url=base_url, auth=ClientAuth(), timeout=CLIENT_TIMEOUT, headers=headers
