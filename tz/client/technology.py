@@ -1,10 +1,10 @@
 from typing import ForwardRef, Optional
 
 from tz.client import RecordCollection, api
-from tz.client.api import schemas
+from tz.client.api import generated_schema
 
 
-class Technology(schemas.TechnologyBase):
+class Technology(generated_schema.Technology):
 
     """
     <!--
@@ -15,7 +15,7 @@ class Technology(schemas.TechnologyBase):
     Technologies can be loaded directly with their id:
 
     ```python
-    coal = Technology.from_id("coal")
+    coal = Technology.from_id("wind")
     ```
 
     """
@@ -25,7 +25,7 @@ class Technology(schemas.TechnologyBase):
     _parents: Optional[list["Technology"]] = None
 
     @classmethod
-    def from_id(cls, id: str) -> "Technology":
+    def from_slug(cls, slug: str) -> "Technology":
         """
         Initialize the Technology object from an ID.
 
@@ -35,7 +35,7 @@ class Technology(schemas.TechnologyBase):
         Returns:
             Technology: A Technology object.
         """
-        technology = api.technologies.get(slug=id)
+        technology = api.technologies.get(slug=slug)
         return cls(**technology.model_dump())
 
     @classmethod
@@ -45,7 +45,6 @@ class Technology(schemas.TechnologyBase):
         slug: str | None = None,
         name: str | None = None,
         owner_id: str | None = None,
-        public: bool | None = None,
         limit: int = 10,
         page: int = 0,
     ) -> list["Technology"]:
@@ -57,7 +56,6 @@ class Technology(schemas.TechnologyBase):
             slug (str | None): The target technology slug to search.
             names (str | None): The target technology name to search.
             owner_id (str | None): The owner of the technologiess to filter.
-            public (bool | None): Filter technologies by public status.
             limit (int): The maximum number of search results to return.
             page (int): The page number of search results to return.
 
@@ -70,43 +68,49 @@ class Technology(schemas.TechnologyBase):
             slug=slug,
             name=name,
             owner_id=owner_id,
-            public=public,
             limit=limit,
             page=page,
         )
 
         return [cls(**technology.model_dump()) for technology in search_results]
 
-    @property
-    def id(self) -> str:
-        """The ID of the technology."""
-        return self.slug
+    # @classmethod
+    # def _get_children(cls, slug) -> list["Technology"]:
+    #     technology = api.technologies.get(slug=slug, includes="children")
+    #     if technology.children:
+    #         return [
+    #             cls(**child.model_dump())
+    #             for child in technology.children
+    #             if isinstance(child, Technology)
+    #         ]
+    #     return []
 
-    @classmethod
-    def _get_children(cls, slug):
-        technology = api.technologies.get(slug=slug, includes="children")
-        return [cls(**child.model_dump()) for child in technology.children]
+    # @classmethod
+    # def _get_parents(cls, slug) -> list["Technology"]:
+    #     technology = api.technologies.get(slug=slug, includes="parents")
+    #     if technology.parents:
+    #         return [
+    #             cls(**parent.model_dump())
+    #             for parent in technology.parents
+    #             if isinstance(parent, Technology)
+    #         ]
+    #     return []
 
-    @classmethod
-    def _get_parents(cls, slug):
-        technology = api.technologies.get(slug=slug, includes="parents")
-        return [cls(**parent.model_dump()) for parent in technology.parents]
+    # @property
+    # def children(self) -> list["Technology"]:
+    #     """A set of technologies which are the heirarchical children of this technology."""
+    #     if self._children is None:
+    #         self._children = self._get_children(self.slug)
+    #         return self._children
+    #     return self._children
 
-    @property
-    def children(self) -> list["Technology"]:
-        """A set of technologies which are the heirarchical children of this technology."""
-        if self._children is None:
-            self._children = self._get_children(self.slug)
-            return self._children
-        return self._children
-
-    @property
-    def parents(self) -> list["Technology"]:
-        """A set of technology which are the heirarchical ancestors of this technology."""
-        if self._parents is None:
-            self._parents = self._get_parents(self.slug)
-            return self._parents
-        return self._parents
+    # @property
+    # def parents(self) -> list["Technology"]:
+    #     """A set of technology which are the heirarchical ancestors of this technology."""
+    #     if self._parents is None:
+    #         self._parents = self._get_parents(self.slug)
+    #         return self._parents
+    #     return self._parents
 
     @property
     def projections(self):
@@ -117,4 +121,4 @@ class Technology(schemas.TechnologyBase):
         return self._projections
 
     def __str__(self) -> str:
-        return f"Technology: {self.name} (id={self.id})"
+        return f"Technology: {self.name} (slug={self.slug})"
