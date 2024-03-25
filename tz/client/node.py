@@ -2,7 +2,6 @@ from typing import Optional
 
 from tz.client import api
 from tz.client.api import generated_schema
-from tz.client.geospatial import Geometry
 
 
 class Node(generated_schema.Node):
@@ -24,7 +23,6 @@ class Node(generated_schema.Node):
 
     """
 
-    _geometry: Optional[Geometry] = None
     _primary_node_alias: Optional[generated_schema.NodeAlias] = None
     # _assets: Optional[AssetCollection] = None
     # _gross_capacity: Optional[Dict[str, Dict[str, Dict[str, float]]]] = None
@@ -35,7 +33,7 @@ class Node(generated_schema.Node):
         api_node = api.nodes.get(slug=slug)
         node = cls(**api_node.model_dump())
         # Also find the primary node_alias
-        node._primary_node_alias = api.node_aliases.get_primary(node.uuid)
+        node._primary_node_alias = api.node_aliases.get_primary(slug)
         return node
 
     @classmethod
@@ -111,19 +109,6 @@ class Node(generated_schema.Node):
     #         self._parents = self._get_parents(self.id)
     #         return self._parents
     #     return self._parents
-
-    # @classmethod
-    # def _get_geometry(cls, ids) -> Geometry:
-    #     return Geometry.get(ids)
-
-    # @property
-    # def geometry(self) -> Geometry:
-    #     """The node's geometry in WGS84 coordinate reference system."""
-    #     if self._geometry is None:
-    #         self._geometry = self._get_geometry(self.id)
-    #         return self._geometry
-    #     else:
-    #         return self._geometry
 
     def __str__(self) -> str:
         alias_str = self._primary_node_alias.alias if self._primary_node_alias else ""
