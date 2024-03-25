@@ -1,7 +1,7 @@
 from typing import List, Union
 
 from tz.client.api.base import BaseAPI
-from tz.client.api.schemas import Technology, TechnologyQueryResponse
+from tz.client.api.generated_schema import Technology, TechnologyPagination
 
 
 class TechnologyAPI(BaseAPI):
@@ -24,7 +24,6 @@ class TechnologyAPI(BaseAPI):
         slug: str | None = None,
         name: str | None = None,
         owner_id: str | None = None,
-        public: bool | None = None,
         limit: int = 10,
         page: int = 0,
     ) -> List[Technology]:
@@ -33,15 +32,19 @@ class TechnologyAPI(BaseAPI):
             "slug": slug,
             "name": name,
             "owner_id": owner_id,
-            "public": public,
             "limit": limit,
             "page": page,
         }
 
-        resp = self.client.get("/technologies", params=params)
-        resp.raise_for_status()
+        non_empty = {k: v for k, v in params.items() if v}
 
-        return TechnologyQueryResponse(**resp.json()).technologies
+        resp = self.client.get("/technologies", params=non_empty)
+        resp.raise_for_status()
+        r = TechnologyPagination(**resp.json())
+        if r.technologies:
+            return r.technologies
+        else:
+            return []
 
     def post(
         self,

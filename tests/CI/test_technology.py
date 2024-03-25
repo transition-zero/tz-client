@@ -5,12 +5,12 @@ from tz.client import Record, RecordCollection, Technology
 
 @pytest.fixture
 def technology():
-    return Technology.from_id("coal")
+    return Technology.from_slug("wind")
 
 
 def test_technology_init(technology):
     assert isinstance(technology, Technology)
-    assert technology.id == "coal"
+    assert technology.slug == "wind"
 
 
 def test_technology_search():
@@ -20,7 +20,7 @@ def test_technology_search():
 
 
 def test_technology_str(technology):
-    assert str(technology) == "Technology: Coal (id=coal)"
+    assert str(technology) == "Technology: WIND (slug=wind)"
 
 
 def test_technology_children(technology):
