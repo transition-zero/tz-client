@@ -2,6 +2,7 @@ from typing import Optional
 
 from tz.client import api
 from tz.client.api import generated_schema
+from tz.client.utils import lazy_load_relationship
 
 
 class Node(generated_schema.Node):
@@ -24,22 +25,25 @@ class Node(generated_schema.Node):
     """
 
     _primary_node_alias: Optional[generated_schema.NodeAlias] = None
+    _children: Optional[list["Node"]] = None
+    _parents: Optional[list["Node"]] = None
     # _assets: Optional[AssetCollection] = None
     # _gross_capacity: Optional[Dict[str, Dict[str, Dict[str, float]]]] = None
 
     @classmethod
     def from_slug(cls, slug: str) -> "Node":
         """Initialise Node from `slug` as a positional argument"""
-        api_node = api.nodes.get(slug=slug)
+        api_node = api.nodes.get(slug=slug, includes="aliases")
         node = cls(**api_node.model_dump())
-        # Also find the primary node_alias
-        node._primary_node_alias = api.node_aliases.get_primary(slug)
+        maybe_primary = [ alias for alias in node.aliases if alias.primary ]
+        if len(maybe_primary) == 1:
+            cls._primary_node_alias = maybe_primary[0]
         return node
 
     @classmethod
     def search(
         cls,
-        alias: str,
+        slug: str,
         threshold: float = 0.5,
         node_type: str | None = None,
         limit: int = 10,
@@ -53,7 +57,7 @@ class Node(generated_schema.Node):
         ```
 
         Args:
-            alias (str): The target alias to search.
+            slug (str): The target slug to search.
             threshold (float): The desired confidence in the search result.
             node_type (str): filter search to a specific node type.
             limit (int): The maximum number of search results to return per page.
@@ -63,8 +67,8 @@ class Node(generated_schema.Node):
             List[Node]: A list of Node objects.
         """
 
-        search_results = api.aliases.get(
-            alias=alias,
+        search_results = api.node_aliases.get(
+            slug=slug,
             threshold=threshold,
             node_type=node_type,
             includes="node",
@@ -74,7 +78,7 @@ class Node(generated_schema.Node):
 
         return [
             cls(**alias.node.model_dump())  # type: ignore[union-attr]
-            for alias in search_results.aliases
+            for alias in search_results.node_aliases
         ]
 
     # @property
@@ -111,5 +115,17 @@ class Node(generated_schema.Node):
     #     return self._parents
 
     def __str__(self) -> str:
-        alias_str = self._primary_node_alias.alias if self._primary_node_alias else ""
+        alias_str = self._primary_node_alias.slug if self._primary_node_alias else ""
         return f"Node: {alias_str} (id={self.slug})"
+
+lazy_load_relationship(
+    Node,
+    "children",
+    lambda self: api.nodes.get(slug=self.slug, includes="children"),
+)
+
+lazy_load_relationship(
+    Node,
+    "parents",
+    lambda self: api.nodes.get(slug=self.slug, includes="parents"),
+)

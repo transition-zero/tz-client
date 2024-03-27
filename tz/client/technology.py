@@ -2,6 +2,7 @@ from typing import ForwardRef, Optional
 
 from tz.client import RecordCollection, api
 from tz.client.api import generated_schema
+from tz.client.utils import lazy_load_relationship
 
 
 class Technology(generated_schema.Technology):
@@ -86,35 +87,14 @@ class Technology(generated_schema.Technology):
         return f"Technology: {self.name} (slug={self.slug})"
 
 
-def _get_parents(self) -> list[Technology]:
-    """A set of technology which are the heirarchical ancestors of this technology."""
-    if self._parents is None:
-        technology = api.technologies.get(slug=self.slug, includes="parents")
-        if technology.parents:
-            self._parents = [
-                Technology(**parent.model_dump())
-                for parent in technology.parents
-                if isinstance(parent, generated_schema.Technology)
-            ]
-        else:
-            self._parents = []
-    return self._parents
+lazy_load_relationship(
+    Technology,
+    "children",
+    lambda self: api.technologies.get(slug=self.slug, includes="children"),
+)
 
-
-def _get_children(self) -> list[Technology]:
-    """A set of technologies which are the heirarchical children of this technology."""
-    if self._children is None:
-        technology = api.technologies.get(slug=self.slug, includes="children")
-        if technology.children:
-            self._children = [
-                Technology(**child.model_dump())
-                for child in technology.children
-                if isinstance(child, generated_schema.Technology)
-            ]
-        else:
-            self._children = []
-    return self._children
-
-
-Technology.children = property(_get_children)  # type: ignore[assignment]
-Technology.parents = property(_get_parents)  # type: ignore[assignment]
+lazy_load_relationship(
+    Technology,
+    "parents",
+    lambda self: api.technologies.get(slug=self.slug, includes="parents"),
+)
