@@ -74,44 +74,6 @@ class Technology(generated_schema.Technology):
 
         return [cls(**technology.model_dump()) for technology in search_results]
 
-    # @classmethod
-    # def _get_children(cls, slug) -> list["Technology"]:
-    #     technology = api.technologies.get(slug=slug, includes="children")
-    #     if technology.children:
-    #         return [
-    #             cls(**child.model_dump())
-    #             for child in technology.children
-    #             if isinstance(child, Technology)
-    #         ]
-    #     return []
-
-    # @classmethod
-    # def _get_parents(cls, slug) -> list["Technology"]:
-    #     technology = api.technologies.get(slug=slug, includes="parents")
-    #     if technology.parents:
-    #         return [
-    #             cls(**parent.model_dump())
-    #             for parent in technology.parents
-    #             if isinstance(parent, Technology)
-    #         ]
-    #     return []
-
-    # @property
-    # def children(self) -> list["Technology"]:
-    #     """A set of technologies which are the heirarchical children of this technology."""
-    #     if self._children is None:
-    #         self._children = self._get_children(self.slug)
-    #         return self._children
-    #     return self._children
-
-    # @property
-    # def parents(self) -> list["Technology"]:
-    #     """A set of technology which are the heirarchical ancestors of this technology."""
-    #     if self._parents is None:
-    #         self._parents = self._get_parents(self.slug)
-    #         return self._parents
-    #     return self._parents
-
     @property
     def projections(self):
         """The RecordCollection associated with the technoogy"""
@@ -122,3 +84,37 @@ class Technology(generated_schema.Technology):
 
     def __str__(self) -> str:
         return f"Technology: {self.name} (slug={self.slug})"
+
+
+def _get_parents(self) -> list[Technology]:
+    """A set of technology which are the heirarchical ancestors of this technology."""
+    if self._parents is None:
+        technology = api.technologies.get(slug=self.slug, includes="parents")
+        if technology.parents:
+            self._parents = [
+                Technology(**parent.model_dump())
+                for parent in technology.parents
+                if isinstance(parent, generated_schema.Technology)
+            ]
+        else:
+            self._parents = []
+    return self._parents
+
+
+def _get_children(self) -> list[Technology]:
+    """A set of technologies which are the heirarchical children of this technology."""
+    if self._children is None:
+        technology = api.technologies.get(slug=self.slug, includes="children")
+        if technology.children:
+            self._children = [
+                Technology(**child.model_dump())
+                for child in technology.children
+                if isinstance(child, generated_schema.Technology)
+            ]
+        else:
+            self._children = []
+    return self._children
+
+
+Technology.children = property(_get_children)  # type: ignore[assignment]
+Technology.parents = property(_get_parents)  # type: ignore[assignment]
