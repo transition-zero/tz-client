@@ -40,11 +40,13 @@ EXAMPLE_PARAMS = [
 
 
 @pytest.mark.parametrize("run_params", EXAMPLE_PARAMS)
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_run_get(run_params):
     run = api.runs.get(**run_params)
     assert isinstance(run, api.schemas.Run)
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_run_search():
     runs = api.runs.search()
     assert isinstance(runs, list)

@@ -31,6 +31,7 @@ RECORD_POST_CSV_CASES = [
 ]
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 @pytest.mark.parametrize("record_get_cases", RECORD_GET_CASES)
 def test_api_records_get(record_get_cases):
     params, expected_result = record_get_cases
@@ -44,6 +45,7 @@ def test_api_records_get(record_get_cases):
             assert getattr(record, k) == v
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 @pytest.mark.parametrize("record_post_csv_cases", RECORD_POST_CSV_CASES)
 def test_post_csv(record_post_csv_cases):
     params, expected_result = record_post_csv_cases

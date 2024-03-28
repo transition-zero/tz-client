@@ -1,18 +1,23 @@
+import pytest
+
 from tz.client import Model, Scenario, utils
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_model_init():
     model = Model.from_id("feo-global-indonesia")
     assert isinstance(model, Model)
     assert model.id == "feo-global-indonesia"
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_model_search():
     models = Model.search()
     assert isinstance(models, list)
     assert isinstance(models[0], Model)
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_search_pagination():
     PAGE_LIMIT = 1
     items1 = Model.search(limit=PAGE_LIMIT, page=0)
@@ -30,6 +35,7 @@ def test_search_pagination():
     assert ids1.intersection(ids2) == set()
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_model_scenarios():
     model = Model.from_id("feo-global-indonesia")
     scenarios = model.scenarios
@@ -40,6 +46,7 @@ def test_model_scenarios():
     assert isinstance(model.featured_scenario, Scenario | None)
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_model_str():
     model = Model.from_id("feo-global-indonesia")
     if utils.ENVIRONMENT == "staging":

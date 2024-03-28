@@ -21,7 +21,6 @@
     my_model = api.models.get("my-model")
     ```
 """
-from tz.client.api.node_aliases import NodeAliasAPI
 from tz.client.api.assets import AssetAPI
 from tz.client.api.geospatial import VectorAPI
 from tz.client.api.models import ModelAPI
