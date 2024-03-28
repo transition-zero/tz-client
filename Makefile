@@ -1,10 +1,10 @@
-FEO_CORE_ENDPOINT := http://127.0.0.1:8080/latest/openapi.json
+OPENAPI_JSON_ENDPOINT := ${TZ_API_URL}/${TZ_API_VERSION}/openapi.json
 TEMP_SCHEMA_FILENAME := .temp-openapi-schema.json
 GENERATED_SCHEMA_FILE := tz/client/api/generated_schema.py
 
 openapi-schema:  ## Generate the OpenAPI model code from feo-core
 	@# Curl to get the json schema
-	curl -s ${FEO_CORE_ENDPOINT}>${TEMP_SCHEMA_FILENAME}
+	curl -s ${OPENAPI_JSON_ENDPOINT}>${TEMP_SCHEMA_FILENAME}
 	@# Run the code-gen
 	datamodel-codegen \
 		--input .temp-openapi-schema.json \
