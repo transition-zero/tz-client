@@ -33,7 +33,7 @@ def test_technology_parents(technology):
     assert all([isinstance(parent, Technology) for parent in technology.parents])
 
 
-@pytest.mark.skip("i don't think this is implemented")
+@pytest.mark.xfail(reason="v2 migration wip (perhaps also not needed)")
 def test_technology_projections():
     gas_combined_cycle = Technology.from_id("combined-cycle-gas-turbine")
     assert isinstance(gas_combined_cycle.projections, RecordCollection)

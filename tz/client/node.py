@@ -35,9 +35,14 @@ class Node(generated_schema.Node):
         """Initialise Node from `slug` as a positional argument"""
         api_node = api.nodes.get(slug=slug, includes="aliases")
         node = cls(**api_node.model_dump())
-        maybe_primary = [ alias for alias in node.aliases if alias.primary ]
-        if len(maybe_primary) == 1:
-            cls._primary_node_alias = maybe_primary[0]
+        if node.aliases:
+            maybe_primary = [
+                alias
+                for alias in node.aliases
+                if isinstance(alias, generated_schema.NodeAlias) and alias.primary
+            ]
+            if len(maybe_primary) == 1:
+                cls._primary_node_alias = maybe_primary[0]
         return node
 
     @classmethod
@@ -78,7 +83,7 @@ class Node(generated_schema.Node):
 
         return [
             cls(**alias.node.model_dump())  # type: ignore[union-attr]
-            for alias in search_results.node_aliases
+            for alias in search_results.node_aliases  # type: ignore[union-attr]
         ]
 
     # @property
@@ -117,6 +122,7 @@ class Node(generated_schema.Node):
     def __str__(self) -> str:
         alias_str = self._primary_node_alias.slug if self._primary_node_alias else ""
         return f"Node: {alias_str} (id={self.slug})"
+
 
 lazy_load_relationship(
     Node,

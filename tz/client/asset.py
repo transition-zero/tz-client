@@ -16,45 +16,47 @@ class Asset(schemas.NodeBase):
         node = api.assets.get(ids=id)[0]
         return cls(**node.model_dump())
 
-    @classmethod
-    def search(
-        cls,
-        alias: str,
-        threshold: float = 0.5,
-        node_type: str | None = None,
-        sector: str | None = None,
-        limit: int = 10,
-        page: int = 0,
-    ) -> list["schemas.Node"]:
-        """
-        Search for nodes using an alias.
+    # Note: v2-migration - This needs to be revised; but I don't want to try
+    # and get the types right just now, so commenting it out.
+    # @classmethod
+    # def search(
+    #     cls,
+    #     slug: str,
+    #     threshold: float = 0.5,
+    #     node_type: str | None = None,
+    #     sector: str | None = None,
+    #     limit: int = 10,
+    #     page: int = 0,
+    # ) -> list[generated_schema.Node]:
+    #     """
+    #     Search for nodes using an alias.
 
-        Args:
-            alias (str): The target alias to search.
-            threshold (float): The desired confidence in the search result.
-            node_type (str): filter search to a specific node type.
-            sector (str): the industrial sector to filter assets for
-            limit (int): The maximum number of search results to return per page.
-            page (int): The page number of search results to return.
+    #     Args:
+    #         alias (str): The target alias to search.
+    #         threshold (float): The desired confidence in the search result.
+    #         node_type (str): filter search to a specific node type.
+    #         sector (str): the industrial sector to filter assets for
+    #         limit (int): The maximum number of search results to return per page.
+    #         page (int): The page number of search results to return.
 
-        Returns:
-            list[schemas.Node]: A list of Node objects.
-        """
+    #     Returns:
+    #         list[schemas.Node]: A list of Node objects.
+    #     """
 
-        search_results = api.aliases.get(
-            alias=alias,
-            threshold=threshold,
-            node_type=node_type,
-            sector=sector,
-            includes="power_unit",
-            limit=limit,
-            page=page,
-        )
+    #     search_results = api.node_aliases.get(
+    #         slug=slug,
+    #         threshold=threshold,
+    #         node_type=node_type,
+    #         sector=sector,
+    #         includes="power_unit",
+    #         limit=limit,
+    #         page=page,
+    #     )
 
-        return [
-            cls(**alias.node.model_dump())  # type: ignore[union-attr, misc]
-            for alias in search_results.aliases
-        ]
+    #     return [
+    #         cls(**alias.node.model_dump())  # type: ignore[union-attr, misc]
+    #         for alias in search_results.node_aliases
+    #     ]
 
     @property
     def sources(self):
