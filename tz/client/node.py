@@ -126,11 +126,13 @@ class Node(generated_schema.Node):
 
 lazy_load_relationship(
     Node,
+    Node,
     "children",
     lambda self: api.nodes.get(slug=self.slug, includes="children"),
 )
 
 lazy_load_relationship(
+    Node,
     Node,
     "parents",
     lambda self: api.nodes.get(slug=self.slug, includes="parents"),

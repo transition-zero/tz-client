@@ -1,16 +1,14 @@
 import pytest
 
-from tz.client import Model, Scenario, utils
+from tz.client import Model, ModelScenario
 
 
-@pytest.mark.xfail(reason="v2 migration wip")
 def test_model_init():
-    model = Model.from_id("feo-global-indonesia")
+    model = Model.from_slug(owner="me", model_slug="feo-indonesia")
     assert isinstance(model, Model)
-    assert model.id == "feo-global-indonesia"
+    assert model.slug == "feo-indonesia"
 
 
-@pytest.mark.xfail(reason="v2 migration wip")
 def test_model_search():
     models = Model.search()
     assert isinstance(models, list)
@@ -35,22 +33,25 @@ def test_search_pagination():
     assert ids1.intersection(ids2) == set()
 
 
-@pytest.mark.xfail(reason="v2 migration wip")
 def test_model_scenarios():
-    model = Model.from_id("feo-global-indonesia")
-    scenarios = model.scenarios
-    print(scenarios[0])
+    model = Model.from_slug(owner="me", model_slug="feo-indonesia")
+    scenarios = model.model_scenarios
+
     assert isinstance(scenarios, list)
-    assert isinstance(scenarios[0], Scenario)
+    assert isinstance(scenarios[0], ModelScenario)
+    # TODO: I don't think this exists anymore.
+    # assert isinstance(model.featured_scenario, ModelScenario | None)
 
-    assert isinstance(model.featured_scenario, Scenario | None)
 
-
-@pytest.mark.xfail(reason="v2 migration wip")
+# @pytest.mark.xfail(reason="v2 migration wip")
 def test_model_str():
-    model = Model.from_id("feo-global-indonesia")
-    if utils.ENVIRONMENT == "staging":
-        output = "Model: FEO-Global Indonesia (id=feo-global-indonesia)"
-    elif utils.ENVIRONMENT == "production":
-        output = "Model: Indonesia JETP (id=feo-global-indonesia)"
-    assert str(model) == output
+    model = Model.from_slug(owner="me", model_slug="feo-indonesia")
+    assert str(model) == "Model: Indonesia Power Grid (id=feo-indonesia)"
+
+    # Note: Removing this for now. See ENG-845.
+    #
+    # if utils.ENVIRONMENT == "staging":
+    #     output = "Model: FEO-Global Indonesia (id=feo-global-indonesia)"
+    # elif utils.ENVIRONMENT == "production":
+    #     output = "Model: Indonesia JETP (id=feo-global-indonesia)"
+    # assert str(model) == output

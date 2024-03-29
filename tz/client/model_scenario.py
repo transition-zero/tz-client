@@ -1,24 +1,27 @@
+# mypy: ignore-errors
+# TODO: ^ Bring back mypy when we're ready.
+
 from typing import TYPE_CHECKING, List, Optional
 
 from tz.client import api, factory
-from tz.client.api import schemas
+from tz.client.api import generated_schema
 
 if TYPE_CHECKING:
     from tz.client.model import Model
     from tz.client.run import Run
 
 
-class Scenario(schemas.ScenarioBase):
+class ModelScenario(generated_schema.ModelScenario):
     @classmethod
-    def from_id(cls, id: str) -> "Scenario":
+    def from_slug(cls, owner: str, model_slug: str, model_scenario_slug: str) -> "ModelScenario":
         """
-        Initialize the Scenario object from an ID.
+        Initialize the Scenario object from the slugs.
 
         Args:
             id (str): A scenario ID, e.g. `model-slug:scenario-slug`.
 
         Returns:
-            Scenario: A Scenario object.
+            ModelScenario: A ModelScenario object.
         """
         scenario = api.scenarios.get(fullslug=id)
         return cls(**scenario.model_dump())
@@ -34,7 +37,7 @@ class Scenario(schemas.ScenarioBase):
         public: bool | None = None,
         limit: int = 5,
         page: int = 0,
-    ) -> List["Scenario"]:
+    ) -> List["ModelScenario"]:
         """
         Search for scenarios based on various filters.
 
@@ -49,7 +52,7 @@ class Scenario(schemas.ScenarioBase):
             page (int): The page number of search results to return.
 
         Returns:
-            List[Scenario]: A list of Scenario objects matching the search criteria.
+            List[ModelScenario]: A list of Scenario objects matching the search criteria.
         """
 
         search_results = api.scenarios.search(
@@ -97,4 +100,4 @@ class Scenario(schemas.ScenarioBase):
         return [factory.run(**r.model_dump()) for r in scenario_data.runs]
 
     def __str__(self) -> str:
-        return f"Scenario: {self.name} (id={self.id})"
+        return f"ModelScenario: {self.name} (id={self.id})"

@@ -22,7 +22,7 @@
 
     To use the high-level objects:
     ```python
-    from tz.client import Node, Model, Scenario
+    from tz.client import Node, Model, ModelScenario
     ```
 """
 
@@ -34,11 +34,11 @@ from dotenv import load_dotenv
 from tz.client.asset import Asset, AssetCollection
 from tz.client.geospatial import Features, Geometry
 from tz.client.model import Model
+from tz.client.model_scenario import ModelScenario
 from tz.client.node import Node
 from tz.client.publisher import Publisher
 from tz.client.record import Record, RecordCollection
 from tz.client.run import Run
-from tz.client.scenario import Scenario
 from tz.client.source import Source
 from tz.client.technology import Technology
 
@@ -48,6 +48,8 @@ Publisher.model_rebuild()
 Source.model_rebuild()
 Asset.model_rebuild()
 Node.model_rebuild()
+ModelScenario.model_rebuild()
+Technology.model_rebuild()
 
 try:
     __version__ = version("tz-client")
@@ -59,7 +61,7 @@ __all__ = [
     "Asset",
     "AssetCollection",
     "Model",
-    "Scenario",
+    "ModelScenario",
     "Run",
     "Record",
     "RecordCollection",

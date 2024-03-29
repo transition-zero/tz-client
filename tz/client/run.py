@@ -7,7 +7,6 @@ from tz.client.api import schemas
 
 if TYPE_CHECKING:
     from tz.client.model import Model
-    from tz.client.scenario import Scenario
 
 
 class ResultsCollection(pd.DataFrame):
@@ -223,13 +222,13 @@ class Run(schemas.RunBase):
             return None
         return factory.model(**run_data.model.model_dump())
 
-    @property
-    def scenario(self) -> Optional["Scenario"]:
-        """The scenario associated with this run."""
-        run_data = api.runs.get(fullslug=self.id, includes="scenario")
-        if run_data.scenario is None:
-            return None
-        return factory.scenario(**run_data.scenario.model_dump())
+    # @property
+    # def scenario(self) -> Optional["Scenario"]:
+    #     """The scenario associated with this run."""
+    #     run_data = api.runs.get(fullslug=self.id, includes="scenario")
+    #     if run_data.scenario is None:
+    #         return None
+    #     return factory.scenario(**run_data.scenario.model_dump())
 
     @property
     def results(self) -> RunResults:

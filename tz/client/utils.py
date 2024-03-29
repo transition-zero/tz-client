@@ -26,7 +26,7 @@ def enforce_list(val: Union[List, str]):
         return val.split(",")
 
 
-def lazy_load_relationship(cls, field, loader):
+def lazy_load_relationship(cls, mk_cls, field, loader):
     """Update the `cls` to have the `field` relationship (i.e. list of
     things) lazy-loaded by the provided loader so that when someone writes
     'cls.field' they get the pre-loaded objects.
@@ -40,7 +40,7 @@ def lazy_load_relationship(cls, field, loader):
         if getattr(self, hidden) is None:
             loaded = loader(self)
             items = getattr(loaded, field)
-            values = [cls(**c.model_dump()) for c in items]
+            values = [mk_cls(**c.model_dump()) for c in items]
             setattr(self, hidden, values)
         v = getattr(self, hidden)
         return v

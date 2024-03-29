@@ -1,31 +1,33 @@
-from typing import TYPE_CHECKING, List, Optional
+from typing import List
 
-from tz.client import api, factory
-from tz.client.api import schemas
+from tz.client import api
+from tz.client.api import generated_schema
+from tz.client.model_scenario import ModelScenario
+from tz.client.utils import lazy_load_relationship
 
-if TYPE_CHECKING:
-    from tz.client.scenario import Scenario
 
+class Model(generated_schema.Model):
+    _model_scenarios: list[ModelScenario] | None = None
 
-class Model(schemas.ModelBase):
     @classmethod
-    def from_id(cls, id: str) -> "Model":
+    def from_slug(cls, model_slug: str, owner: str) -> "Model":
         """
-        Initialize the Model object from an ID.
+        Initialize the Model object from a slug.
 
         Args:
-            id (str): A model ID, e.g. `feo-global-indonesia`.
+            model_slug (str): A model slug, e.g. `feo-global-indonesia`.
+            owner (str): A username, e.g. `me`.
 
         Returns:
             Model: A Model object.
         """
-        model = api.models.get(slug=id)
+        model = api.models.get(owner=owner, model_slug=model_slug)
         return cls(**model.model_dump())
 
     @classmethod
     def search(
         cls,
-        model_slug: str | None = None,
+        slug: str | None = None,
         includes: str | None = None,
         owner: str | None = None,
         sort: str | None = None,
@@ -38,7 +40,7 @@ class Model(schemas.ModelBase):
         Search for models.
 
         Args:
-            model_slug (str | None): The target model slug to search.
+            slug (str | None): The target model slug to search.
             includes (str | None): Related resources to be included in the search result.
             owner (str | None): The owner of the models to filter.
             sort (str | None): The sorting criteria for the search result.
@@ -52,7 +54,7 @@ class Model(schemas.ModelBase):
         """
 
         search_results = api.models.search(
-            model_slug=model_slug,
+            slug=slug,
             includes=includes,
             owner=owner,
             sort=sort,
@@ -64,26 +66,22 @@ class Model(schemas.ModelBase):
 
         return [cls(**model.model_dump()) for model in search_results]
 
-    @property
-    def id(self) -> str:
-        """The ID of the model."""
-        return self.slug
-
-    @property
-    def scenarios(self) -> list["Scenario"]:
-        """A collection of scenarios associated with this model."""
-        model_data = api.models.get(slug=self.id, includes="scenarios")
-        if model_data.scenarios is None:
-            return []
-        return [factory.scenario(**s.model_dump()) for s in model_data.scenarios]
-
-    @property
-    def featured_scenario(self) -> Optional["Scenario"]:
-        """The featured scenario associated with this model."""
-        model_data = api.models.get(slug=self.id, includes="featured_scenario")
-        if model_data.featured_scenario is None:
-            return None
-        return factory.scenario(**model_data.featured_scenario.model_dump())
+    # @property
+    # def featured_scenario(self) -> Optional["Scenario"]:
+    #     """The featured scenario associated with this model."""
+    #     model_data = api.models.get(owner=self.owner,
+    #       model_slug=self.slug, includes="featured_scenario")
+    #     if model_data.featured_scenario is None:
+    #         return None
+    #     return factory.scenario(**model_data.featured_scenario.model_dump())
 
     def __str__(self) -> str:
-        return f"Model: {self.name} (id={self.id})"
+        return f"Model: {self.name} (id={self.slug})"
+
+
+lazy_load_relationship(
+    Model,
+    ModelScenario,
+    "model_scenarios",
+    lambda self: api.models.get(owner=self.owner, model_slug=self.slug, includes="model_scenarios"),
+)

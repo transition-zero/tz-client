@@ -2,6 +2,7 @@ from typing import List, Union
 
 from tz.client.api.base import BaseAPI
 from tz.client.api.generated_schema import Technology, TechnologyPagination
+from tz.client.api.utils import non_empty
 
 
 class TechnologyAPI(BaseAPI):
@@ -36,9 +37,7 @@ class TechnologyAPI(BaseAPI):
             "page": page,
         }
 
-        non_empty = {k: v for k, v in params.items() if v}
-
-        resp = self.client.get("/technologies", params=non_empty)
+        resp = self.client.get("/technologies", params=non_empty(params))
         resp.raise_for_status()
         r = TechnologyPagination(**resp.json())
         if r.technologies:
