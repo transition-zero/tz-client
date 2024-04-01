@@ -1,35 +1,43 @@
-# mypy: ignore-errors
-# TODO: ^ Bring back mypy when we're ready.
+from typing import List, Optional
 
-from typing import TYPE_CHECKING, List, Optional
-
-from tz.client import api, factory
+from tz.client import api
 from tz.client.api import generated_schema
-
-if TYPE_CHECKING:
-    from tz.client.model import Model
-    from tz.client.run import Run
+from tz.client.utils import lazy_load_single_relationship
 
 
 class ModelScenario(generated_schema.ModelScenario):
+    # Cached fields we save when built from `from_slug` or `search`.
+    _model_slug: Optional[str] = None
+    _owner: Optional[str] = None
+
+    # Lazy-loaded
+    _model: Optional["Model"] = None  # type: ignore[name-defined] # noqa: F821
+
     @classmethod
     def from_slug(cls, owner: str, model_slug: str, model_scenario_slug: str) -> "ModelScenario":
         """
         Initialize the Scenario object from the slugs.
 
         Args:
-            id (str): A scenario ID, e.g. `model-slug:scenario-slug`.
+            owner (str): The username of the owner
+            model_slug (str): A model slug
+            model_scenario_slug (str): A model scenario slug
 
         Returns:
             ModelScenario: A ModelScenario object.
         """
-        scenario = api.scenarios.get(fullslug=id)
-        return cls(**scenario.model_dump())
+        scenario = api.model_scenarios.get(
+            owner=owner, model_slug=model_slug, model_scenario_slug=model_scenario_slug
+        )
+        c = cls(**scenario.model_dump())
+        c._model_slug = model_slug
+        c._owner = owner
+        return c
 
     @classmethod
     def search(
         cls,
-        scenario_slug: str | None = None,
+        model_scenario_slug: str | None = None,
         model_slug: str | None = None,
         includes: str | None = None,
         owner_id: str | None = None,
@@ -42,7 +50,7 @@ class ModelScenario(generated_schema.ModelScenario):
         Search for scenarios based on various filters.
 
         Args:
-            scenario_slug (str | None): The slug of the scenario to search for.
+            model_scenario_slug (str | None): The slug of the scenario to search for.
             model_slug (str | None): The slug of the model to filter scenarios by.
             includes (str | None): Related resources to be included in the search result.
             owner_id (str | None): The ID of the owner to filter scenarios by.
@@ -55,8 +63,8 @@ class ModelScenario(generated_schema.ModelScenario):
             List[ModelScenario]: A list of Scenario objects matching the search criteria.
         """
 
-        search_results = api.scenarios.search(
-            scenario_slug=scenario_slug,
+        search_results = api.model_scenarios.search(
+            model_scenario_slug=model_scenario_slug,
             model_slug=model_slug,
             includes=includes,
             owner_id=owner_id,
@@ -66,38 +74,54 @@ class ModelScenario(generated_schema.ModelScenario):
             page=page,
         )
 
-        return [cls(**scenario.model_dump()) for scenario in search_results]
+        cs = [cls(**scenario.model_dump()) for scenario in search_results]
+        for c in cs:
+            c._model_slug = model_slug
+            c._owner = owner_id  # TODO: This should be 'owner'. See ENG-848
+        return cs
 
     @property
     def id(self) -> str:
         """
         The ID of the scenario. A combination of the model slug and scenario slug.
         """
-        return f"{self.model_slug}:{self.slug}"
+        return f"{self._model_slug}:{self.slug}"
 
-    @property
-    def model(self) -> Optional["Model"]:
-        """The model associated with this scenario."""
-        scenario_data = api.scenarios.get(fullslug=self.id, includes="model")
-        if scenario_data.model is None:
-            return None
-        return factory.model(**scenario_data.model.model_dump())
+    # @property
+    # def featured_run(self) -> Optional["Run"]:
+    #     """The featured run associated with this scenario."""
+    #     scenario_data = api.scenarios.get(fullslug=self.id, includes="featured_run")
+    #     if scenario_data.featured_run is None:
+    #         return None
+    #     return factory.run(**scenario_data.featured_run.model_dump())
 
-    @property
-    def featured_run(self) -> Optional["Run"]:
-        """The featured run associated with this scenario."""
-        scenario_data = api.scenarios.get(fullslug=self.id, includes="featured_run")
-        if scenario_data.featured_run is None:
-            return None
-        return factory.run(**scenario_data.featured_run.model_dump())
-
-    @property
-    def runs(self) -> list["Run"]:
-        """The featured run associated with this scenario."""
-        scenario_data = api.scenarios.get(fullslug=self.id, includes="runs")
-        if scenario_data.runs is None:
-            return []
-        return [factory.run(**r.model_dump()) for r in scenario_data.runs]
+    # @property
+    # def runs(self) -> list["Run"]:
+    #     """The featured run associated with this scenario."""
+    #     scenario_data = api.scenarios.get(fullslug=self.id, includes="runs")
+    #     if scenario_data.runs is None:
+    #         return []
+    #     return [factory.run(**r.model_dump()) for r in scenario_data.runs]
 
     def __str__(self) -> str:
         return f"ModelScenario: {self.name} (id={self.id})"
+
+
+def lazy_return_model():
+    # Because of the circular dependency
+    from tz.client.model import Model
+
+    return Model
+
+
+lazy_load_single_relationship(
+    ModelScenario,
+    lazy_return_model,
+    "model",
+    lambda self: api.model_scenarios.get(
+        owner=self._owner,
+        model_slug=self._model_slug,
+        model_scenario_slug=self.slug,
+        includes="model",
+    ),
+)

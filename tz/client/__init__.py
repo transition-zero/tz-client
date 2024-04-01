@@ -48,6 +48,7 @@ Publisher.model_rebuild()
 Source.model_rebuild()
 Asset.model_rebuild()
 Node.model_rebuild()
+Model.model_rebuild()
 ModelScenario.model_rebuild()
 Technology.model_rebuild()
 
