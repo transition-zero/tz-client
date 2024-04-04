@@ -39,11 +39,9 @@ def test_model_scenarios():
 
     assert isinstance(scenarios, list)
     assert isinstance(scenarios[0], ModelScenario)
-    # TODO: I don't think this exists anymore.
-    # assert isinstance(model.featured_scenario, ModelScenario | None)
+    assert isinstance(model.featured_scenario, ModelScenario | None)
 
 
-# @pytest.mark.xfail(reason="v2 migration wip")
 def test_model_str():
     model = Model.from_slug(owner="me", model_slug="feo-indonesia")
     assert str(model) == "Model: Indonesia Power Grid (id=feo-indonesia)"

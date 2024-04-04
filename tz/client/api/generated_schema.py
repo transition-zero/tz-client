@@ -174,7 +174,6 @@ class ModelCreate(PydanticBaseModel):
     name: str | None = Field(None, title="Name")
     description: str | None = Field(None, title="Description")
     version: str | None = Field(None, title="Version")
-    sectors: list[str] | None = Field(None, title="Sectors")
     start_year: int | None = Field(None, title="Start Year")
     end_year: int | None = Field(None, title="End Year")
     n_year_parts: int | None = Field(1, title="N Year Parts")
@@ -183,7 +182,11 @@ class ModelCreate(PydanticBaseModel):
     end_year_part: int | None = Field(1, title="End Year Part")
     status: str | None = Field("draft", title="Status")
     anon_views: int | None = Field(0, title="Anon Views")
+    featured_scenario: str | None = Field(None, title="featured_scenario")
+    commodities: list[str] | None = Field(None, title="commodities")
+    edges: list[str] | None = Field(None, title="edges")
     nodes: list[str] | None = Field(None, title="nodes")
+    technologies: list[str] | None = Field(None, title="technologies")
     urls: list[str] | None = Field(None, title="urls")
 
 
@@ -196,7 +199,6 @@ class ModelResourcePatch(PydanticBaseModel):
     name: str | None = Field(None, title="Name")
     description: str | None = Field(None, title="Description")
     version: str | None = Field(None, title="Version")
-    sectors: list[str] | None = Field(None, title="Sectors")
     start_year: int | None = Field(None, title="Start Year")
     end_year: int | None = Field(None, title="End Year")
     n_year_parts: int | None = Field(None, title="N Year Parts")
@@ -207,7 +209,11 @@ class ModelResourcePatch(PydanticBaseModel):
     anon_views: int | None = Field(None, title="Anon Views")
     owner: str | None = Field(None, title="owner")
     model_scenarios: list[str] | None = Field(None, title="model_scenarios")
+    featured_scenario: str | None = Field(None, title="featured_scenario")
+    commodities: list[str] | None = Field(None, title="commodities")
+    edges: list[str] | None = Field(None, title="edges")
     nodes: list[str] | None = Field(None, title="nodes")
+    technologies: list[str] | None = Field(None, title="technologies")
     urls: list[str] | None = Field(None, title="urls")
 
 
@@ -220,6 +226,7 @@ class ModelScenarioCreate(PydanticBaseModel):
     status: str | None = Field("draft", title="Status")
     featured: bool | None = Field(False, title="Featured")
     model: str | None = Field(None, title="model")
+    featured_run: str | None = Field(None, title="featured_run")
     urls: list[str] | None = Field(None, title="urls")
 
 
@@ -241,6 +248,7 @@ class ModelScenarioResourcePatch(PydanticBaseModel):
     model: str | None = Field(None, title="model")
     scenario_index: str | None = Field(None, title="scenario_index")
     scenario_heritage: str | None = Field(None, title="scenario_heritage")
+    featured_run: str | None = Field(None, title="featured_run")
     runs: list[str] | None = Field(None, title="runs")
     records: list[str] | None = Field(None, title="records")
     urls: list[str] | None = Field(None, title="urls")
@@ -468,9 +476,9 @@ class RecordCreate(PydanticBaseModel):
     edge: str | None = Field(None, title="edge")
     model_scenario: str | None = Field(None, title="model_scenario")
     source_scenario: str | None = Field(None, title="source_scenario")
-    technology: str | None = Field(None, title="technology")
-    commodity: str | None = Field(None, title="commodity")
-    operating_mode: str | None = Field(None, title="operating_mode")
+    technology: str | None = Field("NA", title="technology")
+    commodity: str | None = Field("NA", title="commodity")
+    operating_mode: str | None = Field("NA", title="operating_mode")
 
 
 class RecordResourcePatch(PydanticBaseModel):
@@ -858,6 +866,10 @@ class AssetPagination(PydanticBaseModel):
     assets: list[Asset] | None = Field(..., title="")
 
 
+class CapacityFactorResponse(PydanticBaseModel):
+    capacity_factor_records: list[Record] = Field(..., title="Capacity Factor Records")
+
+
 class Commodity(PydanticBaseModel):
     uuid: UUID = Field(..., title="Uuid")
     slug: str = Field(..., title="Slug")
@@ -944,7 +956,6 @@ class Model(PydanticBaseModel):
     name: str = Field(..., title="Name")
     description: str = Field(..., title="Description")
     version: str | None = Field(None, title="Version")
-    sectors: list[str] = Field(..., title="Sectors")
     start_year: int = Field(..., title="Start Year")
     end_year: int = Field(..., title="End Year")
     n_year_parts: int | None = Field(1, title="N Year Parts")
@@ -954,10 +965,14 @@ class Model(PydanticBaseModel):
     status: str | None = Field("draft", title="Status")
     anon_views: int | None = Field(0, title="Anon Views")
     owner: str = Field(..., title="Owner")
+    edges: list[Edge | str] | None = Field(None, title="Edges")
     nodes: list[Node | str] = Field(..., title="Nodes")
+    commodities: list[Commodity] | list[str] = Field(..., title="Commodities")
+    technologies: list[Technology] | list[str] = Field(..., title="Technologies")
     model_scenarios: list[ModelScenario] | list[str] | None = Field(None, title="Model Scenarios")
     runs: list[Run | str] | None = Field(None, title="Runs")
     urls: list[UrlIndex] | list[str] | None = Field(None, title="Urls")
+    featured_scenario: ModelScenario | str | None = Field(None, title="Featured Scenario")
 
 
 class ModelPagination(PydanticBaseModel):
@@ -982,6 +997,7 @@ class ModelScenario(PydanticBaseModel):
     scenario_index_id: UUID = Field(..., title="Scenario Index Id")
     scenario_heritage: ScenarioIndex | str | None = Field(None, title="Scenario Heritage")
     runs: list[Run] | list[str] | None = Field(None, title="Runs")
+    featured_run: Run | str | None = Field(None, title="Featured Run")
     urls: list[UrlIndex] | list[str] | None = Field(None, title="Urls")
     records: list[Record] | list[str] | None = Field(None, title="Records")
 
@@ -1268,6 +1284,7 @@ class UrlIndexPagination(PydanticBaseModel):
 
 User.model_rebuild()
 Asset.model_rebuild()
+CapacityFactorResponse.model_rebuild()
 Commodity.model_rebuild()
 Edge.model_rebuild()
 Job.model_rebuild()

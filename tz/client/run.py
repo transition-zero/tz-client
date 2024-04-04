@@ -1,12 +1,11 @@
-from typing import TYPE_CHECKING, List, Optional
+# mypy: ignore-errors
+from typing import List, Optional
 
 import pandas as pd
 
-from tz.client import api, factory
-from tz.client.api import schemas
-
-if TYPE_CHECKING:
-    from tz.client.model import Model
+from tz.client import api
+from tz.client.api import generated_schema, schemas
+from tz.client.utils import lazy_load_single_relationship
 
 
 class ResultsCollection(pd.DataFrame):
@@ -147,30 +146,67 @@ class RunResults(schemas.PydanticBaseModel):
         return self._flow
 
 
-class Run(schemas.RunBase):
-    _run_results: Optional[RunResults] = None
+class Run(generated_schema.Run):
+    # _run_results: Optional[RunResults] = None
+    _owner: Optional[str] = None
+    _model_slug: Optional[str] = None
+    _model_scenario_slug: Optional[str] = None
+    _model_scenario: Optional["ModelScenario"] = None  # type: ignore[name-defined] # noqa: F821
 
     @classmethod
-    def from_id(cls, id: str) -> "Run":
+    def from_fullslug(cls, fullslug: str) -> "Run":
         """
-        Initialize the Run object from an ID.
+        Load the Run from a compound slug composed of:
 
-        Args:
-            id (str): A run ID, e.g. `model-slug:scenario-slug:run-slug`.
+            {owner_username}:{model_slug}:{model_scenario_slug}:{run_slug}
 
         Returns:
             Run: A Run object.
         """
-        run_reponse = api.runs.get(fullslug=id)
-        return cls(**run_reponse.model_dump())
+        parts = fullslug.split(":")
+        if len(parts) != 4:
+            raise Exception(
+                f"Need more components for 'fullslug' for 'Run': {fullslug}; expected 4."
+            )
+        return cls.from_slug(
+            owner=parts[0], model_slug=parts[1], model_scenario_slug=parts[2], run_slug=parts[3]
+        )
+
+    @classmethod
+    def from_slug(
+        cls, owner: str, model_slug: str, model_scenario_slug: str, run_slug: str
+    ) -> "Run":
+        """
+        Initialize the Run object from the relevant slugs.
+
+        Args:
+            owner (str): The username of the owner
+            model_slug (str): The model slug
+            model_scenario_slug (str): The model scenario slug
+            run_slug (str): The run slug
+
+        Returns:
+            Run: A Run object.
+        """
+        run_reponse = api.runs.get(
+            owner=owner,
+            model_slug=model_slug,
+            model_scenario_slug=model_scenario_slug,
+            run_slug=run_slug,
+        )
+        c = cls(**run_reponse.model_dump())
+        c._owner = owner
+        c._model_slug = model_slug
+        c._model_scenario_slug = model_scenario_slug
+        return c
 
     @classmethod
     def search(
         cls,
         slug: Optional[str] = None,
         model_slug: Optional[str] = None,
-        scenario_slug: Optional[str] = None,
-        owner_id: Optional[str] = None,
+        model_scenario_slug: Optional[str] = None,
+        owner: Optional[str] = None,
         featured: Optional[bool] = None,
         includes: Optional[str] = None,
         public: Optional[bool] = None,
@@ -184,7 +220,7 @@ class Run(schemas.RunBase):
             slug (str, optional): The slug of the run.
             model_slug (str, optional): The slug of the model to filter by.
             scenario_slug (str, optional): The slug of the scenario to filter by.
-            owner_id (str, optional): The ID of the owner.
+            owner (str, optional): The username of the owner.
             featured (bool, optional): Filter by whether the run is featured.
             includes (str, optional): Additional fields to include in the search results.
             public (bool, optional): Filter by whether the run is public.
@@ -198,8 +234,8 @@ class Run(schemas.RunBase):
         search_results = api.runs.search(
             slug=slug,
             model_slug=model_slug,
-            scenario_slug=scenario_slug,
-            owner_id=owner_id,
+            model_scenario_slug=model_scenario_slug,
+            owner_id=owner,  # TODO: Fix once the owner id problem is resolved
             featured=featured,
             includes=includes,
             public=public,
@@ -207,35 +243,40 @@ class Run(schemas.RunBase):
             page=page,
         )
 
-        return [cls(**r.model_dump()) for r in search_results]
+        cs = [cls(**r.model_dump()) for r in search_results]
+        for c in cs:
+            c._owner = owner
+            c._model_slug = model_slug
+            c._model_scenario_slug = model_scenario_slug
+        return cs
 
     @property
-    def id(self) -> str:
-        """The ID of the run. A combination of the model, scenario, and run slugs."""
-        return f"{self.model_slug}:{self.scenario_slug}:{self.slug}"
+    def fullslug(self) -> str:
+        """The full slug of the run. A combination of the owner username,
+        and model, model scenario, and run slugs."""
+        return f"{self._owner}:{self._model_slug}:{self._model_scenario_slug}:{self.slug}"
 
-    @property
-    def model(self) -> Optional["Model"]:
-        """The model associated with this run."""
-        run_data = api.runs.get(fullslug=self.id, includes="model")
-        if run_data.model is None:
-            return None
-        return factory.model(**run_data.model.model_dump())
-
+    # TODO: Implement this later
     # @property
-    # def scenario(self) -> Optional["Scenario"]:
-    #     """The scenario associated with this run."""
-    #     run_data = api.runs.get(fullslug=self.id, includes="scenario")
-    #     if run_data.scenario is None:
-    #         return None
-    #     return factory.scenario(**run_data.scenario.model_dump())
-
-    @property
-    def results(self) -> RunResults:
-        if self._run_results is None:
-            self._run_results = RunResults(id=self.id)
-            return self._run_results
-        return self._run_results
+    # def results(self) -> RunResults:
+    #     if self._run_results is None:
+    #         self._run_results = RunResults(id=self.id)
+    #         return self._run_results
+    #     return self._run_results
 
     def __str__(self) -> str:
-        return f"Run: {self.name} (id={self.id})"
+        return f"Run: {self.name} (fullslug={self.fullslug})"
+
+
+lazy_load_single_relationship(
+    Run,
+    "ModelScenario",
+    "model_scenario",
+    lambda self: api.runs.get(
+        owner=self._owner,
+        model_slug=self._model_slug,
+        model_scenario_slug=self._model_scenario_slug,
+        run_slug=self.slug,
+        includes="model_scenario",
+    ),
+)

@@ -12,6 +12,7 @@ class ModelScenario(generated_schema.ModelScenario):
 
     # Lazy-loaded
     _model: Optional["Model"] = None  # type: ignore[name-defined] # noqa: F821
+    _featured_run: Optional["Run"] = None  # type: ignore[name-defined] # noqa: F821
 
     @classmethod
     def from_slug(cls, owner: str, model_slug: str, model_scenario_slug: str) -> "ModelScenario":
@@ -107,21 +108,26 @@ class ModelScenario(generated_schema.ModelScenario):
         return f"ModelScenario: {self.name} (id={self.id})"
 
 
-def lazy_return_model():
-    # Because of the circular dependency
-    from tz.client.model import Model
-
-    return Model
-
-
 lazy_load_single_relationship(
     ModelScenario,
-    lazy_return_model,
+    "Model",
     "model",
     lambda self: api.model_scenarios.get(
         owner=self._owner,
         model_slug=self._model_slug,
         model_scenario_slug=self.slug,
         includes="model",
+    ),
+)
+
+lazy_load_single_relationship(
+    ModelScenario,
+    "Run",
+    "featured_run",
+    lambda self: api.model_scenarios.get(
+        owner=self._owner,
+        model_slug=self._model_slug,
+        model_scenario_slug=self.slug,
+        includes="featured_run",
     ),
 )

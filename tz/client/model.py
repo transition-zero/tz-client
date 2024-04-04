@@ -1,13 +1,16 @@
-from typing import List
+from typing import List, Optional
 
 from tz.client import api
 from tz.client.api import generated_schema
 from tz.client.model_scenario import ModelScenario
-from tz.client.utils import lazy_load_relationship
+# fmt: off
+from tz.client.utils import (lazy_load_relationship,
+                             lazy_load_single_relationship)
 
 
 class Model(generated_schema.Model):
     _model_scenarios: list[ModelScenario] | None = None
+    _featured_scenario: Optional[ModelScenario] | None = None
 
     @classmethod
     def from_slug(cls, model_slug: str, owner: str) -> "Model":
@@ -66,15 +69,6 @@ class Model(generated_schema.Model):
 
         return [cls(**model.model_dump()) for model in search_results]
 
-    # @property
-    # def featured_scenario(self) -> Optional["Scenario"]:
-    #     """The featured scenario associated with this model."""
-    #     model_data = api.models.get(owner=self.owner,
-    #       model_slug=self.slug, includes="featured_scenario")
-    #     if model_data.featured_scenario is None:
-    #         return None
-    #     return factory.scenario(**model_data.featured_scenario.model_dump())
-
     def __str__(self) -> str:
         return f"Model: {self.name} (id={self.slug})"
 
@@ -84,4 +78,16 @@ lazy_load_relationship(
     ModelScenario,
     "model_scenarios",
     lambda self: api.models.get(owner=self.owner, model_slug=self.slug, includes="model_scenarios"),
+)
+
+
+lazy_load_single_relationship(
+    Model,
+    "ModelScenario",
+    "featured_scenario",
+    lambda self: api.models.get(
+        owner=self.owner,
+        model_slug=self.slug,
+        includes="featured_scenario",
+    ),
 )

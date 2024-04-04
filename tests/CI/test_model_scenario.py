@@ -1,6 +1,6 @@
 import pytest
 
-from tz.client import Model, ModelScenario
+from tz.client import Model, ModelScenario, Run
 
 
 @pytest.fixture
@@ -50,6 +50,11 @@ def test_model_scenario_model(scenario):
     model = scenario.model
     assert isinstance(model, Model)
     assert model.slug == "feo-indonesia"
+
+
+def test_model_scenario_featured_run(scenario):
+    assert isinstance(scenario.featured_run, Run)
+    assert scenario.featured_run.slug == "run1"
 
 
 def test_model_scenario_str(scenario):

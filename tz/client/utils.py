@@ -1,4 +1,5 @@
 import os
+from importlib import import_module
 from types import FunctionType
 from typing import List, Union
 
@@ -40,8 +41,17 @@ def lazy_load_relationship(cls, mk_cls, field, loader, f=id, g=id):
     where the results will be cached.
     """
 
+    def camel_to_snake(s):
+        return "".join(["_" + c.lower() if c.isupper() else c for c in s]).lstrip("_")
+
     def lazy_loader(self):
-        if isinstance(mk_cls, FunctionType):
+        if isinstance(mk_cls, str):
+            # Bit of a hack to simplify the lazy-loading troubles: just let people
+            # use a string and we'll just import it by convention.
+            module_name = camel_to_snake(mk_cls)
+            module = import_module(f"tz.client.{module_name}")
+            mk_class = getattr(module, mk_cls)
+        elif isinstance(mk_cls, FunctionType):
             mk_class = mk_cls()
         else:
             mk_class = mk_cls

@@ -51,6 +51,7 @@ Node.model_rebuild()
 Model.model_rebuild()
 ModelScenario.model_rebuild()
 Technology.model_rebuild()
+Run.model_rebuild()
 
 try:
     __version__ = version("tz-client")
