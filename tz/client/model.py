@@ -13,7 +13,24 @@ class Model(generated_schema.Model):
     _featured_scenario: Optional[ModelScenario] | None = None
 
     @classmethod
-    def from_slug(cls, model_slug: str, owner: str) -> "Model":
+    def from_fullslug(cls, fullslug: str) -> "Model":
+        """
+        Load the Model from a compound slug composed of:
+
+            {owner_username}:{model_slug}
+
+        Returns:
+            Model: A Model object.
+        """
+        parts = fullslug.split(":")
+        if len(parts) != 2:
+            raise Exception(
+                f"Need 2 components for 'fullslug' for 'Model': {fullslug}, found {len(parts)}."
+            )
+        return cls.from_slug(owner=parts[0], model_slug=parts[1])
+
+    @classmethod
+    def from_slug(cls, owner: str, model_slug: str) -> "Model":
         """
         Initialize the Model object from a slug.
 

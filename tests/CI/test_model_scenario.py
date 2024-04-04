@@ -5,9 +5,7 @@ from tz.client import Model, ModelScenario, Run
 
 @pytest.fixture
 def scenario():
-    scenario = ModelScenario.from_slug(
-        owner="me", model_slug="feo-indonesia", model_scenario_slug="baseline"
-    )
+    scenario = ModelScenario.from_fullslug("me:feo-indonesia:baseline")
     # Note: Removing this for now. See ENG-845.
     #
     # if utils.ENVIRONMENT == "staging":

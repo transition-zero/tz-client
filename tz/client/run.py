@@ -166,7 +166,7 @@ class Run(generated_schema.Run):
         parts = fullslug.split(":")
         if len(parts) != 4:
             raise Exception(
-                f"Need more components for 'fullslug' for 'Run': {fullslug}; expected 4."
+                f"Need 4 components for 'fullslug' for 'Run': {fullslug}, found {len(parts)}."
             )
         return cls.from_slug(
             owner=parts[0], model_slug=parts[1], model_scenario_slug=parts[2], run_slug=parts[3]

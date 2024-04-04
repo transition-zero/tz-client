@@ -4,7 +4,7 @@ from tz.client import Model, ModelScenario
 
 
 def test_model_init():
-    model = Model.from_slug(owner="me", model_slug="feo-indonesia")
+    model = Model.from_fullslug("me:feo-indonesia")
     assert isinstance(model, Model)
     assert model.slug == "feo-indonesia"
 

@@ -15,6 +15,24 @@ class ModelScenario(generated_schema.ModelScenario):
     _featured_run: Optional["Run"] = None  # type: ignore[name-defined] # noqa: F821
 
     @classmethod
+    def from_fullslug(cls, fullslug: str) -> "ModelScenario":
+        """
+        Load the ModelScenario from a compound slug composed of:
+
+            {owner_username}:{model_slug}:{model_scenario_slug}
+
+        Returns:
+            ModelScenario: A ModelScenario object.
+        """
+        parts = fullslug.split(":")
+        if len(parts) != 3:
+            raise Exception(
+                f"""Need 3 components for 'fullslug' for 'ModelScenario':
+                {fullslug}, found {len(parts)}."""
+            )
+        return cls.from_slug(owner=parts[0], model_slug=parts[1], model_scenario_slug=parts[2])
+
+    @classmethod
     def from_slug(cls, owner: str, model_slug: str, model_scenario_slug: str) -> "ModelScenario":
         """
         Initialize the Scenario object from the slugs.
