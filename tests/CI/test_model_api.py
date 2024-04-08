@@ -10,5 +10,5 @@ def test_model_search():
 
 
 def test_model_get():
-    models = api.models.get(owner="me", model_slug=EXAMPLE_MODEL)
+    models = api.models.get(owner="admin|sample", model_slug=EXAMPLE_MODEL)
     assert isinstance(models, api.generated_schema.Model)
