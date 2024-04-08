@@ -13,6 +13,7 @@ from tz.client.api.schemas import PydanticBaseModel
 
 class AssetCreate(PydanticBaseModel):
     name: str | None = Field(None, title="Name")
+    capacity: float | None = Field(None, title="Capacity")
     operating_status: str | None = Field(None, title="Operating Status")
     operating_status_detail: str | None = Field(None, title="Operating Status Detail")
     latitude: float | None = Field(None, title="Latitude")
@@ -40,6 +41,7 @@ class AssetCreate(PydanticBaseModel):
 class AssetResourcePatch(PydanticBaseModel):
     uuid: str | None = Field(None, title="Uuid")
     name: str | None = Field(None, title="Name")
+    capacity: float | None = Field(None, title="Capacity")
     operating_status: str | None = Field(None, title="Operating Status")
     operating_status_detail: str | None = Field(None, title="Operating Status Detail")
     latitude: float | None = Field(None, title="Latitude")
@@ -89,7 +91,6 @@ class CommodityResourcePatch(PydanticBaseModel):
     technology_id: str | None = Field(None, title="Technology Id")
     owner: str | None = Field(None, title="owner")
     technology: str | None = Field(None, title="technology")
-    operating_modes: list[str] | None = Field(None, title="operating_modes")
     records: list[str] | None = Field(None, title="records")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
@@ -404,7 +405,6 @@ class OperatingModeCreate(PydanticBaseModel):
     name: str | None = Field(None, title="Name")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     technology: str | None = Field(None, title="technology")
-    commodity: str | None = Field(None, title="commodity")
 
 
 class OperatingModeResourcePatch(PydanticBaseModel):
@@ -416,11 +416,34 @@ class OperatingModeResourcePatch(PydanticBaseModel):
     name: str | None = Field(None, title="Name")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     technology_id: str | None = Field(None, title="Technology Id")
-    commodity_id: str | None = Field(None, title="Commodity Id")
     owner: str | None = Field(None, title="owner")
     technology: str | None = Field(None, title="technology")
-    commodity: str | None = Field(None, title="commodity")
     records: list[str] | None = Field(None, title="records")
+
+
+class ParameterCreateSchema(PydanticBaseModel):
+    record_type: str = Field(..., title="Record Type")
+    node: str | None = Field(None, title="Node")
+    edge: str | None = Field(None, title="Edge")
+    technology: str = Field(..., title="Technology")
+    commodity: str = Field(..., title="Commodity")
+    operating_mode: str = Field(..., title="Operating Mode")
+    year: int = Field(..., title="Year")
+    n_year_parts: int = Field(..., title="N Year Parts")
+    year_part: int = Field(..., title="Year Part")
+    n_day_parts: int = Field(..., title="N Day Parts")
+    day_part: int = Field(..., title="Day Part")
+    value: float = Field(..., title="Value")
+    model_scenario: str | None = Field(None, title="Model Scenario")
+
+
+class ParameterPostResponseSchema(PydanticBaseModel):
+    created: list[UUID] = Field(..., title="Created")
+    updated: list[UUID] = Field(..., title="Updated")
+
+
+class ParameterPostSchema(PydanticBaseModel):
+    parameters: list[ParameterCreateSchema] = Field(..., title="Parameters")
 
 
 class PotentialResponse(PydanticBaseModel):
@@ -628,9 +651,9 @@ class TechnologyCreate(PydanticBaseModel):
     is_storage: bool | None = Field(False, title="Is Storage")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     commodities: list[str] | None = Field(None, title="commodities")
-    operating_modes: list[str] | None = Field(None, title="operating_modes")
     assets: list[str] | None = Field(None, title="assets")
     records: list[str] | None = Field(None, title="records")
+    operating_modes: list[str] | None = Field(None, title="operating_modes")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
 
@@ -646,9 +669,9 @@ class TechnologyResourcePatch(PydanticBaseModel):
     properties: dict[str, Any] | None = Field(None, title="Properties")
     owner: str | None = Field(None, title="owner")
     commodities: list[str] | None = Field(None, title="commodities")
-    operating_modes: list[str] | None = Field(None, title="operating_modes")
     assets: list[str] | None = Field(None, title="assets")
     records: list[str] | None = Field(None, title="records")
+    operating_modes: list[str] | None = Field(None, title="operating_modes")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
 
@@ -833,6 +856,7 @@ class NodeResourcePatch(PydanticBaseModel):
 class Asset(PydanticBaseModel):
     uuid: UUID = Field(..., title="Uuid")
     name: str | None = Field(None, title="Name")
+    capacity: float | None = Field(None, title="Capacity")
     operating_status: str | None = Field(None, title="Operating Status")
     operating_status_detail: str | None = Field(None, title="Operating Status Detail")
     latitude: float | None = Field(None, title="Latitude")
@@ -879,7 +903,6 @@ class Commodity(PydanticBaseModel):
     properties: dict[str, Any] | None = Field(None, title="Properties")
     owner: str = Field(..., title="Owner")
     technology: str | Technology | None = Field(None, title="Technology")
-    operating_modes: list[OperatingMode] | list[str] | None = Field(None, title="Operating Modes")
     records: list[Record] | list[str] | None = Field(None, title="Records")
     parents: list[Commodity] | list[str] | None = Field(None, title="Parents")
     children: list[Commodity] | list[str] | None = Field(None, title="Children")
@@ -1071,7 +1094,6 @@ class OperatingMode(PydanticBaseModel):
     properties: dict[str, Any] | None = Field(None, title="Properties")
     owner: str = Field(..., title="Owner")
     technology: str | Technology | None = Field(None, title="Technology")
-    commodity: str | Commodity | None = Field(None, title="Commodity")
     records: list[Record] | list[str] | None = Field(None, title="Records")
 
 
@@ -1080,6 +1102,10 @@ class OperatingModePagination(PydanticBaseModel):
     next_page: int | None = Field(..., title="next_page")
     total_results: int | None = Field(..., title="total_results")
     operating_modes: list[OperatingMode] | None = Field(..., title="")
+
+
+class ParameterGetResponseSchema(PydanticBaseModel):
+    parameters: list[Record] = Field(..., title="Parameters")
 
 
 class PowerPlant(PydanticBaseModel):
@@ -1099,7 +1125,6 @@ class PowerTransmission(PydanticBaseModel):
 class PowerUnit(PydanticBaseModel):
     asset_id: UUID = Field(..., title="Asset Id")
     power_unit: str = Field(..., title="Power Unit")
-    capacity: float | None = Field(None, title="Capacity")
     capacity_rating: str | None = Field(None, title="Capacity Rating")
     is_captive: bool | None = Field(None, title="Is Captive")
     captive_use: str | None = Field(None, title="Captive Use")
@@ -1293,6 +1318,7 @@ Model.model_rebuild()
 ModelScenario.model_rebuild()
 Node.model_rebuild()
 OperatingMode.model_rebuild()
+ParameterGetResponseSchema.model_rebuild()
 Publisher.model_rebuild()
 Record.model_rebuild()
 Run.model_rebuild()
