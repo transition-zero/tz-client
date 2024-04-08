@@ -15,6 +15,6 @@ def test_scenario_search():
 
 def test_scenario_get():
     scenario = api.model_scenarios.get(
-        owner="admin|sample", model_slug="feo-indonesia", model_scenario_slug="baseline"
+        owner="feo-core-admin", model_slug="feo-indonesia", model_scenario_slug="baseline"
     )
     assert isinstance(scenario, api.generated_schema.ModelScenario)

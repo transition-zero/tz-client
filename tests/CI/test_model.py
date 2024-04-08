@@ -4,7 +4,7 @@ from tz.client import Model, ModelScenario
 
 
 def test_model_init():
-    model = Model.from_fullslug("admin|sample:feo-indonesia")
+    model = Model.from_fullslug("feo-core-admin:feo-indonesia")
     assert isinstance(model, Model)
     assert model.slug == "feo-indonesia"
 
@@ -34,7 +34,7 @@ def test_search_pagination():
 
 
 def test_model_scenarios():
-    model = Model.from_slug(owner="admin|sample", model_slug="feo-indonesia")
+    model = Model.from_slug(owner="feo-core-admin", model_slug="feo-indonesia")
     scenarios = model.model_scenarios
 
     assert isinstance(scenarios, list)
@@ -43,7 +43,7 @@ def test_model_scenarios():
 
 
 def test_model_str():
-    model = Model.from_slug(owner="admin|sample", model_slug="feo-indonesia")
+    model = Model.from_slug(owner="feo-core-admin", model_slug="feo-indonesia")
     assert str(model) == "Model: Indonesia Power Grid (id=feo-indonesia)"
 
     # Note: Removing this for now. See ENG-845.

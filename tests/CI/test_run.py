@@ -5,13 +5,13 @@ from tz.client import ModelScenario, Run
 
 @pytest.fixture
 def run_fixture():
-    run_result = Run.from_fullslug("admin|sample:feo-indonesia:baseline:run1")
+    run_result = Run.from_fullslug("feo-core-admin:feo-indonesia:baseline:run1")
     return run_result
 
 
 @pytest.fixture
 def run_fixture_with_chart_data():
-    run_result = Run.from_fullslug("admin|sample:feo-indonesia:baseline:run1")
+    run_result = Run.from_fullslug("feo-core-admin:feo-indonesia:baseline:run1")
     # See: ENG-845
     # if utils.ENVIRONMENT == "staging":
     #     run_result = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
@@ -56,7 +56,7 @@ def test_run_model_scenario(run_fixture):
 
 
 def test_run_str(run_fixture):
-    output = "Run: Run 1 (fullslug=me:feo-indonesia:baseline:run1)"
+    output = "Run: Run 1 (fullslug=feo-core-admin:feo-indonesia:baseline:run1)"
     # See: ENG-845
     # if utils.ENVIRONMENT == "staging":
     #     output = "Run: demo (id=feo-global-indonesia:feo-indonesia-current-policies:demo)"

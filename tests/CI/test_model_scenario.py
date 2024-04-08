@@ -5,7 +5,7 @@ from tz.client import Model, ModelScenario, Run
 
 @pytest.fixture
 def scenario():
-    scenario = ModelScenario.from_fullslug("admin|sample:feo-indonesia:baseline")
+    scenario = ModelScenario.from_fullslug("feo-core-admin:feo-indonesia:baseline")
     # Note: Removing this for now. See ENG-845.
     #
     # if utils.ENVIRONMENT == "staging":
