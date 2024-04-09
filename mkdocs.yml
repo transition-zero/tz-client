@@ -32,7 +32,7 @@ nav:
         - Generation: data-coverage/power/generation.md
         - Assets: data-coverage/power/assets.md
       - Steel: data-coverage/steel/index.md
-    # - FEO-OSeMOSYS: '!import https://github.com/transition-zero/tz-osemosys'
+    - TZ-OSeMOSYS: '!import https://github.com/transition-zero/tz-osemosys?branch=main'
   - API Reference: redoc.md
   - Tutorials: '!import https://github.com/transition-zero/feo-client-examples?branch=main&docs_dir=feo-client-examples'
   - Tech Blog: https://transitionzero.medium.com/
