@@ -70,6 +70,29 @@ class BodyRecordBulkCreateResource(PydanticBaseModel):
     file: bytes = Field(..., title="File")
 
 
+class BodyRunDataCapacityBulkCreateResource(PydanticBaseModel):
+    file: bytes = Field(..., title="File")
+
+
+class BodyRunDataCostBulkCreateResource(PydanticBaseModel):
+    file: bytes = Field(..., title="File")
+
+
+class BodyRunDataFlowBulkCreateResource(PydanticBaseModel):
+    file: bytes = Field(..., title="File")
+
+
+class BodyRunDataProductionBulkCreateResource(PydanticBaseModel):
+    file: bytes = Field(..., title="File")
+
+
+class CapacityType(Enum):
+    gross = "gross"
+    new = "new"
+    residual = "residual"
+    retirement = "retirement"
+
+
 class CommodityCreate(PydanticBaseModel):
     slug: str | None = Field(None, title="Slug")
     public: bool | None = Field(True, title="Public")
@@ -399,6 +422,11 @@ class NodeTypeAlias(Enum):
     voivodeship = "voivodeship"
 
 
+class NodesOrEdgesType(Enum):
+    nodes = "nodes"
+    edges = "edges"
+
+
 class OperatingModeCreate(PydanticBaseModel):
     slug: str | None = Field(None, title="Slug")
     public: bool | None = Field(True, title="Public")
@@ -552,6 +580,50 @@ class RunCreate(PydanticBaseModel):
     featured: bool | None = Field(False, title="Featured")
     model_scenario: str | None = Field(None, title="model_scenario")
     urls: list[str] | None = Field(None, title="urls")
+    run_data_capacity: list[str] | None = Field(None, title="run_data_capacity")
+    run_data_flow: list[str] | None = Field(None, title="run_data_flow")
+    run_data_cost: list[str] | None = Field(None, title="run_data_cost")
+    run_data_production: list[str] | None = Field(None, title="run_data_production")
+
+
+class RunDataCapacityCreate(PydanticBaseModel):
+    slug: str | None = Field(None, title="Slug")
+    public: bool | None = Field(True, title="Public")
+    year: int | None = Field(None, title="Year")
+    capacity_type: CapacityType | None = None
+    nodes_or_edges: NodesOrEdgesType | None = None
+    data: dict[str, Any] | None = Field(None, title="Data")
+    run: str | None = Field(None, title="run")
+
+
+class RunDataCostCreate(PydanticBaseModel):
+    slug: str | None = Field(None, title="Slug")
+    public: bool | None = Field(True, title="Public")
+    year: int | None = Field(None, title="Year")
+    year_part: int | None = Field(None, title="Year Part")
+    day_part: int | None = Field(None, title="Day Part")
+    data: dict[str, Any] | None = Field(None, title="Data")
+    run: str | None = Field(None, title="run")
+
+
+class RunDataFlowCreate(PydanticBaseModel):
+    slug: str | None = Field(None, title="Slug")
+    public: bool | None = Field(True, title="Public")
+    year: int | None = Field(None, title="Year")
+    year_part: int | None = Field(None, title="Year Part")
+    day_part: int | None = Field(None, title="Day Part")
+    data: dict[str, Any] | None = Field(None, title="Data")
+    run: str | None = Field(None, title="run")
+
+
+class RunDataProductionCreate(PydanticBaseModel):
+    slug: str | None = Field(None, title="Slug")
+    public: bool | None = Field(True, title="Public")
+    year: int | None = Field(None, title="Year")
+    year_part: int | None = Field(None, title="Year Part")
+    day_part: int | None = Field(None, title="Day Part")
+    data: dict[str, Any] | None = Field(None, title="Data")
+    run: str | None = Field(None, title="run")
 
 
 class RunResourcePatch(PydanticBaseModel):
@@ -570,6 +642,10 @@ class RunResourcePatch(PydanticBaseModel):
     model_scenario: str | None = Field(None, title="model_scenario")
     jobs: list[str] | None = Field(None, title="jobs")
     urls: list[str] | None = Field(None, title="urls")
+    run_data_capacity: list[str] | None = Field(None, title="run_data_capacity")
+    run_data_flow: list[str] | None = Field(None, title="run_data_flow")
+    run_data_cost: list[str] | None = Field(None, title="run_data_cost")
+    run_data_production: list[str] | None = Field(None, title="run_data_production")
 
 
 class ScenarioIndex(PydanticBaseModel):
@@ -1206,6 +1282,86 @@ class Run(PydanticBaseModel):
     model_scenario: str | ModelScenario = Field(..., title="Model Scenario")
     jobs: list[Job] | list[str] | None = Field(None, title="Jobs")
     urls: list[UrlIndex] | list[str] | None = Field(None, title="Urls")
+
+
+class RunDataCapacity(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    slug: str | None = Field(..., title="Slug")
+    public: bool | None = Field(True, title="Public")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    year: int = Field(..., title="Year")
+    capacity_type: CapacityType
+    nodes_or_edges: NodesOrEdgesType
+    data: dict[str, Any] = Field(..., title="Data")
+    owner: str = Field(..., title="Owner")
+    run: str | Run = Field(..., title="Run")
+
+
+class RunDataCapacityPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_data_capacity: list[RunDataCapacity] | None = Field(..., title="")
+
+
+class RunDataCost(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    slug: str | None = Field(..., title="Slug")
+    public: bool | None = Field(True, title="Public")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    year: int = Field(..., title="Year")
+    year_part: int = Field(..., title="Year Part")
+    day_part: int = Field(..., title="Day Part")
+    data: dict[str, Any] = Field(..., title="Data")
+    owner: str = Field(..., title="Owner")
+    run: str | Run = Field(..., title="Run")
+
+
+class RunDataCostPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_data_cost: list[RunDataCost] | None = Field(..., title="")
+
+
+class RunDataFlow(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    slug: str | None = Field(..., title="Slug")
+    public: bool | None = Field(True, title="Public")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    year: int = Field(..., title="Year")
+    year_part: int = Field(..., title="Year Part")
+    day_part: int = Field(..., title="Day Part")
+    data: dict[str, Any] = Field(..., title="Data")
+    owner: str = Field(..., title="Owner")
+    run: str | Run = Field(..., title="Run")
+
+
+class RunDataFlowPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_data_flow: list[RunDataFlow] | None = Field(..., title="")
+
+
+class RunDataProduction(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    slug: str | None = Field(..., title="Slug")
+    public: bool | None = Field(True, title="Public")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    year: int = Field(..., title="Year")
+    year_part: int = Field(..., title="Year Part")
+    day_part: int = Field(..., title="Day Part")
+    data: dict[str, Any] = Field(..., title="Data")
+    owner: str = Field(..., title="Owner")
+    run: str | Run = Field(..., title="Run")
+
+
+class RunDataProductionPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_data_production: list[RunDataProduction] | None = Field(..., title="")
 
 
 class RunPagination(PydanticBaseModel):
