@@ -5,17 +5,17 @@ from tz.client import AssetCollection, Node
 
 @pytest.fixture
 def node():
-    return Node.from_slug("DEU")
+    return Node.from_slug("IDN")
 
 
 def test_node_initialization(node):
-    assert node.slug == "DEU"
+    assert node.slug == "IDN"
 
 
 def test_node_search():
-    nodes = Node.search("Germany")
+    nodes = Node.search("Indonesia")
     node_slugs = [node.slug for node in nodes]
-    assert "DEU" in node_slugs
+    assert "IDN" in node_slugs
 
 
 @pytest.mark.xfail(reason="v2 migration; assets needs a bit of work")
