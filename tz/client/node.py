@@ -87,7 +87,9 @@ class Node(schemas.NodeBase):
             self._assets = AssetCollection.from_parent_node(node_id=self.id)
         return self._assets
 
+
     def get_children(self, child_type=None):
+        """get children of this node with option to specify node type e.g. "admin_0" """
         node_data = api.nodes.get(ids=self.id, includes="children")
         if child_type is None:
             return [Node.from_id(child.id) for child in node_data[0].children]
