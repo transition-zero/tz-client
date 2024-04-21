@@ -55,3 +55,8 @@ def test_node_geometry(node):
 
 def test_node_str(node):
     assert str(node) == "Node: Germany (id=DEU)"
+
+
+def test_node_children_with_type():
+    children = Node.search("Europe")[0].get_children(child_type="admin_1")
+    assert all([child.node_type == "admin_1" for child in children])

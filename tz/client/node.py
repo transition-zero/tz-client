@@ -1,15 +1,15 @@
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 from tz.client import api
 from tz.client.api import schemas
 from tz.client.asset import AssetCollection
 from tz.client.geospatial import Geometry
 
+
 # use property decorator to facilitate getting and setting property
 
 
 class Node(schemas.NodeBase):
-
     """
     <!--
     The Node class enables access to geospatially-referenced data of a given node.
@@ -87,10 +87,12 @@ class Node(schemas.NodeBase):
             self._assets = AssetCollection.from_parent_node(node_id=self.id)
         return self._assets
 
-    @classmethod
-    def _get_children(cls, ids):
-        node_data = api.nodes.get(ids=ids, includes="children")
-        return [cls(**child.model_dump()) for child in node_data[0].children]
+    def get_children(self, child_type=None):
+        node_data = api.nodes.get(ids=self.id, includes="children")
+        if child_type is None:
+            return [Node.from_id(child.id) for child in node_data[0].children]
+        else:
+            return [Node.from_id(child.id) for child in node_data[0].children if child.node_type == child_type]
 
     @classmethod
     def _get_parents(cls, ids):
@@ -98,10 +100,10 @@ class Node(schemas.NodeBase):
         return [cls(**parent.model_dump()) for parent in node_data[0].parents]
 
     @property
-    def children(self) -> list["Node"]:
+    def children(self):
         """A set of nodes which are the heirarchical children of this node."""
         if self._children is None:
-            self._children = self._get_children(self.id)
+            self._children = self.get_children()
             return self._children
         return self._children
 

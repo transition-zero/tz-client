@@ -22,6 +22,7 @@ dependencies = [
   "httpx>0.25",
   "click>8.1",
   "shapely",
+  "python-dotenv"
 ]
 
 [project.optional-dependencies] # Optional
