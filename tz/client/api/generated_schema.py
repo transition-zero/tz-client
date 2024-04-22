@@ -548,6 +548,21 @@ class RecordType(PydanticBaseModel):
     description: str = Field(..., title="Description")
 
 
+class ResidualCapacityDataPoint(PydanticBaseModel):
+    year: int = Field(..., title="Year")
+    value: float = Field(..., title="Value")
+    unit: str = Field(..., title="Unit")
+
+
+class ResidualCapacityTimeseries(PydanticBaseModel):
+    unit: str = Field(..., title="Unit")
+    residual_capacity_timeseries: list[ResidualCapacityDataPoint] = Field(
+        ..., title="Residual Capacity Timeseries"
+    )
+    technology: str = Field(..., title="Technology")
+    node: str = Field(..., title="Node")
+
+
 class RunCreate(PydanticBaseModel):
     slug: str | None = Field(None, title="Slug")
     public: bool | None = Field(True, title="Public")
@@ -1014,6 +1029,13 @@ class ValidationError(PydanticBaseModel):
 
 class HTTPValidationError(PydanticBaseModel):
     detail: list[ValidationError] | None = Field(None, title="Detail")
+
+
+class MultiResidualCapacityResponse(PydanticBaseModel):
+    model_scenario_slug: str = Field(..., title="Model Scenario Slug")
+    model_scenario_residual_capacities: list[ResidualCapacityTimeseries] = Field(
+        ..., title="Model Scenario Residual Capacities"
+    )
 
 
 class NodeCreate(PydanticBaseModel):
