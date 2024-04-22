@@ -41,4 +41,4 @@ def test_model_scenarios(username):
 
 def test_model_str(username):
     model = Model.from_slug(owner=username, model_slug="feo-indonesia")
-    assert str(model) == "Model: Indonesia Power Grid (id=feo-indonesia)"
+    assert str(model) == "Model: Indonesia Power Grid (slug=feo-indonesia)"

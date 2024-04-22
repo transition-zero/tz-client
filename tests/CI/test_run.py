@@ -4,21 +4,15 @@ from tz.client import ModelScenario, Run
 
 
 @pytest.fixture
-def run_fixture():
-    run_result = Run.from_fullslug("feo-core-admin:feo-indonesia:baseline:run1")
+def run_fixture(username):
+    run_result = Run.from_fullslug(f"{username}:feo-indonesia:nz-2050:run1")
     return run_result
 
 
 @pytest.fixture
 def run_fixture_with_chart_data():
-    run_result = Run.from_fullslug("feo-core-admin:feo-indonesia:baseline:run1")
-    # See: ENG-845
-    # if utils.ENVIRONMENT == "staging":
-    #     run_result = Run.from_id("feo-global-indonesia:feo-indonesia-current-policies:demo")
-    # elif utils.ENVIRONMENT == "production":
-    #     run_result = Run.from_id("feo-global-indonesia:baseline:main")
-    # else:
-    #     raise ValueError("Unknown environment")
+    # TODO:
+    run_result = Run.from_fullslug(...)
     return run_result
 
 
@@ -52,18 +46,11 @@ def test_search_pagination():
 def test_run_model_scenario(run_fixture):
     model_scenario = run_fixture.model_scenario
     assert isinstance(model_scenario, ModelScenario)
-    assert model_scenario.slug == "baseline"
+    assert model_scenario.slug == "nz-2050"
 
 
 def test_run_str(run_fixture):
-    output = "Run: Run 1 (fullslug=feo-core-admin:feo-indonesia:baseline:run1)"
-    # See: ENG-845
-    # if utils.ENVIRONMENT == "staging":
-    #     output = "Run: demo (id=feo-global-indonesia:feo-indonesia-current-policies:demo)"
-    # elif utils.ENVIRONMENT == "production":
-    #     output = "Run: main (id=feo-global-indonesia:net-zero-2060:main)"
-    # else:
-    #     raise ValueError("Unknown environment")
+    output = "Run: Run 1 (fullslug=feo-core-admin:feo-indonesia:nz-2050:run1)"
     assert str(run_fixture) == output
 
 

@@ -51,4 +51,4 @@ def test_node_search_pagination():
 
 
 def test_node_str(node):
-    assert str(node) == "Node: Germany (id=DEU)"
+    assert str(node) == "Node: Indonesia (id=IDN)"
