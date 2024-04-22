@@ -37,9 +37,8 @@ def test_model_search_pagination():
 
 
 def test_model_scenario_model(scenario):
-    model = scenario.model
-    assert isinstance(model, Model)
-    assert model.slug == "feo-indonesia"
+    assert isinstance(scenario.model, Model)
+    assert scenario.model.slug == "feo-indonesia"
 
 
 def test_model_scenario_featured_run(scenario):
