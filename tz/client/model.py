@@ -87,7 +87,7 @@ class Model(generated_schema.Model):
         return [cls(**model.model_dump()) for model in search_results]
 
     def __str__(self) -> str:
-        return f"Model: {self.name} (id={self.slug})"
+        return f"Model: {self.name} (slug={self.slug})"
 
 
 lazy_load_relationship(
