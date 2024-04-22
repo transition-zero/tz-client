@@ -4,16 +4,8 @@ from tz.client import Model, ModelScenario, Run
 
 
 @pytest.fixture
-def scenario():
-    scenario = ModelScenario.from_fullslug("feo-core-admin:feo-indonesia:baseline")
-    # Note: Removing this for now. See ENG-845.
-    #
-    # if utils.ENVIRONMENT == "staging":
-    #     scenario = ModelScenario.from_id("feo-global-indonesia:feo-indonesia-current-policies")
-    # elif utils.ENVIRONMENT == "production":
-    #     scenario = ModelScenario.from_id("feo-global-indonesia:net-zero-2060")
-    # else:
-    #     raise ValueError("Unknown environment")
+def scenario(username):
+    scenario = ModelScenario.from_fullslug(f"{username}:feo-indonesia:nz-2050")
     return scenario
 
 
@@ -56,15 +48,4 @@ def test_model_scenario_featured_run(scenario):
 
 
 def test_model_scenario_str(scenario):
-    assert str(scenario) == "ModelScenario: Current Policies (id=feo-indonesia:baseline)"
-    # Note: Removing this for now. See ENG-845.
-    # if utils.ENVIRONMENT == "staging":
-    #     output = (
-    #         "ModelScenario: FEO Indonesia - Current Policies "
-    #         "(id=feo-global-indonesia:feo-indonesia-current-policies)"
-    #     )
-    # elif utils.ENVIRONMENT == "production":
-    #     output = "ModelScenario: Net Zero 2060 (id=feo-global-indonesia:net-zero-2060)"
-    # else:
-    #     raise ValueError("Unknown environment")
-    # assert str(scenario) == output
+    assert str(scenario) == "ModelScenario: Current Policies (id=feo-indonesia:nz-2050)"
