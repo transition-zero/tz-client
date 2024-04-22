@@ -100,7 +100,7 @@ lazy_load_relationship(
 
 lazy_load_single_relationship(
     Model,
-    "ModelScenario",
+    ModelScenario,
     "featured_scenario",
     lambda self: api.models.get(
         owner=self.owner,
