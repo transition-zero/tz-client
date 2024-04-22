@@ -2,14 +2,10 @@ from datetime import datetime
 
 import pytest
 
-from tz.client import api, utils
+from tz.client import api
 
-if utils.ENVIRONMENT == "staging":
-    FULLSLUG = "feo-global-indonesia:feo-indonesia-current-policies:demo"
-elif utils.ENVIRONMENT == "production":
-    FULLSLUG = "feo-global-indonesia:net-zero-2060:main"
-else:
-    raise ValueError("Unknown environment")
+# TODO: This is wrong; needs to be refactored.
+FULLSLUG = "feo-indonesia:nz-2050:run1"
 
 EXAMPLE_PARAMS = [
     dict(

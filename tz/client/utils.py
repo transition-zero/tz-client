@@ -1,13 +1,6 @@
-import os
 from importlib import import_module
 from types import FunctionType
 from typing import List, Union
-
-ENVIRONMENT = (
-    "staging"
-    if os.environ.get("TZ_API_URL") == "https://staging.api.feo.transitionzero.org"
-    else "production"
-)
 
 
 def parse_slug(fullslug, nparts):
