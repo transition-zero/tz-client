@@ -23,6 +23,7 @@ dependencies = [
   "click>8.1",
   "shapely",
   "python-dotenv"
+  "python-dotenv",
 ]
 
 [project.optional-dependencies] # Optional
@@ -38,7 +39,6 @@ dev = [
   "coverage",
   "types-requests",
   "pandas-stubs",
-  "python-dotenv",
   ]
 
 geo = [
