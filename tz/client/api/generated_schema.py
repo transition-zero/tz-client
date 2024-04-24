@@ -194,6 +194,8 @@ class ModelCreate(PydanticBaseModel):
     nodes: list[str] | None = Field(None, title="nodes")
     technologies: list[str] | None = Field(None, title="technologies")
     urls: list[str] | None = Field(None, title="urls")
+    viewing_users: list[str] | None = Field(None, title="viewing_users")
+    starring_users: list[str] | None = Field(None, title="starring_users")
 
 
 class ModelResourcePatch(PydanticBaseModel):
@@ -221,6 +223,8 @@ class ModelResourcePatch(PydanticBaseModel):
     nodes: list[str] | None = Field(None, title="nodes")
     technologies: list[str] | None = Field(None, title="technologies")
     urls: list[str] | None = Field(None, title="urls")
+    viewing_users: list[str] | None = Field(None, title="viewing_users")
+    starring_users: list[str] | None = Field(None, title="starring_users")
 
 
 class ModelScenarioCreate(PydanticBaseModel):
@@ -305,6 +309,7 @@ class NodeTypeAlias(Enum):
     power_plant = "power_plant"
     power_transmission = "power_transmission"
     grid_region = "grid_region"
+    balancing_authority = "balancing_authority"
     country = "country"
     province = "province"
     major_sub_region = "major_sub_region"
@@ -312,7 +317,6 @@ class NodeTypeAlias(Enum):
     continent = "continent"
     root = "root"
     unknown = "unknown"
-    field_ = ""
     administrative_area = "administrative_area"
     administrative_subdivisions = "administrative_subdivisions"
     arctic_region = "arctic_region"
@@ -546,6 +550,8 @@ class RecordType(PydanticBaseModel):
     slug: str = Field(..., title="Slug")
     units: str = Field(..., title="Units")
     description: str = Field(..., title="Description")
+    aggregating_operation: str = Field(..., title="Aggregating Operation")
+    scale: int | None = Field(None, title="Scale")
 
 
 class ResidualCapacityDataPoint(PydanticBaseModel):
@@ -1215,6 +1221,8 @@ class Model(PydanticBaseModel):
     urls: list[UrlIndex] | list[str] | None = Field(None, title="Urls")
     featured_scenario: ModelScenario | str | None = Field(None, title="Featured Scenario")
     node_summary: NodeSummary | None = None
+    stars: int | None = Field(0, title="Stars")
+    views: int | None = Field(0, title="Views")
 
 
 class ModelPagination(PydanticBaseModel):
