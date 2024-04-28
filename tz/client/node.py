@@ -102,7 +102,7 @@ class Node(schemas.NodeBase):
         return [cls(**parent.model_dump()) for parent in node_data[0].parents]
 
     @property
-    def children(self):
+    def children(self) -> list["Node"]:
         """A set of nodes which are the heirarchical children of this node."""
         if self._children is None:
             self._children = self.get_children()
