@@ -90,11 +90,11 @@ class Node(schemas.NodeBase):
 
     def get_children(self, child_type=None):
         """get children of this node with option to specify node type e.g. "admin_0" """
-        node_data = api.nodes.get(ids=self.id, includes="children")
+        node_data = api.nodes.get(ids=self.id, includes="children")[0]
         if child_type is None:
-            return [Node.from_id(child.id) for child in node_data[0].children]
+            return [Node(**child.model_dump()) for child in node_data.children]
         else:
-            return [Node.from_id(child.id) for child in node_data[0].children if child.node_type == child_type]
+            return [Node(**child.model_dump()) for child in node_data.children if child.node_type == child_type]
 
     @classmethod
     def _get_parents(cls, ids):
