@@ -5,7 +5,7 @@ from tz.client import Model, ModelScenario, Run
 
 @pytest.fixture
 def scenario(username):
-    scenario = ModelScenario.from_fullslug(f"{username}:feo-indonesia:nz-2050")
+    scenario = ModelScenario.from_fullslug(f"{username}:feo-indonesia:net-zero-2060")
     return scenario
 
 
@@ -19,7 +19,7 @@ def test_model_scenario_search():
     assert isinstance(scenarios[0], ModelScenario)
 
 
-def test_model_search_pagination():
+def test_model_scenario_search_pagination():
     PAGE_LIMIT = 2
     items1 = ModelScenario.search(limit=PAGE_LIMIT, page=0)
     assert len(items1) <= PAGE_LIMIT
@@ -47,4 +47,4 @@ def test_model_scenario_featured_run(scenario):
 
 
 def test_model_scenario_str(scenario):
-    assert str(scenario) == "ModelScenario: Current Policies (id=feo-indonesia:nz-2050)"
+    assert str(scenario) == "ModelScenario: Net Zero 2060 (id=feo-indonesia:net-zero-2060)"

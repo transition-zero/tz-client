@@ -5,7 +5,7 @@ from tz.client import ModelScenario, Run
 
 @pytest.fixture
 def run_fixture(username):
-    run_result = Run.from_fullslug(f"{username}:feo-indonesia:nz-2050:run1")
+    run_result = Run.from_fullslug(f"{username}:feo-indonesia:net-zero-2060:run1")
     return run_result
 
 
@@ -39,6 +39,7 @@ def test_search_pagination():
 
     ids1 = {item.fullslug for item in items1}
     ids2 = {item.fullslug for item in items2}
+
     # assert that items on different pages are all different
     assert ids1.intersection(ids2) == set()
 
@@ -46,11 +47,11 @@ def test_search_pagination():
 def test_run_model_scenario(run_fixture):
     model_scenario = run_fixture.model_scenario
     assert isinstance(model_scenario, ModelScenario)
-    assert model_scenario.slug == "nz-2050"
+    assert model_scenario.slug == "net-zero-2060"
 
 
 def test_run_str(run_fixture):
-    output = "Run: Run 1 (fullslug=feo-core-admin:feo-indonesia:nz-2050:run1)"
+    output = "Run: Run 1 (fullslug=feo-core-admin:feo-indonesia:net-zero-2060:run1)"
     assert str(run_fixture) == output
 
 

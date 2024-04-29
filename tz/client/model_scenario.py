@@ -6,10 +6,6 @@ from tz.client.utils import lazy_load_single_relationship
 
 
 class ModelScenario(generated_schema.ModelScenario):
-    # Cached fields we save when built from `from_slug` or `search`.
-    _model_slug: Optional[str] = None
-    _owner: Optional[str] = None
-
     # Lazy-loaded
     _model: Optional["Model"] = None  # type: ignore[name-defined] # noqa: F821
     _featured_run: Optional["Run"] = None  # type: ignore[name-defined] # noqa: F821
@@ -49,8 +45,6 @@ class ModelScenario(generated_schema.ModelScenario):
             owner=owner, model_slug=model_slug, model_scenario_slug=model_scenario_slug
         )
         c = cls(**scenario.model_dump())
-        c._model_slug = model_slug
-        c._owner = owner
         return c
 
     @classmethod
@@ -93,26 +87,14 @@ class ModelScenario(generated_schema.ModelScenario):
             page=page,
         )
 
-        cs = [cls(**scenario.model_dump()) for scenario in search_results]
-        for c in cs:
-            c._model_slug = model_slug
-            c._owner = owner_id  # TODO: This should be 'owner'. See ENG-848
-        return cs
+        return [cls(**scenario.model_dump()) for scenario in search_results]
 
     @property
     def id(self) -> str:
         """
         The ID of the scenario. A combination of the model slug and scenario slug.
         """
-        return f"{self._model_slug}:{self.slug}"
-
-    # @property
-    # def featured_run(self) -> Optional["Run"]:
-    #     """The featured run associated with this scenario."""
-    #     scenario_data = api.scenarios.get(fullslug=self.id, includes="featured_run")
-    #     if scenario_data.featured_run is None:
-    #         return None
-    #     return factory.run(**scenario_data.featured_run.model_dump())
+        return f"{self.model.slug}:{self.slug}"  # type: ignore[union-attr]
 
     # @property
     # def runs(self) -> list["Run"]:
@@ -130,9 +112,9 @@ lazy_load_single_relationship(
     ModelScenario,
     "Model",
     "model",
-    lambda self: api.model_scenarios.get(
-        owner=self._owner,
-        model_slug=self._model_slug,
+    lambda self, ctx: api.model_scenarios.get(
+        owner=self.owner,
+        model_slug=ctx["model"].split(":")[1],
         model_scenario_slug=self.slug,
         includes="model",
     ),
@@ -142,9 +124,9 @@ lazy_load_single_relationship(
     ModelScenario,
     "Run",
     "featured_run",
-    lambda self: api.model_scenarios.get(
-        owner=self._owner,
-        model_slug=self._model_slug,
+    lambda self, ctx: api.model_scenarios.get(
+        owner=self.owner,
+        model_slug=ctx["model"].split(":")[1],
         model_scenario_slug=self.slug,
         includes="featured_run",
     ),

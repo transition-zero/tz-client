@@ -91,12 +91,12 @@ lazy_load_relationship(
     Technology,
     Technology,
     "children",
-    lambda self: api.technologies.get(slug=self.slug, includes="children"),
+    lambda self, _: api.technologies.get(slug=self.slug, includes="children"),
 )
 
 lazy_load_relationship(
     Technology,
     Technology,
     "parents",
-    lambda self: api.technologies.get(slug=self.slug, includes="parents"),
+    lambda self, _: api.technologies.get(slug=self.slug, includes="parents"),
 )

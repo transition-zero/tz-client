@@ -38,6 +38,11 @@ def lazy_load_relationship(cls, mk_cls, field, loader, f=id, g=id):
         return "".join(["_" + c.lower() if c.isupper() else c for c in s]).lstrip("_")
 
     def lazy_loader(self):
+        # Note: Here we assume `self` is a pydantic model and we send the
+        # value of `model_dump()` as context to the `loader` function above.
+        # This is so initial values of fields can be used in lazy-loading.
+        current_context = self.model_dump()
+
         if isinstance(mk_cls, str):
             # Bit of a hack to simplify the lazy-loading troubles: just let people
             # use a string and we'll just import it by convention.
@@ -49,8 +54,9 @@ def lazy_load_relationship(cls, mk_cls, field, loader, f=id, g=id):
         else:
             mk_class = mk_cls
         hidden = f"_{field}"
+
         if getattr(self, hidden) is None:
-            loaded = loader(self)
+            loaded = loader(self, current_context)
             items = f(getattr(loaded, field))
             values = g([mk_class(**c.model_dump()) for c in items])
             setattr(self, hidden, values)

@@ -93,32 +93,6 @@ class Node(generated_schema.Node):
     #         self._assets = AssetCollection.from_parent_node(node_id=self.id)
     #     return self._assets
 
-    # @classmethod
-    # def _get_children(cls, ids):
-    #     node_data = api.nodes.get(ids=ids, includes="children")
-    #     return [cls(**child.model_dump()) for child in node_data[0].children]
-
-    # @classmethod
-    # def _get_parents(cls, ids):
-    #     node_data = api.nodes.get(ids=ids, includes="parents")
-    #     return [cls(**parent.model_dump()) for parent in node_data[0].parents]
-
-    # @property
-    # def children(self) -> list["Node"]:
-    #     """A set of nodes which are the heirarchical children of this node."""
-    #     if self._children is None:
-    #         self._children = self._get_children(self.id)
-    #         return self._children
-    #     return self._children
-
-    # @property
-    # def parents(self) -> list["Node"]:
-    #     """A set of nodes which are the heirarchical ancestors of this node."""
-    #     if self._parents is None:
-    #         self._parents = self._get_parents(self.id)
-    #         return self._parents
-    #     return self._parents
-
     def __str__(self) -> str:
         alias_str = self._primary_node_alias.slug if self._primary_node_alias else ""
         return f"Node: {alias_str} (id={self.slug})"
@@ -128,12 +102,12 @@ lazy_load_relationship(
     Node,
     Node,
     "children",
-    lambda self: api.nodes.get(slug=self.slug, includes="children"),
+    lambda self, _: api.nodes.get(slug=self.slug, includes="children"),
 )
 
 lazy_load_relationship(
     Node,
     Node,
     "parents",
-    lambda self: api.nodes.get(slug=self.slug, includes="parents"),
+    lambda self, _: api.nodes.get(slug=self.slug, includes="parents"),
 )

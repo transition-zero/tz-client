@@ -148,9 +148,6 @@ class RunResults(schemas.PydanticBaseModel):
 
 class Run(generated_schema.Run):
     # _run_results: Optional[RunResults] = None
-    _owner: Optional[str] = None
-    _model_slug: Optional[str] = None
-    _model_scenario_slug: Optional[str] = None
     _model_scenario: Optional["ModelScenario"] = None  # type: ignore[name-defined] # noqa: F821
 
     @classmethod
@@ -194,11 +191,7 @@ class Run(generated_schema.Run):
             model_scenario_slug=model_scenario_slug,
             run_slug=run_slug,
         )
-        c = cls(**run_reponse.model_dump())
-        c._owner = owner
-        c._model_slug = model_slug
-        c._model_scenario_slug = model_scenario_slug
-        return c
+        return cls(**run_reponse.model_dump())
 
     @classmethod
     def search(
@@ -243,18 +236,15 @@ class Run(generated_schema.Run):
             page=page,
         )
 
-        cs = [cls(**r.model_dump()) for r in search_results]
-        for c in cs:
-            c._owner = owner
-            c._model_slug = model_slug
-            c._model_scenario_slug = model_scenario_slug
-        return cs
+        return [cls(**r.model_dump()) for r in search_results]
 
     @property
     def fullslug(self) -> str:
         """The full slug of the run. A combination of the owner username,
         and model, model scenario, and run slugs."""
-        return f"{self._owner}:{self._model_slug}:{self._model_scenario_slug}:{self.slug}"
+        return (
+            f"{self.owner}:{self.model_scenario.model.slug}:{self.model_scenario.slug}:{self.slug}"
+        )
 
     # TODO: Implement this later
     # @property
@@ -268,15 +258,16 @@ class Run(generated_schema.Run):
         return f"Run: {self.name} (fullslug={self.fullslug})"
 
 
-lazy_load_single_relationship(
-    Run,
-    "ModelScenario",
-    "model_scenario",
-    lambda self: api.runs.get(
-        owner=self._owner,
-        model_slug=self._model_slug,
-        model_scenario_slug=self._model_scenario_slug,
+def _load_model_scenario(self, ctx):
+    owner, model_slug, model_scenario_slug = ctx["model_scenario"].split(":")
+    r = api.runs.get(
+        owner=owner,
+        model_slug=model_slug,
+        model_scenario_slug=model_scenario_slug,
         run_slug=self.slug,
         includes="model_scenario",
-    ),
-)
+    )
+    return r
+
+
+lazy_load_single_relationship(Run, "ModelScenario", "model_scenario", _load_model_scenario)

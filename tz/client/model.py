@@ -94,7 +94,8 @@ lazy_load_relationship(
     Model,
     ModelScenario,
     "model_scenarios",
-    lambda self: api.models.get(owner=self.owner, model_slug=self.slug, includes="model_scenarios"),
+    lambda self, _: api.models.get(owner=self.owner, model_slug=self.slug,
+                                   includes="model_scenarios"),
 )
 
 
@@ -102,7 +103,7 @@ lazy_load_single_relationship(
     Model,
     ModelScenario,
     "featured_scenario",
-    lambda self: api.models.get(
+    lambda self, _: api.models.get(
         owner=self.owner,
         model_slug=self.slug,
         includes="featured_scenario",
