@@ -12,7 +12,7 @@ permissions:
   contents: read
   # for the test result publisher
   checks: write
-  pull-requests: write
+  # pull-requests: write
 
 jobs:
   test:
@@ -102,6 +102,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
+        comment_mode: off
         files: |
           test.xml
 
