@@ -25,6 +25,7 @@ jobs:
       GIST_ID: ${{ vars.GIST_ID}}
       TZ_API_URL: ${{ vars.TZ_API_URL}}
       TZ_API_VERSION: ${{ vars.TZ_API_VERSION }}
+      TZ_TEST_DATA_OWNER: admin
 
 
     steps:
@@ -42,7 +43,6 @@ jobs:
         echo "AUTH0_AUDIENCE: ${{ vars.AUTH0_AUDIENCE }}"
         echo "CLIENT_ID: ${{ vars.CLIENT_ID }}"
         echo "TEST_USER: ${{ vars.TEST_USER }}"
-        echo "TEST_PW: ${{ vars.TEST_PW}}"
         echo "GIST_ID: ${{ vars.GIST_ID}}"
         echo "TZ_API_URL: ${{ vars.TZ_API_URL}}"
         echo "TZ_API_VERSION: ${{ vars.TZ_API_VERSION}}"
