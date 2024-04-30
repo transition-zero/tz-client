@@ -93,7 +93,13 @@ jobs:
 
     - name: Test with pytest and capture coverage
       run: |
-        pytest --cov=tz --cov-report=json:coverage.json
+        pytest --cov=tz --cov-report=json:coverage.json --junitxml=test.xml
+
+    - name: Publish test results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      with:
+        files: |
+          test.xml
 
     - name: parse coverage report
       id: show_coverage_val
