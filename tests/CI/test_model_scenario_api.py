@@ -7,8 +7,8 @@ def test_model_scenario_search():
     assert isinstance(scenarios[0], api.generated_schema.ModelScenario)
 
 
-def test_model_scenario_get():
+def test_model_scenario_get(username):
     scenario = api.model_scenarios.get(
-        owner="feo-core-admin", model_slug="feo-indonesia", model_scenario_slug="net-zero-2060"
+        owner=username, model_slug="feo-indonesia", model_scenario_slug="net-zero-2060"
     )
     assert isinstance(scenario, api.generated_schema.ModelScenario)

@@ -50,8 +50,8 @@ def test_run_model_scenario(run_fixture):
     assert model_scenario.slug == "net-zero-2060"
 
 
-def test_run_str(run_fixture):
-    output = "Run: Run 1 (fullslug=feo-core-admin:feo-indonesia:net-zero-2060:run1)"
+def test_run_str(run_fixture, username):
+    output = f"Run: Run 1 (fullslug={username}:feo-indonesia:net-zero-2060:run1)"
     assert str(run_fixture) == output
 
 

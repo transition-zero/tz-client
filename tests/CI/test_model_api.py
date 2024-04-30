@@ -9,6 +9,6 @@ def test_model_search():
     assert isinstance(models[0], api.generated_schema.Model)
 
 
-def test_model_get():
-    models = api.models.get(owner="feo-core-admin", model_slug=EXAMPLE_MODEL)
+def test_model_get(username):
+    models = api.models.get(owner=username, model_slug=EXAMPLE_MODEL)
     assert isinstance(models, api.generated_schema.Model)
