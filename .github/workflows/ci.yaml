@@ -46,6 +46,7 @@ jobs:
         echo "GIST_ID: ${{ vars.GIST_ID}}"
         echo "TZ_API_URL: ${{ vars.TZ_API_URL}}"
         echo "TZ_API_VERSION: ${{ vars.TZ_API_VERSION}}"
+        echo "TZ_TEST_DATA_OWNER: ${{ vars.TZ_TEST_DATA_OWNER}}"
         echo "HOME: $HOME"
 
     - name: mkdir token

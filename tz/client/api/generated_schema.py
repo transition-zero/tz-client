@@ -46,6 +46,10 @@ class BodyRecordBulkCreateResource(PydanticBaseModel):
     file: bytes = Field(..., title="File")
 
 
+class BodyRunResultsChartBulkCreateResource(PydanticBaseModel):
+    file: bytes = Field(..., title="File")
+
+
 class BodyRunResultsCostBulkCreateResource(PydanticBaseModel):
     file: bytes = Field(..., title="File")
 
@@ -80,6 +84,7 @@ class CommodityCreate(PydanticBaseModel):
     rank: int | None = Field(None, title="Rank")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     technology: str | None = Field(None, title="technology")
+    charts: list[str] | None = Field(None, title="charts")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
 
@@ -97,8 +102,55 @@ class CommodityResourcePatch(PydanticBaseModel):
     owner: str | None = Field(None, title="owner")
     technology: str | None = Field(None, title="technology")
     records: list[str] | None = Field(None, title="records")
+    charts: list[str] | None = Field(None, title="charts")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
+
+
+class DayPart(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    slug: str = Field(..., title="Slug")
+    public: bool | None = Field(True, title="Public")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    n_day_parts: int = Field(..., title="N Day Parts")
+    order_idx: int = Field(..., title="Order Idx")
+    description: str | None = Field(None, title="Description")
+    owner: str | None = Field(None, title="Owner")
+    parent: DayPart | str | None = Field(None, title="Parent")
+    children: list[DayPart] | list[str] | None = Field(None, title="Children")
+
+
+class DayPartCreate(PydanticBaseModel):
+    slug: str | None = Field(None, title="Slug")
+    public: bool | None = Field(True, title="Public")
+    n_day_parts: int | None = Field(None, title="N Day Parts")
+    order_idx: int | None = Field(None, title="Order Idx")
+    description: str | None = Field(None, title="Description")
+    parents: list[str] | None = Field(None, title="parents")
+    children: list[str] | None = Field(None, title="children")
+    records: list[str] | None = Field(None, title="records")
+
+
+class DayPartPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    day_parts: list[DayPart] | None = Field(..., title="")
+
+
+class DayPartResourcePatch(PydanticBaseModel):
+    uuid: str | None = Field(None, title="Uuid")
+    slug: str | None = Field(None, title="Slug")
+    public: bool | None = Field(None, title="Public")
+    creation_time: AwareDatetime | None = Field(None, title="Creation Time")
+    owner_id: str | None = Field(None, title="Owner Id")
+    n_day_parts: int | None = Field(None, title="N Day Parts")
+    order_idx: int | None = Field(None, title="Order Idx")
+    description: str | None = Field(None, title="Description")
+    owner: str | None = Field(None, title="owner")
+    parents: list[str] | None = Field(None, title="parents")
+    children: list[str] | None = Field(None, title="children")
+    records: list[str] | None = Field(None, title="records")
 
 
 class DeleteResponse(PydanticBaseModel):
@@ -113,6 +165,7 @@ class EdgeCreate(PydanticBaseModel):
     target_node: str | None = Field(None, title="Target Node")
     is_asset: bool | None = Field(False, title="Is Asset")
     bidirectional: bool | None = Field(True, title="Bidirectional")
+    charts: list[str] | None = Field(None, title="charts")
     sources: list[str] | None = Field(None, title="sources")
 
 
@@ -128,6 +181,7 @@ class EdgeResourcePatch(PydanticBaseModel):
     bidirectional: bool | None = Field(None, title="Bidirectional")
     owner: str | None = Field(None, title="owner")
     records: list[str] | None = Field(None, title="records")
+    charts: list[str] | None = Field(None, title="charts")
     asset_properties: str | None = Field(None, title="asset_properties")
     sources: list[str] | None = Field(None, title="sources")
 
@@ -184,8 +238,6 @@ class ModelCreate(PydanticBaseModel):
     end_year: int | None = Field(None, title="End Year")
     n_year_parts: int | None = Field(1, title="N Year Parts")
     n_day_parts: int | None = Field(1, title="N Day Parts")
-    start_year_part: int | None = Field(1, title="Start Year Part")
-    end_year_part: int | None = Field(1, title="End Year Part")
     status: str | None = Field("draft", title="Status")
     anon_views: int | None = Field(0, title="Anon Views")
     featured_scenario: str | None = Field(None, title="featured_scenario")
@@ -211,8 +263,6 @@ class ModelResourcePatch(PydanticBaseModel):
     end_year: int | None = Field(None, title="End Year")
     n_year_parts: int | None = Field(None, title="N Year Parts")
     n_day_parts: int | None = Field(None, title="N Day Parts")
-    start_year_part: int | None = Field(None, title="Start Year Part")
-    end_year_part: int | None = Field(None, title="End Year Part")
     status: str | None = Field(None, title="Status")
     anon_views: int | None = Field(None, title="Anon Views")
     owner: str | None = Field(None, title="owner")
@@ -444,10 +494,8 @@ class ParameterCreateSchema(PydanticBaseModel):
     commodity: str = Field(..., title="Commodity")
     operating_mode: str = Field(..., title="Operating Mode")
     year: int = Field(..., title="Year")
-    n_year_parts: int = Field(..., title="N Year Parts")
-    year_part: int = Field(..., title="Year Part")
-    n_day_parts: int = Field(..., title="N Day Parts")
-    day_part: int = Field(..., title="Day Part")
+    year_part: str = Field(..., title="Year Part")
+    day_part: str = Field(..., title="Day Part")
     value: float = Field(..., title="Value")
     model_scenario: str | None = Field(None, title="Model Scenario")
 
@@ -469,6 +517,7 @@ class PowerTransmission(PydanticBaseModel):
     asset_id: UUID = Field(..., title="Asset Id")
     capacity_reverse: float | None = Field(None, title="Capacity Reverse")
     voltage: float | None = Field(None, title="Voltage")
+    segments: dict[str, Any] | None = Field(None, title="Segments")
 
 
 class PublisherCreate(PydanticBaseModel):
@@ -497,14 +546,14 @@ class PublisherResourcePatch(PydanticBaseModel):
 class RecordCreate(PydanticBaseModel):
     public: bool | None = Field(True, title="Public")
     year: int | None = Field(None, title="Year")
-    n_year_parts: int | None = Field(None, title="N Year Parts")
-    year_part: int | None = Field(None, title="Year Part")
-    n_day_parts: int | None = Field(None, title="N Day Parts")
-    day_part: int | None = Field(None, title="Day Part")
     timestamp: AwareDatetime | None = Field(None, title="Timestamp")
     value: float | None = Field(None, title="Value")
     properties: dict[str, Any] | None = Field(None, title="Properties")
+    year_part_id: str | None = Field(None, title="Year Part Id")
+    day_part_id: str | None = Field(None, title="Day Part Id")
     record_type: str | None = Field(None, title="Record Type")
+    year_part: str | None = Field(None, title="year_part")
+    day_part: str | None = Field(None, title="day_part")
     node: str | None = Field(None, title="node")
     edge: str | None = Field(None, title="edge")
     model_scenario: str | None = Field(None, title="model_scenario")
@@ -521,13 +570,11 @@ class RecordResourcePatch(PydanticBaseModel):
     creation_time: AwareDatetime | None = Field(None, title="Creation Time")
     owner_id: str | None = Field(None, title="Owner Id")
     year: int | None = Field(None, title="Year")
-    n_year_parts: int | None = Field(None, title="N Year Parts")
-    year_part: int | None = Field(None, title="Year Part")
-    n_day_parts: int | None = Field(None, title="N Day Parts")
-    day_part: int | None = Field(None, title="Day Part")
     timestamp: AwareDatetime | None = Field(None, title="Timestamp")
     value: float | None = Field(None, title="Value")
     properties: dict[str, Any] | None = Field(None, title="Properties")
+    year_part_id: str | None = Field(None, title="Year Part Id")
+    day_part_id: str | None = Field(None, title="Day Part Id")
     node_id: str | None = Field(None, title="Node Id")
     edge_id: str | None = Field(None, title="Edge Id")
     model_scenario_id: str | None = Field(None, title="Model Scenario Id")
@@ -537,6 +584,8 @@ class RecordResourcePatch(PydanticBaseModel):
     operating_mode_id: str | None = Field(None, title="Operating Mode Id")
     record_type: str | None = Field(None, title="Record Type")
     owner: str | None = Field(None, title="owner")
+    year_part: str | None = Field(None, title="year_part")
+    day_part: str | None = Field(None, title="day_part")
     node: str | None = Field(None, title="node")
     edge: str | None = Field(None, title="edge")
     model_scenario: str | None = Field(None, title="model_scenario")
@@ -637,112 +686,53 @@ class RunResultsCapacityPagination(PydanticBaseModel):
     run_results_capacity: list[RunResultsCapacity] | None = Field(..., title="")
 
 
-class RunResultsChart(PydanticBaseModel):
-    uuid: UUID = Field(..., title="Uuid")
-    creation_time: AwareDatetime = Field(..., title="Creation Time")
-    chart_type: str = Field(..., title="Chart Type")
-    series_name: str = Field(..., title="Series Name")
-    series_properties: dict[str, Any] | None = Field(..., title="Series Properties")
-    x: list[float] = Field(..., title="X")
-    y: list[float] = Field(..., title="Y")
-
-
 class RunResultsChartCreate(PydanticBaseModel):
     chart_type: str | None = Field(None, title="Chart Type")
     series_name: str | None = Field(None, title="Series Name")
     series_properties: dict[str, Any] | None = Field(None, title="Series Properties")
+    year: int | None = Field(None, title="Year")
     x: list[float] | None = Field(None, title="X")
     y: list[float] | None = Field(None, title="Y")
+    node_id: str | None = Field(None, title="Node Id")
+    edge_id: str | None = Field(None, title="Edge Id")
+    technology_id: str | None = Field(None, title="Technology Id")
+    commodity_id: str | None = Field(None, title="Commodity Id")
+    year_part_id: str | None = Field(None, title="Year Part Id")
     run: str | None = Field(None, title="run")
-
-
-class RunResultsChartPagination(PydanticBaseModel):
-    current_page: int | None = Field(0, title="current_page")
-    next_page: int | None = Field(..., title="next_page")
-    total_results: int | None = Field(..., title="total_results")
-    run_results_charts: list[RunResultsChart] | None = Field(..., title="")
-
-
-class RunResultsCost(PydanticBaseModel):
-    uuid: UUID = Field(..., title="Uuid")
-    creation_time: AwareDatetime = Field(..., title="Creation Time")
-    year: int = Field(..., title="Year")
-    year_part: int = Field(..., title="Year Part")
-    day_part: int = Field(..., title="Day Part")
-    data: dict[str, Any] = Field(..., title="Data")
+    node: str | None = Field(None, title="node")
+    edge: str | None = Field(None, title="edge")
+    technology: str | None = Field(None, title="technology")
+    commodity: str | None = Field(None, title="commodity")
+    year_part: str | None = Field(None, title="year_part")
 
 
 class RunResultsCostCreate(PydanticBaseModel):
     year: int | None = Field(None, title="Year")
-    year_part: int | None = Field(None, title="Year Part")
-    day_part: int | None = Field(None, title="Day Part")
     data: dict[str, Any] | None = Field(None, title="Data")
+    year_part: str | None = Field(None, title="Year Part")
+    day_part: str | None = Field(None, title="Day Part")
     run: str | None = Field(None, title="run")
-
-
-class RunResultsCostPagination(PydanticBaseModel):
-    current_page: int | None = Field(0, title="current_page")
-    next_page: int | None = Field(..., title="next_page")
-    total_results: int | None = Field(..., title="total_results")
-    run_results_cost: list[RunResultsCost] | None = Field(..., title="")
-
-
-class RunResultsExtrema(PydanticBaseModel):
-    uuid: UUID = Field(..., title="Uuid")
-    creation_time: AwareDatetime = Field(..., title="Creation Time")
-    datum: str = Field(..., title="Datum")
-    min_value: float = Field(..., title="Min Value")
-    min_year: int = Field(..., title="Min Year")
-    min_day_part: int = Field(..., title="Min Day Part")
-    min_year_part: int = Field(..., title="Min Year Part")
-    max_value: float = Field(..., title="Max Value")
-    max_year: int = Field(..., title="Max Year")
-    max_day_part: int = Field(..., title="Max Day Part")
-    max_year_part: int = Field(..., title="Max Year Part")
 
 
 class RunResultsExtremaCreate(PydanticBaseModel):
     datum: str | None = Field(None, title="Datum")
     min_value: float | None = Field(None, title="Min Value")
     min_year: int | None = Field(None, title="Min Year")
-    min_day_part: int | None = Field(None, title="Min Day Part")
-    min_year_part: int | None = Field(None, title="Min Year Part")
     max_value: float | None = Field(None, title="Max Value")
     max_year: int | None = Field(None, title="Max Year")
-    max_day_part: int | None = Field(None, title="Max Day Part")
-    max_year_part: int | None = Field(None, title="Max Year Part")
+    min_year_part: str | None = Field(None, title="Min Year Part")
+    min_day_part: str | None = Field(None, title="Min Day Part")
+    max_year_part: str | None = Field(None, title="Max Year Part")
+    max_day_part: str | None = Field(None, title="Max Day Part")
     run: str | None = Field(None, title="run")
-
-
-class RunResultsExtremaPagination(PydanticBaseModel):
-    current_page: int | None = Field(0, title="current_page")
-    next_page: int | None = Field(..., title="next_page")
-    total_results: int | None = Field(..., title="total_results")
-    run_results_extrema: list[RunResultsExtrema] | None = Field(..., title="")
-
-
-class RunResultsFlow(PydanticBaseModel):
-    uuid: UUID = Field(..., title="Uuid")
-    creation_time: AwareDatetime = Field(..., title="Creation Time")
-    year: int = Field(..., title="Year")
-    year_part: int = Field(..., title="Year Part")
-    day_part: int = Field(..., title="Day Part")
-    data: dict[str, Any] = Field(..., title="Data")
 
 
 class RunResultsFlowCreate(PydanticBaseModel):
     year: int | None = Field(None, title="Year")
-    year_part: int | None = Field(None, title="Year Part")
-    day_part: int | None = Field(None, title="Day Part")
     data: dict[str, Any] | None = Field(None, title="Data")
+    year_part: str | None = Field(None, title="Year Part")
+    day_part: str | None = Field(None, title="Day Part")
     run: str | None = Field(None, title="run")
-
-
-class RunResultsFlowPagination(PydanticBaseModel):
-    current_page: int | None = Field(0, title="current_page")
-    next_page: int | None = Field(..., title="next_page")
-    total_results: int | None = Field(..., title="total_results")
-    run_results_flow: list[RunResultsFlow] | None = Field(..., title="")
 
 
 class RunResultsMetric(PydanticBaseModel):
@@ -767,28 +757,12 @@ class RunResultsMetricPagination(PydanticBaseModel):
     run_results_metrics: list[RunResultsMetric] | None = Field(..., title="")
 
 
-class RunResultsProduction(PydanticBaseModel):
-    uuid: UUID = Field(..., title="Uuid")
-    creation_time: AwareDatetime = Field(..., title="Creation Time")
-    year: int = Field(..., title="Year")
-    year_part: int = Field(..., title="Year Part")
-    day_part: int = Field(..., title="Day Part")
-    data: dict[str, Any] = Field(..., title="Data")
-
-
 class RunResultsProductionCreate(PydanticBaseModel):
     year: int | None = Field(None, title="Year")
-    year_part: int | None = Field(None, title="Year Part")
-    day_part: int | None = Field(None, title="Day Part")
     data: dict[str, Any] | None = Field(None, title="Data")
+    year_part: str | None = Field(None, title="Year Part")
+    day_part: str | None = Field(None, title="Day Part")
     run: str | None = Field(None, title="run")
-
-
-class RunResultsProductionPagination(PydanticBaseModel):
-    current_page: int | None = Field(0, title="current_page")
-    next_page: int | None = Field(..., title="next_page")
-    total_results: int | None = Field(..., title="total_results")
-    run_results_production: list[RunResultsProduction] | None = Field(..., title="")
 
 
 class ScenarioIndex(PydanticBaseModel):
@@ -873,6 +847,7 @@ class TechnologyCreate(PydanticBaseModel):
     commodities: list[str] | None = Field(None, title="commodities")
     assets: list[str] | None = Field(None, title="assets")
     records: list[str] | None = Field(None, title="records")
+    charts: list[str] | None = Field(None, title="charts")
     operating_modes: list[str] | None = Field(None, title="operating_modes")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
@@ -892,6 +867,7 @@ class TechnologyResourcePatch(PydanticBaseModel):
     commodities: list[str] | None = Field(None, title="commodities")
     assets: list[str] | None = Field(None, title="assets")
     records: list[str] | None = Field(None, title="records")
+    charts: list[str] | None = Field(None, title="charts")
     operating_modes: list[str] | None = Field(None, title="operating_modes")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
@@ -1033,6 +1009,65 @@ class ValidationError(PydanticBaseModel):
     type: str = Field(..., title="Error Type")
 
 
+class YearPart(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    slug: str = Field(..., title="Slug")
+    public: bool | None = Field(True, title="Public")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    n_year_parts: int = Field(..., title="N Year Parts")
+    order_idx: int = Field(..., title="Order Idx")
+    description: str | None = Field(None, title="Description")
+    owner: str | None = Field(None, title="Owner")
+    parent: YearPart | str | None = Field(None, title="Parent")
+    children: list[YearPart] | list[str] | None = Field(None, title="Children")
+
+
+class YearPartCreate(PydanticBaseModel):
+    slug: str | None = Field(None, title="Slug")
+    public: bool | None = Field(True, title="Public")
+    n_year_parts: int | None = Field(None, title="N Year Parts")
+    order_idx: int | None = Field(None, title="Order Idx")
+    description: str | None = Field(None, title="Description")
+    parents: list[str] | None = Field(None, title="parents")
+    children: list[str] | None = Field(None, title="children")
+    records: list[str] | None = Field(None, title="records")
+    charts: list[str] | None = Field(None, title="charts")
+
+
+class YearPartPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    year_parts: list[YearPart] | None = Field(..., title="")
+
+
+class YearPartResource(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    slug: str = Field(..., title="Slug")
+    public: bool | None = Field(True, title="Public")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    owner_id: UUID = Field(..., title="Owner Id")
+    n_year_parts: int = Field(..., title="N Year Parts")
+    order_idx: int = Field(..., title="Order Idx")
+    description: str | None = Field(None, title="Description")
+
+
+class YearPartResourcePatch(PydanticBaseModel):
+    uuid: str | None = Field(None, title="Uuid")
+    slug: str | None = Field(None, title="Slug")
+    public: bool | None = Field(None, title="Public")
+    creation_time: AwareDatetime | None = Field(None, title="Creation Time")
+    owner_id: str | None = Field(None, title="Owner Id")
+    n_year_parts: int | None = Field(None, title="N Year Parts")
+    order_idx: int | None = Field(None, title="Order Idx")
+    description: str | None = Field(None, title="Description")
+    owner: str | None = Field(None, title="owner")
+    parents: list[str] | None = Field(None, title="parents")
+    children: list[str] | None = Field(None, title="children")
+    records: list[str] | None = Field(None, title="records")
+    charts: list[str] | None = Field(None, title="charts")
+
+
 class HTTPValidationError(PydanticBaseModel):
     detail: list[ValidationError] | None = Field(None, title="Detail")
 
@@ -1050,7 +1085,7 @@ class NodeCreate(PydanticBaseModel):
     node_type_alias: NodeTypeAlias | None = None
     properties: dict[str, Any] | None = Field(None, title="Properties")
     is_asset: bool | None = Field(False, title="Is Asset")
-    node_type_discriminator: NodeType | None = None
+    charts: list[str] | None = Field(None, title="charts")
     node_type: str | None = Field(None, title="node_type")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
@@ -1072,6 +1107,7 @@ class NodeResourcePatch(PydanticBaseModel):
     owner: str | None = Field(None, title="owner")
     aliases: list[str] | None = Field(None, title="aliases")
     records: list[str] | None = Field(None, title="records")
+    charts: list[str] | None = Field(None, title="charts")
     asset_properties: str | None = Field(None, title="asset_properties")
     node_type: str | None = Field(None, title="node_type")
     parents: list[str] | None = Field(None, title="parents")
@@ -1079,6 +1115,75 @@ class NodeResourcePatch(PydanticBaseModel):
     neighbours_out: list[str] | None = Field(None, title="neighbours_out")
     neighbours_in: list[str] | None = Field(None, title="neighbours_in")
     sources: list[str] | None = Field(None, title="sources")
+
+
+class RunResultsCost(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    year: int = Field(..., title="Year")
+    data: dict[str, Any] = Field(..., title="Data")
+    year_part: YearPart | str = Field(..., title="Year Part")
+    day_part: DayPart | str = Field(..., title="Day Part")
+
+
+class RunResultsCostPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_results_cost: list[RunResultsCost] | None = Field(..., title="")
+
+
+class RunResultsExtrema(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    datum: str = Field(..., title="Datum")
+    min_value: float = Field(..., title="Min Value")
+    min_year: int = Field(..., title="Min Year")
+    max_value: float = Field(..., title="Max Value")
+    max_year: int = Field(..., title="Max Year")
+    min_year_part: YearPart | str = Field(..., title="Min Year Part")
+    min_day_part: DayPart | str = Field(..., title="Min Day Part")
+    max_year_part: YearPart | str = Field(..., title="Max Year Part")
+    max_day_part: DayPart | str = Field(..., title="Max Day Part")
+
+
+class RunResultsExtremaPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_results_extrema: list[RunResultsExtrema] | None = Field(..., title="")
+
+
+class RunResultsFlow(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    year: int = Field(..., title="Year")
+    data: dict[str, Any] = Field(..., title="Data")
+    year_part: YearPart | str = Field(..., title="Year Part")
+    day_part: DayPart | str = Field(..., title="Day Part")
+
+
+class RunResultsFlowPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_results_flow: list[RunResultsFlow] | None = Field(..., title="")
+
+
+class RunResultsProduction(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    year: int = Field(..., title="Year")
+    data: dict[str, Any] = Field(..., title="Data")
+    year_part: YearPart | str = Field(..., title="Year Part")
+    day_part: DayPart | str = Field(..., title="Day Part")
+
+
+class RunResultsProductionPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_results_production: list[RunResultsProduction] | None = Field(..., title="")
 
 
 class Asset(PydanticBaseModel):
@@ -1126,7 +1231,6 @@ class Commodity(PydanticBaseModel):
     properties: dict[str, Any] | None = Field(None, title="Properties")
     owner: str = Field(..., title="Owner")
     technology: str | Technology | None = Field(None, title="Technology")
-    records: list[Record] | list[str] | None = Field(None, title="Records")
     parents: list[Commodity] | list[str] | None = Field(None, title="Parents")
     children: list[Commodity] | list[str] | None = Field(None, title="Children")
 
@@ -1147,7 +1251,6 @@ class Edge(PydanticBaseModel):
     source_node: Node | str | None = Field(None, title="Source Node")
     target_node: Node | str | None = Field(None, title="Target Node")
     is_asset: bool = Field(..., title="Is Asset")
-    records: list[Record] | list[str] | None = Field(None, title="Records")
     sources: list[Source] | list[str] | None = Field(None, title="Sources")
 
 
@@ -1207,8 +1310,6 @@ class Model(PydanticBaseModel):
     end_year: int = Field(..., title="End Year")
     n_year_parts: int | None = Field(1, title="N Year Parts")
     n_day_parts: int | None = Field(1, title="N Day Parts")
-    start_year_part: int | None = Field(1, title="Start Year Part")
-    end_year_part: int | None = Field(1, title="End Year Part")
     status: str | None = Field("draft", title="Status")
     anon_views: int | None = Field(0, title="Anon Views")
     owner: str = Field(..., title="Owner")
@@ -1249,7 +1350,6 @@ class ModelScenario(PydanticBaseModel):
     runs: list[Run] | list[str] | None = Field(None, title="Runs")
     featured_run: Run | str | None = Field(None, title="Featured Run")
     urls: list[UrlIndex] | list[str] | None = Field(None, title="Urls")
-    records: list[Record] | list[str] | None = Field(None, title="Records")
 
 
 class ModelScenarioPagination(PydanticBaseModel):
@@ -1326,7 +1426,6 @@ class OperatingMode(PydanticBaseModel):
     properties: dict[str, Any] | None = Field(None, title="Properties")
     owner: str = Field(..., title="Owner")
     technology: str | Technology | None = Field(None, title="Technology")
-    records: list[Record] | list[str] | None = Field(None, title="Records")
 
 
 class OperatingModePagination(PydanticBaseModel):
@@ -1383,16 +1482,14 @@ class Record(PydanticBaseModel):
     public: bool | None = Field(True, title="Public")
     creation_time: AwareDatetime | None = Field(None, title="Creation Time")
     year: int = Field(..., title="Year")
-    n_year_parts: int = Field(..., title="N Year Parts")
-    year_part: int = Field(..., title="Year Part")
-    n_day_parts: int = Field(..., title="N Day Parts")
-    day_part: int = Field(..., title="Day Part")
     timestamp: AwareDatetime | None = Field(None, title="Timestamp")
     value: float = Field(..., title="Value")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     owner: str = Field(..., title="Owner")
     source_scenario: SourceScenario | str | None = Field(None, title="Source Scenario")
     model_scenario: ModelScenario | str | None = Field(None, title="Model Scenario")
+    year_part: YearPart | str = Field(..., title="Year Part")
+    day_part: DayPart | str = Field(..., title="Day Part")
     node: Node | str | None = Field(None, title="Node")
     edge: Edge | str | None = Field(None, title="Edge")
     technology: Technology | str = Field(..., title="Technology")
@@ -1429,6 +1526,29 @@ class RunPagination(PydanticBaseModel):
     next_page: int | None = Field(..., title="next_page")
     total_results: int | None = Field(..., title="total_results")
     runs: list[Run] | None = Field(..., title="")
+
+
+class RunResultsChart(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    chart_type: str = Field(..., title="Chart Type")
+    series_name: str | None = Field(None, title="Series Name")
+    series_properties: dict[str, Any] | None = Field(..., title="Series Properties")
+    year: int | None = Field(None, title="Year")
+    x: list[float] = Field(..., title="X")
+    y: list[float] = Field(..., title="Y")
+    node: Node | str | None = Field(None, title="Node")
+    edge: Edge | str | None = Field(None, title="Edge")
+    technology: str | Technology | None = Field(None, title="Technology")
+    commodity: Commodity | str | None = Field(None, title="Commodity")
+    year_part: YearPartResource | str | None = Field(None, title="Year Part")
+
+
+class RunResultsChartPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_results_charts: list[RunResultsChart] | None = Field(..., title="")
 
 
 class Source(PydanticBaseModel):
@@ -1469,7 +1589,6 @@ class SourceScenario(PydanticBaseModel):
     owner: str = Field(..., title="Owner")
     scenario_index_id: UUID = Field(..., title="Scenario Index Id")
     source: Source | str = Field(..., title="Source")
-    records: list[Record] | list[str] | None = Field(None, title="Records")
 
 
 class SourceScenarioPagination(PydanticBaseModel):
@@ -1491,7 +1610,6 @@ class Technology(PydanticBaseModel):
     owner: str | None = Field(None, title="Owner")
     commodities: list[Commodity] | list[str] | None = Field(None, title="Commodities")
     operating_modes: list[OperatingMode] | list[str] | None = Field(None, title="Operating Modes")
-    records: list[Record] | list[str] | None = Field(None, title="Records")
     parents: list[Technology] | list[str] | None = Field(None, title="Parents")
     children: list[Technology] | list[str] | None = Field(None, title="Children")
 
@@ -1524,7 +1642,9 @@ class UrlIndexPagination(PydanticBaseModel):
     url_index: list[UrlIndex] | None = Field(..., title="")
 
 
+DayPart.model_rebuild()
 User.model_rebuild()
+YearPart.model_rebuild()
 Asset.model_rebuild()
 Commodity.model_rebuild()
 Edge.model_rebuild()
@@ -1538,3 +1658,4 @@ ParameterGetResponseSchema.model_rebuild()
 Publisher.model_rebuild()
 Record.model_rebuild()
 Run.model_rebuild()
+RunResultsChart.model_rebuild()
