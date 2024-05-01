@@ -78,8 +78,6 @@ addopts = [
     "--strict-markers",
     "--doctest-modules",
     "--doctest-glob=\\*.rst",
-    "--import-mode=importlib",
-    "--assert=rewrite"
 ]
 testpaths = [
     "tests"
