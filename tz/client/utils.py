@@ -1,5 +1,4 @@
 from importlib import import_module
-from types import FunctionType
 from typing import List, Union
 
 
@@ -36,7 +35,7 @@ def lazy_load_relationship(cls, mk_cls, field, loader, f=id, g=id):
     Args:
         cls: The class name to which we will add `field` as a property.
         mk_cls: A way to construct the type of `field`;
-          we let this be a string or a function because, sometimes, it needs
+          we let this be a string because, sometimes, it needs
           to be done lazily due to circular imports.
         field: The name of the field that we are overwriting.
         f: an (optional) function to be evaluated on the result of evaluating
@@ -62,12 +61,11 @@ def lazy_load_relationship(cls, mk_cls, field, loader, f=id, g=id):
 
         if isinstance(mk_cls, str):
             # Bit of a hack to simplify the lazy-loading troubles: just let people
-            # use a string and we'll just import it by convention.
+            # use a string and we'll just import it by convention; this is
+            # because of circular dependencies.
             module_name = camel_to_snake(mk_cls)
             module = import_module(f"tz.client.{module_name}")
             mk_class = getattr(module, mk_cls)
-        elif isinstance(mk_cls, FunctionType):
-            mk_class = mk_cls()
         else:
             mk_class = mk_cls
         hidden = f"_{field}"
