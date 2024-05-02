@@ -28,6 +28,7 @@ class AssetCreate(PydanticBaseModel):
     node_id: str | None = Field(None, title="Node Id")
     edge_id: str | None = Field(None, title="Edge Id")
     technology_id: str | None = Field(None, title="Technology Id")
+    source_scenario_id: str | None = Field(None, title="Source Scenario Id")
     node: dict[str, Any] | None = Field(None, title="node")
     edge: dict[str, Any] | None = Field(None, title="edge")
     technology: str | None = Field(None, title="technology")
@@ -36,6 +37,7 @@ class AssetCreate(PydanticBaseModel):
     power_plant: dict[str, Any] | None = Field(None, title="power_plant")
     power_transmission: dict[str, Any] | None = Field(None, title="power_transmission")
     sources: list[str] | None = Field(None, title="sources")
+    source_scenario: str | None = Field(None, title="source_scenario")
 
 
 class BodyBulkCreateRunResultsCapacity(PydanticBaseModel):
@@ -115,6 +117,7 @@ class DayPart(PydanticBaseModel):
     n_day_parts: int = Field(..., title="N Day Parts")
     order_idx: int = Field(..., title="Order Idx")
     description: str | None = Field(None, title="Description")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str | None = Field(None, title="Owner")
     parent: DayPart | str | None = Field(None, title="Parent")
     children: list[DayPart] | list[str] | None = Field(None, title="Children")
@@ -240,6 +243,7 @@ class ModelCreate(PydanticBaseModel):
     n_day_parts: int | None = Field(1, title="N Day Parts")
     status: str | None = Field("draft", title="Status")
     anon_views: int | None = Field(0, title="Anon Views")
+    runs: list[str] | None = Field(None, title="runs")
     featured_scenario: str | None = Field(None, title="featured_scenario")
     commodities: list[str] | None = Field(None, title="commodities")
     edges: list[str] | None = Field(None, title="edges")
@@ -267,6 +271,7 @@ class ModelResourcePatch(PydanticBaseModel):
     anon_views: int | None = Field(None, title="Anon Views")
     owner: str | None = Field(None, title="owner")
     model_scenarios: list[str] | None = Field(None, title="model_scenarios")
+    runs: list[str] | None = Field(None, title="runs")
     featured_scenario: str | None = Field(None, title="featured_scenario")
     commodities: list[str] | None = Field(None, title="commodities")
     edges: list[str] | None = Field(None, title="edges")
@@ -527,6 +532,7 @@ class PublisherCreate(PydanticBaseModel):
     organisation_type: str | None = Field(None, title="Organisation Type")
     short_name: str | None = Field(None, title="Short Name")
     url: str | None = Field(None, title="Url")
+    source_scenarios: list[str] | None = Field(None, title="source_scenarios")
 
 
 class PublisherResourcePatch(PydanticBaseModel):
@@ -541,6 +547,7 @@ class PublisherResourcePatch(PydanticBaseModel):
     url: str | None = Field(None, title="Url")
     owner: str | None = Field(None, title="owner")
     sources: list[str] | None = Field(None, title="sources")
+    source_scenarios: list[str] | None = Field(None, title="source_scenarios")
 
 
 class RecordCreate(PydanticBaseModel):
@@ -626,6 +633,8 @@ class RunCreate(PydanticBaseModel):
     validated: bool | None = Field(False, title="Validated")
     description: str | None = Field(None, title="Description")
     featured: bool | None = Field(False, title="Featured")
+    model_id: str | None = Field(None, title="Model Id")
+    model: str | None = Field(None, title="model")
     model_scenario: str | None = Field(None, title="model_scenario")
     urls: list[str] | None = Field(None, title="urls")
     run_results_capacity: list[str] | None = Field(None, title="run_results_capacity")
@@ -648,8 +657,10 @@ class RunResourcePatch(PydanticBaseModel):
     validated: bool | None = Field(None, title="Validated")
     description: str | None = Field(None, title="Description")
     featured: bool | None = Field(None, title="Featured")
+    model_id: str | None = Field(None, title="Model Id")
     model_scenario_id: str | None = Field(None, title="Model Scenario Id")
     owner: str | None = Field(None, title="owner")
+    model: str | None = Field(None, title="model")
     model_scenario: str | None = Field(None, title="model_scenario")
     jobs: list[str] | None = Field(None, title="jobs")
     urls: list[str] | None = Field(None, title="urls")
@@ -814,8 +825,11 @@ class SourceScenarioCreate(PydanticBaseModel):
     version: str | None = Field(None, title="Version")
     status: str | None = Field("draft", title="Status")
     featured: bool | None = Field(False, title="Featured")
+    publisher_id: str | None = Field(None, title="Publisher Id")
+    publisher: str | None = Field(None, title="publisher")
     source: str | None = Field(None, title="source")
     records: list[str] | None = Field(None, title="records")
+    assets: list[str] | None = Field(None, title="assets")
 
 
 class SourceScenarioResourcePatch(PydanticBaseModel):
@@ -829,12 +843,15 @@ class SourceScenarioResourcePatch(PydanticBaseModel):
     version: str | None = Field(None, title="Version")
     status: str | None = Field(None, title="Status")
     featured: bool | None = Field(None, title="Featured")
+    publisher_id: str | None = Field(None, title="Publisher Id")
     source_id: str | None = Field(None, title="Source Id")
     scenario_index_id: str | None = Field(None, title="Scenario Index Id")
     owner: str | None = Field(None, title="owner")
+    publisher: str | None = Field(None, title="publisher")
     source: str | None = Field(None, title="source")
     scenario_index: str | None = Field(None, title="scenario_index")
     records: list[str] | None = Field(None, title="records")
+    assets: list[str] | None = Field(None, title="assets")
 
 
 class TechnologyCreate(PydanticBaseModel):
@@ -1017,6 +1034,7 @@ class YearPart(PydanticBaseModel):
     n_year_parts: int = Field(..., title="N Year Parts")
     order_idx: int = Field(..., title="Order Idx")
     description: str | None = Field(None, title="Description")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str | None = Field(None, title="Owner")
     parent: YearPart | str | None = Field(None, title="Parent")
     children: list[YearPart] | list[str] | None = Field(None, title="Children")
@@ -1212,6 +1230,7 @@ class Asset(PydanticBaseModel):
     power_plant: str | PowerPlant | None = Field(None, title="Power Plant")
     power_transmission: str | PowerTransmission | None = Field(None, title="Power Transmission")
     sources: list[Source] | list[str] | None = Field(None, title="Sources")
+    source_scenario: SourceScenario | str | None = Field(None, title="Source Scenario")
 
 
 class AssetPagination(PydanticBaseModel):
@@ -1229,6 +1248,7 @@ class Commodity(PydanticBaseModel):
     name: str = Field(..., title="Name")
     rank: int | None = Field(None, title="Rank")
     properties: dict[str, Any] | None = Field(None, title="Properties")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     technology: str | Technology | None = Field(None, title="Technology")
     parents: list[Commodity] | list[str] | None = Field(None, title="Parents")
@@ -1247,6 +1267,7 @@ class Edge(PydanticBaseModel):
     slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
     creation_time: AwareDatetime = Field(..., title="Creation Time")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     source_node: Node | str | None = Field(None, title="Source Node")
     target_node: Node | str | None = Field(None, title="Target Node")
@@ -1287,6 +1308,7 @@ class License(PydanticBaseModel):
     name: str = Field(..., title="Name")
     abbreviation: str = Field(..., title="Abbreviation")
     full_text: str = Field(..., title="Full Text")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     sources: list[Source] | list[str] | None = Field(None, title="Sources")
 
@@ -1312,6 +1334,7 @@ class Model(PydanticBaseModel):
     n_day_parts: int | None = Field(1, title="N Day Parts")
     status: str | None = Field("draft", title="Status")
     anon_views: int | None = Field(0, title="Anon Views")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     edges: list[Edge | str] | None = Field(None, title="Edges")
     nodes: list[Node | str] = Field(..., title="Nodes")
@@ -1343,6 +1366,7 @@ class ModelScenario(PydanticBaseModel):
     version: str | None = Field(None, title="Version")
     status: str | None = Field("draft", title="Status")
     featured: bool | None = Field(False, title="Featured")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     model: Model | str = Field(..., title="Model")
     scenario_index_id: UUID = Field(..., title="Scenario Index Id")
@@ -1367,6 +1391,7 @@ class Node(PydanticBaseModel):
     node_type_alias: str | None = Field(None, title="Node Type Alias")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     is_asset: bool | None = Field(False, title="Is Asset")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     node_type: NodeTypeRank | str = Field(..., title="Node Type")
     asset_properties: Asset | str | None = Field(None, title="Asset Properties")
@@ -1387,6 +1412,7 @@ class NodeAlias(PydanticBaseModel):
     alias_type: str = Field(..., title="Alias Type")
     alias_lang: str | None = Field(None, title="Alias Lang")
     primary: bool | None = Field(None, title="Primary")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     node: Node | str = Field(..., title="Node")
     power_unit: NodeAlias | str | None = Field(None, title="Power Unit")
@@ -1424,6 +1450,7 @@ class OperatingMode(PydanticBaseModel):
     creation_time: AwareDatetime = Field(..., title="Creation Time")
     name: str = Field(..., title="Name")
     properties: dict[str, Any] | None = Field(None, title="Properties")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     technology: str | Technology | None = Field(None, title="Technology")
 
@@ -1465,6 +1492,7 @@ class Publisher(PydanticBaseModel):
     organisation_type: str = Field(..., title="Organisation Type")
     short_name: str | None = Field(None, title="Short Name")
     url: str | None = Field(None, title="Url")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     sources: list[Source] | list[str] | None = Field(None, title="Sources")
 
@@ -1515,7 +1543,9 @@ class Run(PydanticBaseModel):
     validated: bool | None = Field(False, title="Validated")
     description: str | None = Field(None, title="Description")
     featured: bool | None = Field(False, title="Featured")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
+    model: str | Model = Field(..., title="Model")
     model_scenario: str | ModelScenario = Field(..., title="Model Scenario")
     jobs: list[Job] | list[str] | None = Field(None, title="Jobs")
     urls: list[UrlIndex] | list[str] | None = Field(None, title="Urls")
@@ -1564,6 +1594,7 @@ class Source(PydanticBaseModel):
     day: int | None = Field(None, title="Day")
     quarter: int | None = Field(None, title="Quarter")
     url: str | None = Field(None, title="Url")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     publisher: Publisher | str = Field(..., title="Publisher")
     license: License | str | None = Field(None, title="License")
@@ -1586,8 +1617,10 @@ class SourceScenario(PydanticBaseModel):
     version: str | None = Field(None, title="Version")
     status: str | None = Field("draft", title="Status")
     featured: bool | None = Field(False, title="Featured")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     scenario_index_id: UUID = Field(..., title="Scenario Index Id")
+    publisher: Publisher | str = Field(..., title="Publisher")
     source: Source | str = Field(..., title="Source")
 
 
@@ -1607,7 +1640,8 @@ class Technology(PydanticBaseModel):
     rank: int | None = Field(None, title="Rank")
     is_storage: bool | None = Field(False, title="Is Storage")
     properties: dict[str, Any] | None = Field(None, title="Properties")
-    owner: str | None = Field(None, title="Owner")
+    fullslug: str | None = Field(..., title="Fullslug")
+    owner: str = Field(..., title="Owner")
     commodities: list[Commodity] | list[str] | None = Field(None, title="Commodities")
     operating_modes: list[OperatingMode] | list[str] | None = Field(None, title="Operating Modes")
     parents: list[Technology] | list[str] | None = Field(None, title="Parents")
@@ -1629,6 +1663,7 @@ class UrlIndex(PydanticBaseModel):
     url: str = Field(..., title="Url")
     url_type: URLType
     properties: dict[str, Any] | None = Field(None, title="Properties")
+    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     model: Model | str | None = Field(None, title="Model")
     modelscenario: ModelScenario | str | None = Field(None, title="Modelscenario")

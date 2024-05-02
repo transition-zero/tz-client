@@ -32,6 +32,23 @@ def lazy_load_relationship(cls, mk_cls, field, loader, f=id, g=id):
 
     Note that this assumes there is a field named "_field" defined in "cls"
     where the results will be cached.
+
+    Args:
+        cls: The class name to which we will add `field` as a property.
+        mk_cls: A way to construct the type of `field`;
+          we let this be a string or a function because, sometimes, it needs
+          to be done lazily due to circular imports.
+        field: The name of the field that we are overwriting.
+        f: an (optional) function to be evaluated on the result of evaluating
+          the 'loader' function and extracting 'field' from it. This can be
+          used, say, to wrap the item in a list; because we assume list-based
+          processing in the body of the function.
+        g: an (optional) function to be evaluated _after_ converting all the
+          items to a list of `mk_cls`-based classes. This can be used to, say,
+          unwrap the item from a list if we previously had to do that.
+
+    Returns:
+        Nothing.
     """
 
     def camel_to_snake(s):
