@@ -30,8 +30,8 @@ def test_model_scenario_search_pagination():
     items_bad = ModelScenario.search(limit=PAGE_LIMIT, page=10000)
     assert len(items_bad) == 0
 
-    ids1 = {item.id for item in items1}
-    ids2 = {item.id for item in items2}
+    ids1 = {item.fullslug for item in items1}
+    ids2 = {item.fullslug for item in items2}
     # assert that items on different pages are all different
     assert ids1.intersection(ids2) == set()
 
@@ -46,5 +46,8 @@ def test_model_scenario_featured_run(scenario):
     assert scenario.featured_run.slug == "run1"
 
 
-def test_model_scenario_str(scenario):
-    assert str(scenario) == "ModelScenario: Net Zero 2060 (id=feo-indonesia:net-zero-2060)"
+def test_model_scenario_str(username, scenario):
+    assert (
+        str(scenario)
+        == f"ModelScenario: Net Zero 2060 (fullslug={username}:feo-indonesia:net-zero-2060)"
+    )

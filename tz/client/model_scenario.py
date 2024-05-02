@@ -89,13 +89,6 @@ class ModelScenario(generated_schema.ModelScenario):
 
         return [cls(**scenario.model_dump()) for scenario in search_results]
 
-    @property
-    def id(self) -> str:
-        """
-        The ID of the scenario. A combination of the model slug and scenario slug.
-        """
-        return f"{self.model.slug}:{self.slug}"  # type: ignore[union-attr]
-
     # @property
     # def runs(self) -> list["Run"]:
     #     """The featured run associated with this scenario."""
@@ -105,7 +98,7 @@ class ModelScenario(generated_schema.ModelScenario):
     #     return [factory.run(**r.model_dump()) for r in scenario_data.runs]
 
     def __str__(self) -> str:
-        return f"ModelScenario: {self.name} (id={self.id})"
+        return f"ModelScenario: {self.name} (fullslug={self.fullslug})"
 
 
 lazy_load_single_relationship(

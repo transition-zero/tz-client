@@ -94,8 +94,12 @@ class Node(generated_schema.Node):
     #     return self._assets
 
     def __str__(self) -> str:
-        alias_str = self._primary_node_alias.slug if self._primary_node_alias else ""
-        return f"Node: {alias_str} (id={self.slug})"
+        alias_str = (
+            f"primary-alias={self._primary_node_alias.slug}"
+            if self._primary_node_alias
+            else "no primary alias found"
+        )
+        return f"Node: {alias_str} (fullslug={self.fullslug})"
 
 
 lazy_load_relationship(

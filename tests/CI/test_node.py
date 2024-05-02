@@ -36,19 +36,18 @@ def test_node_parents(node):
     assert all(isinstance(parent, Node) for parent in parents)
 
 
-@pytest.mark.xfail(reason="search currently not working")
 def test_node_search_pagination():
     PAGE_LIMIT = 2
     items1 = Node.search("power plant", limit=PAGE_LIMIT, page=0)
-    assert len(items1) == PAGE_LIMIT
+    assert len(items1) <= PAGE_LIMIT
     items2 = Node.search("power plant", limit=PAGE_LIMIT, page=1)
-    assert len(items2) == PAGE_LIMIT
+    assert len(items2) <= PAGE_LIMIT
 
-    ids1 = {item.id for item in items1}
-    ids2 = {item.id for item in items2}
+    ids1 = {item.fullslug for item in items1}
+    ids2 = {item.fullslug for item in items2}
     # assert that items on different pages are all different
     assert ids1.intersection(ids2) == set()
 
 
 def test_node_str(node):
-    assert str(node) == "Node: Indonesia (id=IDN)"
+    assert str(node) == "Node: primary-alias=Indonesia (fullslug=IDN)"

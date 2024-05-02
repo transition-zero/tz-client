@@ -44,5 +44,5 @@ def test_model_scenarios(model):
     assert isinstance(model.featured_scenario, ModelScenario | None)
 
 
-def test_model_str(model):
-    assert str(model) == "Model: Indonesia Power Grid (slug=feo-indonesia)"
+def test_model_str(username, model):
+    assert str(model) == f"Model: Indonesia Power Grid (fullslug={username}:feo-indonesia)"

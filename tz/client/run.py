@@ -238,14 +238,6 @@ class Run(generated_schema.Run):
 
         return [cls(**r.model_dump()) for r in search_results]
 
-    @property
-    def fullslug(self) -> str:
-        """The full slug of the run. A combination of the owner username,
-        and model, model scenario, and run slugs."""
-        return (
-            f"{self.owner}:{self.model_scenario.model.slug}:{self.model_scenario.slug}:{self.slug}"
-        )
-
     # TODO: Implement this later
     # @property
     # def results(self) -> RunResults:
@@ -259,12 +251,12 @@ class Run(generated_schema.Run):
 
 
 def _load_model_scenario(self, ctx):
-    owner, model_slug, model_scenario_slug = ctx["model_scenario"].split(":")
+    owner, model_slug, model_scenario_slug, run_slug = ctx["fullslug"].split(":")
     r = api.runs.get(
         owner=owner,
         model_slug=model_slug,
         model_scenario_slug=model_scenario_slug,
-        run_slug=self.slug,
+        run_slug=run_slug,
         includes="model_scenario",
     )
     return r
