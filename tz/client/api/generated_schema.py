@@ -80,9 +80,9 @@ class CapacityType(Enum):
 
 
 class CommodityCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
+    name: str = Field(..., title="Name")
     rank: int | None = Field(None, title="Rank")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     technology: str | None = Field(None, title="technology")
@@ -124,10 +124,10 @@ class DayPart(PydanticBaseModel):
 
 
 class DayPartCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    n_day_parts: int | None = Field(None, title="N Day Parts")
-    order_idx: int | None = Field(None, title="Order Idx")
+    n_day_parts: int = Field(..., title="N Day Parts")
+    order_idx: int = Field(..., title="Order Idx")
     description: str | None = Field(None, title="Description")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
@@ -162,10 +162,10 @@ class DeleteResponse(PydanticBaseModel):
 
 
 class EdgeCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    source_node: str | None = Field(None, title="Source Node")
-    target_node: str | None = Field(None, title="Target Node")
+    source_node: str = Field(..., title="Source Node")
+    target_node: str = Field(..., title="Target Node")
     is_asset: bool | None = Field(False, title="Is Asset")
     bidirectional: bool | None = Field(True, title="Bidirectional")
     charts: list[str] | None = Field(None, title="charts")
@@ -192,7 +192,7 @@ class EdgeResourcePatch(PydanticBaseModel):
 class JobCreate(PydanticBaseModel):
     slug: str | None = Field(None, title="Slug")
     public: bool | None = Field(True, title="Public")
-    status: str | None = Field(None, title="Status")
+    status: str = Field(..., title="Status")
     successful: bool | None = Field(None, title="Successful")
     run: str | None = Field(None, title="run")
 
@@ -211,11 +211,11 @@ class JobResourcePatch(PydanticBaseModel):
 
 
 class LicenseCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
-    abbreviation: str | None = Field(None, title="Abbreviation")
-    full_text: str | None = Field(None, title="Full Text")
+    name: str = Field(..., title="Name")
+    abbreviation: str = Field(..., title="Abbreviation")
+    full_text: str = Field(..., title="Full Text")
 
 
 class LicenseResourcePatch(PydanticBaseModel):
@@ -232,13 +232,13 @@ class LicenseResourcePatch(PydanticBaseModel):
 
 
 class ModelCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
-    description: str | None = Field(None, title="Description")
+    name: str = Field(..., title="Name")
+    description: str = Field(..., title="Description")
     version: str | None = Field(None, title="Version")
-    start_year: int | None = Field(None, title="Start Year")
-    end_year: int | None = Field(None, title="End Year")
+    start_year: int = Field(..., title="Start Year")
+    end_year: int = Field(..., title="End Year")
     n_year_parts: int | None = Field(1, title="N Year Parts")
     n_day_parts: int | None = Field(1, title="N Day Parts")
     status: str | None = Field("draft", title="Status")
@@ -283,9 +283,9 @@ class ModelResourcePatch(PydanticBaseModel):
 
 
 class ModelScenarioCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
+    name: str = Field(..., title="Name")
     description: str | None = Field(None, title="Description")
     version: str | None = Field(None, title="Version")
     status: str | None = Field("draft", title="Status")
@@ -321,9 +321,9 @@ class ModelScenarioResourcePatch(PydanticBaseModel):
 
 
 class NodeAliasCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    alias_type: str | None = Field(None, title="Alias Type")
+    alias_type: str = Field(..., title="Alias Type")
     alias_lang: str | None = Field(None, title="Alias Lang")
     primary: bool | None = Field(None, title="Primary")
     node: str | None = Field(None, title="node")
@@ -470,9 +470,9 @@ class NodesOrEdgesType(Enum):
 
 
 class OperatingModeCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
+    name: str = Field(..., title="Name")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     technology: str | None = Field(None, title="technology")
 
@@ -526,10 +526,10 @@ class PowerTransmission(PydanticBaseModel):
 
 
 class PublisherCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
-    organisation_type: str | None = Field(None, title="Organisation Type")
+    name: str = Field(..., title="Name")
+    organisation_type: str = Field(..., title="Organisation Type")
     short_name: str | None = Field(None, title="Short Name")
     url: str | None = Field(None, title="Url")
     source_scenarios: list[str] | None = Field(None, title="source_scenarios")
@@ -552,13 +552,11 @@ class PublisherResourcePatch(PydanticBaseModel):
 
 class RecordCreate(PydanticBaseModel):
     public: bool | None = Field(True, title="Public")
-    year: int | None = Field(None, title="Year")
+    year: int = Field(..., title="Year")
     timestamp: AwareDatetime | None = Field(None, title="Timestamp")
-    value: float | None = Field(None, title="Value")
+    value: float = Field(..., title="Value")
     properties: dict[str, Any] | None = Field(None, title="Properties")
-    year_part_id: str | None = Field(None, title="Year Part Id")
-    day_part_id: str | None = Field(None, title="Day Part Id")
-    record_type: str | None = Field(None, title="Record Type")
+    record_type: str = Field(..., title="Record Type")
     year_part: str | None = Field(None, title="year_part")
     day_part: str | None = Field(None, title="day_part")
     node: str | None = Field(None, title="node")
@@ -626,14 +624,13 @@ class ResidualCapacityTimeseries(PydanticBaseModel):
 
 
 class RunCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
-    run_spec: dict[str, Any] | None = Field(None, title="Run Spec")
+    name: str = Field(..., title="Name")
+    run_spec: dict[str, Any] | None = Field(..., title="Run Spec")
     validated: bool | None = Field(False, title="Validated")
     description: str | None = Field(None, title="Description")
     featured: bool | None = Field(False, title="Featured")
-    model_id: str | None = Field(None, title="Model Id")
     model: str | None = Field(None, title="model")
     model_scenario: str | None = Field(None, title="model_scenario")
     urls: list[str] | None = Field(None, title="urls")
@@ -683,10 +680,10 @@ class RunResultsCapacity(PydanticBaseModel):
 
 
 class RunResultsCapacityCreate(PydanticBaseModel):
-    year: int | None = Field(None, title="Year")
-    capacity_type: CapacityType | None = None
-    nodes_or_edges: NodesOrEdgesType | None = None
-    data: dict[str, Any] | None = Field(None, title="Data")
+    year: int = Field(..., title="Year")
+    capacity_type: CapacityType
+    nodes_or_edges: NodesOrEdgesType
+    data: dict[str, Any] = Field(..., title="Data")
     run: str | None = Field(None, title="run")
 
 
@@ -698,12 +695,12 @@ class RunResultsCapacityPagination(PydanticBaseModel):
 
 
 class RunResultsChartCreate(PydanticBaseModel):
-    chart_type: str | None = Field(None, title="Chart Type")
+    chart_type: str = Field(..., title="Chart Type")
     series_name: str | None = Field(None, title="Series Name")
-    series_properties: dict[str, Any] | None = Field(None, title="Series Properties")
+    series_properties: dict[str, Any] | None = Field(..., title="Series Properties")
     year: int | None = Field(None, title="Year")
-    x: list[float] | None = Field(None, title="X")
-    y: list[float] | None = Field(None, title="Y")
+    x: list[float] = Field(..., title="X")
+    y: list[float] = Field(..., title="Y")
     node_id: str | None = Field(None, title="Node Id")
     edge_id: str | None = Field(None, title="Edge Id")
     technology_id: str | None = Field(None, title="Technology Id")
@@ -718,19 +715,19 @@ class RunResultsChartCreate(PydanticBaseModel):
 
 
 class RunResultsCostCreate(PydanticBaseModel):
-    year: int | None = Field(None, title="Year")
-    data: dict[str, Any] | None = Field(None, title="Data")
-    year_part: str | None = Field(None, title="Year Part")
-    day_part: str | None = Field(None, title="Day Part")
+    year: int = Field(..., title="Year")
+    data: dict[str, Any] = Field(..., title="Data")
+    year_part: str = Field(..., title="Year Part")
+    day_part: str = Field(..., title="Day Part")
     run: str | None = Field(None, title="run")
 
 
 class RunResultsExtremaCreate(PydanticBaseModel):
-    datum: str | None = Field(None, title="Datum")
-    min_value: float | None = Field(None, title="Min Value")
-    min_year: int | None = Field(None, title="Min Year")
-    max_value: float | None = Field(None, title="Max Value")
-    max_year: int | None = Field(None, title="Max Year")
+    datum: str = Field(..., title="Datum")
+    min_value: float = Field(..., title="Min Value")
+    min_year: int = Field(..., title="Min Year")
+    max_value: float = Field(..., title="Max Value")
+    max_year: int = Field(..., title="Max Year")
     min_year_part: str | None = Field(None, title="Min Year Part")
     min_day_part: str | None = Field(None, title="Min Day Part")
     max_year_part: str | None = Field(None, title="Max Year Part")
@@ -739,10 +736,10 @@ class RunResultsExtremaCreate(PydanticBaseModel):
 
 
 class RunResultsFlowCreate(PydanticBaseModel):
-    year: int | None = Field(None, title="Year")
-    data: dict[str, Any] | None = Field(None, title="Data")
-    year_part: str | None = Field(None, title="Year Part")
-    day_part: str | None = Field(None, title="Day Part")
+    year: int = Field(..., title="Year")
+    data: dict[str, Any] = Field(..., title="Data")
+    year_part: str = Field(..., title="Year Part")
+    day_part: str = Field(..., title="Day Part")
     run: str | None = Field(None, title="run")
 
 
@@ -755,9 +752,9 @@ class RunResultsMetric(PydanticBaseModel):
 
 
 class RunResultsMetricCreate(PydanticBaseModel):
-    unit: str | None = Field(None, title="Unit")
-    value: float | None = Field(None, title="Value")
-    metric: str | None = Field(None, title="Metric")
+    unit: str = Field(..., title="Unit")
+    value: float = Field(..., title="Value")
+    metric: str = Field(..., title="Metric")
     run: str | None = Field(None, title="run")
 
 
@@ -769,10 +766,10 @@ class RunResultsMetricPagination(PydanticBaseModel):
 
 
 class RunResultsProductionCreate(PydanticBaseModel):
-    year: int | None = Field(None, title="Year")
-    data: dict[str, Any] | None = Field(None, title="Data")
-    year_part: str | None = Field(None, title="Year Part")
-    day_part: str | None = Field(None, title="Day Part")
+    year: int = Field(..., title="Year")
+    data: dict[str, Any] = Field(..., title="Data")
+    year_part: str = Field(..., title="Year Part")
+    day_part: str = Field(..., title="Day Part")
     run: str | None = Field(None, title="run")
 
 
@@ -781,9 +778,9 @@ class ScenarioIndex(PydanticBaseModel):
 
 
 class SourceCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
+    name: str = Field(..., title="Name")
     short_name: str | None = Field(None, title="Short Name")
     description: str | None = Field(None, title="Description")
     year: int | None = Field(None, title="Year")
@@ -818,14 +815,13 @@ class SourceResourcePatch(PydanticBaseModel):
 
 
 class SourceScenarioCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
+    name: str = Field(..., title="Name")
     description: str | None = Field(None, title="Description")
     version: str | None = Field(None, title="Version")
     status: str | None = Field("draft", title="Status")
     featured: bool | None = Field(False, title="Featured")
-    publisher_id: str | None = Field(None, title="Publisher Id")
     publisher: str | None = Field(None, title="publisher")
     source: str | None = Field(None, title="source")
     records: list[str] | None = Field(None, title="records")
@@ -855,9 +851,9 @@ class SourceScenarioResourcePatch(PydanticBaseModel):
 
 
 class TechnologyCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    name: str | None = Field(None, title="Name")
+    name: str = Field(..., title="Name")
     rank: int | None = Field(None, title="Rank")
     is_storage: bool | None = Field(False, title="Is Storage")
     properties: dict[str, Any] | None = Field(None, title="Properties")
@@ -899,10 +895,10 @@ class URLType(Enum):
 
 
 class UrlIndexCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    url: str | None = Field(None, title="Url")
-    url_type: URLType | None = None
+    url: str = Field(..., title="Url")
+    url_type: URLType
     properties: dict[str, Any] | None = Field(None, title="Properties")
     model: str | None = Field(None, title="model")
     model_scenario: str | None = Field(None, title="model_scenario")
@@ -956,13 +952,13 @@ class User(PydanticBaseModel):
 
 
 class UserCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(False, title="Public")
-    role: str | None = Field(None, title="Role")
+    role: str = Field(..., title="Role")
     permissions: list[str] | None = Field(None, title="Permissions")
-    username: str | None = Field(None, title="Username")
+    username: str = Field(..., title="Username")
     email: str | None = Field(None, title="Email")
-    tenant: str | None = Field(None, title="Tenant")
+    tenant: str = Field(..., title="Tenant")
     auth0_creation_time: AwareDatetime | None = Field(None, title="Auth0 Creation Time")
     email_verified: bool | None = Field(False, title="Email Verified")
     family_name: str | None = Field(None, title="Family Name")
@@ -1041,10 +1037,10 @@ class YearPart(PydanticBaseModel):
 
 
 class YearPartCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    n_year_parts: int | None = Field(None, title="N Year Parts")
-    order_idx: int | None = Field(None, title="Order Idx")
+    n_year_parts: int = Field(..., title="N Year Parts")
+    order_idx: int = Field(..., title="Order Idx")
     description: str | None = Field(None, title="Description")
     parents: list[str] | None = Field(None, title="parents")
     children: list[str] | None = Field(None, title="children")
@@ -1098,9 +1094,9 @@ class MultiResidualCapacityResponse(PydanticBaseModel):
 
 
 class NodeCreate(PydanticBaseModel):
-    slug: str | None = Field(None, title="Slug")
+    slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
-    node_type_alias: NodeTypeAlias | None = None
+    node_type_alias: NodeTypeAlias
     properties: dict[str, Any] | None = Field(None, title="Properties")
     is_asset: bool | None = Field(False, title="Is Asset")
     charts: list[str] | None = Field(None, title="charts")
