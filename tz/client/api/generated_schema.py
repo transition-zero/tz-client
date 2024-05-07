@@ -72,13 +72,6 @@ class BodyRunResultsProductionBulkCreateResource(PydanticBaseModel):
     file: bytes = Field(..., title="File")
 
 
-class CapacityType(Enum):
-    gross = "gross"
-    new = "new"
-    residual = "residual"
-    retirement = "retirement"
-
-
 class CommodityCreate(PydanticBaseModel):
     slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
@@ -321,13 +314,13 @@ class ModelScenarioResourcePatch(PydanticBaseModel):
 
 
 class NodeAliasCreate(PydanticBaseModel):
-    slug: str = Field(..., title="Slug")
+    slug: str | None = Field(None, title="Slug")
     public: bool | None = Field(True, title="Public")
+    name: str = Field(..., title="Name")
     alias_type: str = Field(..., title="Alias Type")
     alias_lang: str | None = Field(None, title="Alias Lang")
     primary: bool | None = Field(None, title="Primary")
     node: str | None = Field(None, title="node")
-    power_unit: str | None = Field(None, title="power_unit")
 
 
 class NodeAliasResourcePatch(PydanticBaseModel):
@@ -336,14 +329,13 @@ class NodeAliasResourcePatch(PydanticBaseModel):
     public: bool | None = Field(None, title="Public")
     creation_time: AwareDatetime | None = Field(None, title="Creation Time")
     owner_id: str | None = Field(None, title="Owner Id")
+    name: str | None = Field(None, title="Name")
     alias_type: str | None = Field(None, title="Alias Type")
     alias_lang: str | None = Field(None, title="Alias Lang")
     primary: bool | None = Field(None, title="Primary")
     node_id: str | None = Field(None, title="Node Id")
-    power_unit_id: str | None = Field(None, title="Power Unit Id")
     owner: str | None = Field(None, title="owner")
     node: str | None = Field(None, title="node")
-    power_unit: str | None = Field(None, title="power_unit")
 
 
 class NodeType(Enum):
@@ -462,11 +454,6 @@ class NodeTypeAlias(Enum):
     urban_prefecture = "urban_prefecture"
     village_district = "village_district"
     voivodeship = "voivodeship"
-
-
-class NodesOrEdgesType(Enum):
-    nodes = "nodes"
-    edges = "edges"
 
 
 class OperatingModeCreate(PydanticBaseModel):
@@ -627,7 +614,6 @@ class RunCreate(PydanticBaseModel):
     slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
     name: str = Field(..., title="Name")
-    run_spec: dict[str, Any] | None = Field(..., title="Run Spec")
     validated: bool | None = Field(False, title="Validated")
     description: str | None = Field(None, title="Description")
     featured: bool | None = Field(False, title="Featured")
@@ -670,28 +656,12 @@ class RunResourcePatch(PydanticBaseModel):
     run_results_production: list[str] | None = Field(None, title="run_results_production")
 
 
-class RunResultsCapacity(PydanticBaseModel):
-    uuid: UUID = Field(..., title="Uuid")
-    creation_time: AwareDatetime = Field(..., title="Creation Time")
-    year: int = Field(..., title="Year")
-    capacity_type: CapacityType
-    nodes_or_edges: NodesOrEdgesType
-    data: dict[str, Any] = Field(..., title="Data")
-
-
 class RunResultsCapacityCreate(PydanticBaseModel):
     year: int = Field(..., title="Year")
-    capacity_type: CapacityType
-    nodes_or_edges: NodesOrEdgesType
+    capacity_type: str = Field(..., title="Capacity Type")
+    nodes_or_edges: str = Field(..., title="Nodes Or Edges")
     data: dict[str, Any] = Field(..., title="Data")
     run: str | None = Field(None, title="run")
-
-
-class RunResultsCapacityPagination(PydanticBaseModel):
-    current_page: int | None = Field(0, title="current_page")
-    next_page: int | None = Field(..., title="next_page")
-    total_results: int | None = Field(..., title="total_results")
-    run_results_capacity: list[RunResultsCapacity] | None = Field(..., title="")
 
 
 class RunResultsChartCreate(PydanticBaseModel):
@@ -1402,16 +1372,15 @@ class Node(PydanticBaseModel):
 
 class NodeAlias(PydanticBaseModel):
     uuid: UUID = Field(..., title="Uuid")
-    slug: str = Field(..., title="Slug")
+    slug: str | None = Field(None, title="Slug")
     public: bool | None = Field(True, title="Public")
     creation_time: AwareDatetime = Field(..., title="Creation Time")
+    name: str = Field(..., title="Name")
     alias_type: str = Field(..., title="Alias Type")
     alias_lang: str | None = Field(None, title="Alias Lang")
     primary: bool | None = Field(None, title="Primary")
-    fullslug: str | None = Field(..., title="Fullslug")
     owner: str = Field(..., title="Owner")
     node: Node | str = Field(..., title="Node")
-    power_unit: NodeAlias | str | None = Field(None, title="Power Unit")
 
 
 class NodeAliasPagination(PydanticBaseModel):
@@ -1458,7 +1427,10 @@ class OperatingModePagination(PydanticBaseModel):
     operating_modes: list[OperatingMode] | None = Field(..., title="")
 
 
-class ParameterGetResponseSchema(PydanticBaseModel):
+class ParameterPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
     parameters: list[Record] = Field(..., title="Parameters")
 
 
@@ -1552,6 +1524,23 @@ class RunPagination(PydanticBaseModel):
     next_page: int | None = Field(..., title="next_page")
     total_results: int | None = Field(..., title="total_results")
     runs: list[Run] | None = Field(..., title="")
+
+
+class RunResultsCapacity(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    creation_time: AwareDatetime = Field(..., title="Creation Time")
+    year: int = Field(..., title="Year")
+    capacity_type: str = Field(..., title="Capacity Type")
+    nodes_or_edges: str = Field(..., title="Nodes Or Edges")
+    data: dict[str, Any] = Field(..., title="Data")
+    run: Run | str = Field(..., title="Run")
+
+
+class RunResultsCapacityPagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    run_results_capacity: list[RunResultsCapacity] | None = Field(..., title="")
 
 
 class RunResultsChart(PydanticBaseModel):
@@ -1685,7 +1674,7 @@ Model.model_rebuild()
 ModelScenario.model_rebuild()
 Node.model_rebuild()
 OperatingMode.model_rebuild()
-ParameterGetResponseSchema.model_rebuild()
+ParameterPagination.model_rebuild()
 Publisher.model_rebuild()
 Record.model_rebuild()
 Run.model_rebuild()
