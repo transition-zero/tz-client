@@ -10,9 +10,7 @@ class NodeAPI(BaseAPI):
         slug: str,
         includes: Union[str, None] = None,
     ) -> Node:
-        params = dict(
-            includes=includes,
-        )
+        params = dict(includes=includes, is_asset=False)
 
         resp = self.client.get(f"/nodes/{slug}", params=params)
         resp.raise_for_status()

@@ -11,9 +11,7 @@ class TechnologyAPI(BaseAPI):
         slug: str,
         includes: Union[str, None] = None,
     ) -> Technology:
-        params = dict(
-            includes=includes,
-        )
+        params = dict(includes=includes, is_asset=False)
         resp = self.client.get(f"/technologies/{slug}", params=params)
         resp.raise_for_status()
 
