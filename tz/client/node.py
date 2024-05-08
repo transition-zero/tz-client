@@ -48,21 +48,21 @@ class Node(generated_schema.Node):
     @classmethod
     def search(
         cls,
-        slug: str,
+        name: str,
         threshold: float = 0.5,
         node_type: str | None = None,
         limit: int = 10,
         page: int = 0,
     ) -> list["Node"]:
         """
-        Search for nodes using an alias.
+        Search for nodes using an alias name.
 
         ```python
         germany_nodes = Node.search("Germany")
         ```
 
         Args:
-            slug (str): The target slug to search.
+            name (str): The target name to search.
             threshold (float): The desired confidence in the search result.
             node_type (str): filter search to a specific node type.
             limit (int): The maximum number of search results to return per page.
@@ -73,7 +73,7 @@ class Node(generated_schema.Node):
         """
 
         search_results = api.node_aliases.get(
-            slug=slug,
+            name=name,
             threshold=threshold,
             node_type=node_type,
             includes="node",
@@ -95,7 +95,7 @@ class Node(generated_schema.Node):
 
     def __str__(self) -> str:
         alias_str = (
-            f"primary-alias={self._primary_node_alias.slug}"
+            f"primary-alias={self._primary_node_alias.name}"
             if self._primary_node_alias
             else "no primary alias found"
         )
