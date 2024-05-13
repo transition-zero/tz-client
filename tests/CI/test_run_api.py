@@ -4,7 +4,6 @@ import pytest
 
 from tz.client import api
 
-# TODO: This is wrong; needs to be refactored.
 FULLSLUG = "feo-indonesia:nz-2050:run1"
 
 EXAMPLE_PARAMS = [
