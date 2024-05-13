@@ -20,7 +20,7 @@ def test_technology_search():
 
 
 def test_technology_str(technology):
-    assert str(technology) == "Technology: WIND (slug=wind)"
+    assert str(technology) == "Technology: wind (slug=wind)"
 
 
 def test_technology_children(technology):
