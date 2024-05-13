@@ -228,7 +228,7 @@ class Run(generated_schema.Run):
             slug=slug,
             model_slug=model_slug,
             model_scenario_slug=model_scenario_slug,
-            owner_id=owner,  # TODO: Fix once the owner id problem is resolved
+            owner=owner,
             featured=featured,
             includes=includes,
             public=public,
