@@ -185,8 +185,8 @@ class EdgeResourcePatch(PydanticBaseModel):
 class JobCreate(PydanticBaseModel):
     slug: str | None = Field(None, title="Slug")
     public: bool | None = Field(True, title="Public")
-    status: str = Field(..., title="Status")
-    successful: bool | None = Field(None, title="Successful")
+    status: str | None = Field("created", title="Status")
+    detail: str | None = Field(None, title="Detail")
     run: str | None = Field(None, title="run")
     build_runspec: bool | None = Field(None, title="build_runspec")
 
@@ -198,7 +198,7 @@ class JobResourcePatch(PydanticBaseModel):
     creation_time: AwareDatetime | None = Field(None, title="Creation Time")
     owner_id: str | None = Field(None, title="Owner Id")
     status: str | None = Field(None, title="Status")
-    successful: bool | None = Field(None, title="Successful")
+    detail: str | None = Field(None, title="Detail")
     run_id: str | None = Field(None, title="Run Id")
     owner: str | None = Field(None, title="owner")
     run: str | None = Field(None, title="run")
@@ -1262,8 +1262,8 @@ class Job(PydanticBaseModel):
     slug: str | None = Field(None, title="Slug")
     public: bool | None = Field(True, title="Public")
     creation_time: AwareDatetime = Field(..., title="Creation Time")
-    status: str = Field(..., title="Status")
-    successful: bool | None = Field(None, title="Successful")
+    status: str | None = Field("created", title="Status")
+    detail: str | None = Field(None, title="Detail")
     owner: str | MinimalUserResponse = Field(..., title="Owner")
     run: str | Run = Field(..., title="Run")
 
