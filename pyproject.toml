@@ -39,6 +39,7 @@ dev = [
   "types-requests",
   "pandas-stubs",
   "python-dotenv",
+  "datamodel-code-generator",
   ]
 
 geo = [
