@@ -92,6 +92,7 @@ jobs:
 
     - name: Check that the OpenAPI schema hasn't changed.
       run: |
+        datamodel-codegen --version
         make openapi-schema
         git diff --exit-code
 
