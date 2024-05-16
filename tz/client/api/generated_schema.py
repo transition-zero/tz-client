@@ -40,7 +40,19 @@ class AssetCreate(PydanticBaseModel):
     source_scenario: str | None = Field(None, title="source_scenario")
 
 
+class BodyAssetBulkCreateResource(PydanticBaseModel):
+    file: bytes = Field(..., title="File")
+
+
 class BodyBulkCreateRunResultsCapacity(PydanticBaseModel):
+    file: bytes = Field(..., title="File")
+
+
+class BodyBulkUploadAssetPropertiesAssetsPropertiesAssetTypeBlobPost(PydanticBaseModel):
+    file: bytes = Field(..., title="File")
+
+
+class BodyNodeBulkCreateResource(PydanticBaseModel):
     file: bytes = Field(..., title="File")
 
 
@@ -188,7 +200,7 @@ class JobCreate(PydanticBaseModel):
     status: str | None = Field("created", title="Status")
     detail: str | None = Field(None, title="Detail")
     run: str | None = Field(None, title="run")
-    build_runspec: bool | None = Field(None, title="build_runspec")
+    submit_job: bool | None = Field(None, title="submit_job")
 
 
 class JobResourcePatch(PydanticBaseModel):
@@ -549,7 +561,7 @@ class RecordCreate(PydanticBaseModel):
     public: bool | None = Field(True, title="Public")
     year: int = Field(..., title="Year")
     timestamp: AwareDatetime | None = Field(None, title="Timestamp")
-    value: float = Field(..., title="Value")
+    value: float | str = Field(..., title="Value")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     record_type: str = Field(..., title="Record Type")
     year_part: str | None = Field(None, title="year_part")
@@ -571,7 +583,7 @@ class RecordResourcePatch(PydanticBaseModel):
     owner_id: str | None = Field(None, title="Owner Id")
     year: int | None = Field(None, title="Year")
     timestamp: AwareDatetime | None = Field(None, title="Timestamp")
-    value: float | None = Field(None, title="Value")
+    value: float | str | None = Field(None, title="Value")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     year_part_id: str | None = Field(None, title="Year Part Id")
     day_part_id: str | None = Field(None, title="Day Part Id")
@@ -600,7 +612,6 @@ class RecordType(PydanticBaseModel):
     units: str = Field(..., title="Units")
     description: str = Field(..., title="Description")
     aggregating_operation: str = Field(..., title="Aggregating Operation")
-    scale: int | None = Field(None, title="Scale")
 
 
 class ResidualCapacityDataPoint(PydanticBaseModel):
@@ -635,7 +646,8 @@ class RunCreate(PydanticBaseModel):
     run_results_extrema: list[str] | None = Field(None, title="run_results_extrema")
     run_results_chart: list[str] | None = Field(None, title="run_results_chart")
     run_results_production: list[str] | None = Field(None, title="run_results_production")
-    build_runspec: bool | None = Field(None, title="build_runspec")
+    skip_build_runspec: bool | None = Field(None, title="skip_build_runspec")
+    skip_add_run_to_db: bool | None = Field(None, title="skip_add_run_to_db")
 
 
 class RunResourcePatch(PydanticBaseModel):
@@ -1489,7 +1501,7 @@ class Record(PydanticBaseModel):
     creation_time: AwareDatetime | None = Field(None, title="Creation Time")
     year: int = Field(..., title="Year")
     timestamp: AwareDatetime | None = Field(None, title="Timestamp")
-    value: float = Field(..., title="Value")
+    value: float | str = Field(..., title="Value")
     properties: dict[str, Any] | None = Field(None, title="Properties")
     owner: str | MinimalUserResponse = Field(..., title="Owner")
     source_scenario: SourceScenario | str | None = Field(None, title="Source Scenario")
