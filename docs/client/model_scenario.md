@@ -11,5 +11,5 @@ For example, in the Indonesia JETP model currently available in the TransitionZe
 
 To access data for these scenarios, you can use this [Jupyter Notebook on Github](https://github.com/transition-zero/feo-client-examples/blob/main/feo-client-examples/3_system_model_results.ipynb).
 
-## ::: tz.client.scenario.Scenario
+## ::: tz.client.model_scenario.ModelScenario
     handler: python
