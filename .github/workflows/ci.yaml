@@ -81,6 +81,7 @@ jobs:
       run: |
         echo "$(jq '.data' $HOME/tmp.json)" > $HOME/.tz/token.json
 
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -89,10 +90,10 @@ jobs:
       run: |
         pip install -e .[dev]
 
-    - name: Sleep for 5 seconds
-      uses: jakejarvis/wait-action@master
-      with:
-        time: '5s'
+    - name: Check that the OpenAPI schema hasn't changed.
+      run: |
+        make openapi-schema
+        git diff --exit-code
 
     - name: Test with pytest and capture coverage
       run: |
