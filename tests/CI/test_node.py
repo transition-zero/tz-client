@@ -36,7 +36,7 @@ def test_node_parents(node):
     assert all(isinstance(parent, Node) for parent in parents)
 
 
-def test_node_search_pagination():
+def test_node_pagination():
     PAGE_LIMIT = 2
     items1 = Node.search("power plant", limit=PAGE_LIMIT, page=0)
     assert len(items1) <= PAGE_LIMIT
