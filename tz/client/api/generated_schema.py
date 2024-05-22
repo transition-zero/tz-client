@@ -609,9 +609,17 @@ class RecordResourcePatch(PydanticBaseModel):
 
 class RecordType(PydanticBaseModel):
     slug: str = Field(..., title="Slug")
+    public: bool | None = Field(True, title="Public")
     units: str = Field(..., title="Units")
     description: str = Field(..., title="Description")
     aggregating_operation: str = Field(..., title="Aggregating Operation")
+
+
+class RecordTypePagination(PydanticBaseModel):
+    current_page: int | None = Field(0, title="current_page")
+    next_page: int | None = Field(..., title="next_page")
+    total_results: int | None = Field(..., title="total_results")
+    record_types: list[RecordType] | None = Field(..., title="")
 
 
 class ResidualCapacityDataPoint(PydanticBaseModel):
