@@ -1,2 +1,2 @@
 def non_empty(params):
-    return {k: v for k, v in params.items() if v}
+    return {k: v for k, v in params.items() if v is not None}

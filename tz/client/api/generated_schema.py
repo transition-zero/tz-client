@@ -124,7 +124,7 @@ class DayPart(PydanticBaseModel):
     description: str | None = Field(None, title="Description")
     fullslug: str | None = Field(..., title="Fullslug")
     owner: str | None = Field(None, title="Owner")
-    parent: DayPart | str | None = Field(None, title="Parent")
+    parents: list[DayPart] | list[str] | None = Field(None, title="Parents")
     children: list[DayPart] | list[str] | None = Field(None, title="Children")
 
 
@@ -356,6 +356,11 @@ class NodeAliasResourcePatch(PydanticBaseModel):
     node_id: str | None = Field(None, title="Node Id")
     owner: str | None = Field(None, title="owner")
     node: str | None = Field(None, title="node")
+
+
+class NodeSummary(PydanticBaseModel):
+    representative_nodes: list[str] = Field(..., title="Representative Nodes")
+    node_counts: dict[str, int] = Field(..., title="Node Counts")
 
 
 class NodeType(Enum):
@@ -772,10 +777,6 @@ class RunResultsProductionCreate(PydanticBaseModel):
     run: str | None = Field(None, title="run")
 
 
-class ScenarioIndex(PydanticBaseModel):
-    uuid: UUID = Field(..., title="Uuid")
-
-
 class SourceCreate(PydanticBaseModel):
     slug: str = Field(..., title="Slug")
     public: bool | None = Field(True, title="Public")
@@ -1031,7 +1032,7 @@ class YearPart(PydanticBaseModel):
     description: str | None = Field(None, title="Description")
     fullslug: str | None = Field(..., title="Fullslug")
     owner: str | None = Field(None, title="Owner")
-    parent: YearPart | str | None = Field(None, title="Parent")
+    parents: list[YearPart] | list[str] | None = Field(None, title="Parents")
     children: list[YearPart] | list[str] | None = Field(None, title="Children")
 
 
@@ -1340,8 +1341,8 @@ class Model(PydanticBaseModel):
     urls: list[UrlIndex] | list[str] | None = Field(None, title="Urls")
     featured_scenario: ModelScenario | str | None = Field(None, title="Featured Scenario")
     node_summary: NodeSummary | None = None
-    stars: int | None = Field(0, title="Stars")
-    views: int | None = Field(0, title="Views")
+    stars: int | None = Field(None, title="Stars")
+    views: int | None = Field(None, title="Views")
 
 
 class ModelPagination(PydanticBaseModel):
@@ -1365,7 +1366,7 @@ class ModelScenario(PydanticBaseModel):
     owner: str | MinimalUserResponse = Field(..., title="Owner")
     model: Model | str = Field(..., title="Model")
     scenario_index_id: UUID = Field(..., title="Scenario Index Id")
-    scenario_heritage: ScenarioIndex | str | None = Field(None, title="Scenario Heritage")
+    scenario_heritage: ScenarioHeritage | str | None = Field(None, title="Scenario Heritage")
     runs: list[Run] | list[str] | None = Field(None, title="Runs")
     featured_run: Run | str | None = Field(None, title="Featured Run")
     urls: list[UrlIndex] | list[str] | None = Field(None, title="Urls")
@@ -1391,7 +1392,6 @@ class Node(PydanticBaseModel):
     node_type: NodeTypeRank | str = Field(..., title="Node Type")
     asset_properties: Asset | str | None = Field(None, title="Asset Properties")
     aliases: list[NodeAlias] | list[str] | None = Field(None, title="Aliases")
-    records: list[Record] | list[str] | None = Field(None, title="Records")
     neighbours_out: list[Node] | list[str] | None = Field(None, title="Neighbours Out")
     neighbours_in: list[Node] | list[str] | None = Field(None, title="Neighbours In")
     parents: list[Node] | list[str] | None = Field(None, title="Parents")
@@ -1425,11 +1425,6 @@ class NodePagination(PydanticBaseModel):
     next_page: int | None = Field(..., title="next_page")
     total_results: int | None = Field(..., title="total_results")
     nodes: list[Node] | None = Field(..., title="")
-
-
-class NodeSummary(PydanticBaseModel):
-    representative_nodes: list[Node] = Field(..., title="Representative Nodes")
-    node_counts: dict[str, int] = Field(..., title="Node Counts")
 
 
 class NodeTypeRank(PydanticBaseModel):
@@ -1511,7 +1506,7 @@ class Record(PydanticBaseModel):
     timestamp: AwareDatetime | None = Field(None, title="Timestamp")
     value: float | str = Field(..., title="Value")
     properties: dict[str, Any] | None = Field(None, title="Properties")
-    owner: str | MinimalUserResponse = Field(..., title="Owner")
+    owner: str | MinimalUserResponse | None = Field(None, title="Owner")
     source_scenario: SourceScenario | str | None = Field(None, title="Source Scenario")
     model_scenario: ModelScenario | str | None = Field(None, title="Model Scenario")
     year_part: YearPart | str = Field(..., title="Year Part")
@@ -1521,7 +1516,7 @@ class Record(PydanticBaseModel):
     technology: Technology | str = Field(..., title="Technology")
     commodity: Commodity | str = Field(..., title="Commodity")
     operating_mode: OperatingMode | str = Field(..., title="Operating Mode")
-    record_type: RecordType | str = Field(..., title="Record Type")
+    record_type: str = Field(..., title="Record Type")
 
 
 class RecordPagination(PydanticBaseModel):
@@ -1594,6 +1589,13 @@ class RunResultsChartPagination(PydanticBaseModel):
     next_page: int | None = Field(..., title="next_page")
     total_results: int | None = Field(..., title="total_results")
     run_results_charts: list[RunResultsChart] | None = Field(..., title="")
+
+
+class ScenarioHeritage(PydanticBaseModel):
+    uuid: UUID = Field(..., title="Uuid")
+    model_scenario: ModelScenario | str | None = Field(None, title="Model Scenario")
+    source_scenario: SourceScenario | str | None = Field(None, title="Source Scenario")
+    child_scenarios: list[ModelScenario] | list[str] | None = Field(None, title="Child Scenarios")
 
 
 class Source(PydanticBaseModel):
@@ -1681,7 +1683,7 @@ class UrlIndex(PydanticBaseModel):
     fullslug: str | None = Field(..., title="Fullslug")
     owner: str | MinimalUserResponse = Field(..., title="Owner")
     model: Model | str | None = Field(None, title="Model")
-    modelscenario: ModelScenario | str | None = Field(None, title="Modelscenario")
+    model_scenario: ModelScenario | str | None = Field(None, title="Model Scenario")
     run: Run | str | None = Field(None, title="Run")
 
 
@@ -1709,3 +1711,4 @@ Publisher.model_rebuild()
 Record.model_rebuild()
 Run.model_rebuild()
 RunResultsChart.model_rebuild()
+ScenarioHeritage.model_rebuild()
