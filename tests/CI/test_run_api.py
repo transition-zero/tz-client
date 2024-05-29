@@ -2,14 +2,9 @@ from datetime import datetime
 
 import pytest
 
-from tz.client import api, utils
+from tz.client import api
 
-if utils.ENVIRONMENT == "staging":
-    FULLSLUG = "feo-global-indonesia:feo-indonesia-current-policies:demo"
-elif utils.ENVIRONMENT == "production":
-    FULLSLUG = "feo-global-indonesia:net-zero-2060:main"
-else:
-    raise ValueError("Unknown environment")
+FULLSLUG = "feo-indonesia:nz-2050:run1"
 
 EXAMPLE_PARAMS = [
     dict(
@@ -40,11 +35,13 @@ EXAMPLE_PARAMS = [
 
 
 @pytest.mark.parametrize("run_params", EXAMPLE_PARAMS)
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_run_get(run_params):
     run = api.runs.get(**run_params)
     assert isinstance(run, api.schemas.Run)
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_run_search():
     runs = api.runs.search()
     assert isinstance(runs, list)

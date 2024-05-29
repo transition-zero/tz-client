@@ -38,6 +38,8 @@ dev = [
   "coverage",
   "types-requests",
   "pandas-stubs",
+  "python-dotenv",
+  "datamodel-code-generator",
   ]
 
 geo = [
@@ -77,7 +79,6 @@ addopts = [
     "--strict-markers",
     "--doctest-modules",
     "--doctest-glob=\\*.rst",
-    "--import-mode=importlib"
 ]
 testpaths = [
     "tests"

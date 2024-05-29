@@ -1,7 +1,6 @@
 from tz.client import model as _model
 from tz.client import publisher as _publisher
 from tz.client import run as _run
-from tz.client import scenario as _scenario
 from tz.client import source as _source
 
 
@@ -15,10 +14,6 @@ def publisher(**kwargs):
 
 def run(**kwargs):
     return _run.Run(**kwargs)
-
-
-def scenario(**kwargs):
-    return _scenario.Scenario(**kwargs)
 
 
 def source(**kwargs):

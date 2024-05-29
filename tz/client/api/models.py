@@ -1,19 +1,21 @@
 from typing import List
 
 from tz.client.api.base import BaseAPI
-from tz.client.api.schemas import Model, ModelQueryResult
+from tz.client.api.generated_schema import Model, ModelPagination
+from tz.client.api.utils import non_empty
 
 
 class ModelAPI(BaseAPI):
-    def get(self, slug: str, includes: str | None = None) -> Model:
-        resp = self.client.get(f"/models/{slug}", params={"includes": includes})
+    def get(self, model_slug: str, owner: str, includes: str | None = None) -> Model:
+        print("includes=", includes)
+        resp = self.client.get(f"/models/{owner}:{model_slug}", params={"includes": includes})
         resp.raise_for_status()
 
         return Model(**resp.json())
 
     def search(
         self,
-        model_slug: str | None = None,
+        slug: str | None = None,
         includes: str | None = None,
         owner: str | None = None,
         sort: str | None = None,
@@ -23,7 +25,7 @@ class ModelAPI(BaseAPI):
         page: int = 0,
     ) -> List[Model]:
         params = {
-            "model_slug": model_slug,
+            "slug": slug,
             "includes": includes,
             "owner": owner,
             "sort": sort,
@@ -33,7 +35,10 @@ class ModelAPI(BaseAPI):
             "page": page,
         }
 
-        resp = self.client.get("/models", params=params)
+        resp = self.client.get("/models", params=non_empty(params))
         resp.raise_for_status()
 
-        return ModelQueryResult(**resp.json()).models
+        r = ModelPagination(**resp.json())
+        if r.models is None:
+            return []
+        return r.models

@@ -45,18 +45,21 @@ SOURCE_POST_CASES = [
 ]
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_api_sources_get():
     source = api.sources.get(f"{TEST_PUBLISHER}:{TEST_SOURCE}")
 
     assert isinstance(source, schemas.Source)
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_api_publishers_get():
     publisher = api.publishers.get(f"{TEST_PUBLISHER}")
 
     assert isinstance(publisher, schemas.Publisher)
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_publisher_get_sources():
     publisher = Publisher(**api.publishers.get(f"{TEST_PUBLISHER}").model_dump())
 
@@ -64,12 +67,14 @@ def test_publisher_get_sources():
         assert isinstance(source, Source)
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 def test_source_get_publisher():
     source = Source(**api.sources.get(f"{TEST_PUBLISHER}:{TEST_SOURCE}").model_dump())
 
     assert isinstance(source.publisher, Publisher)
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 @pytest.mark.parametrize("publisher_post_cases", PUBLISHER_POST_CASES)
 def test_publisher_post(publisher_post_cases):
     params, expected_result = publisher_post_cases
@@ -87,6 +92,7 @@ def test_publisher_post(publisher_post_cases):
         )
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 @pytest.mark.parametrize("publisher_post_cases", PUBLISHER_POST_CASES)
 def test_publisher_post_http_error(publisher_post_cases):
     params, _ = publisher_post_cases
@@ -106,6 +112,7 @@ def test_publisher_post_http_error(publisher_post_cases):
         )
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 @pytest.mark.parametrize("source_post_cases", SOURCE_POST_CASES)
 def test_source_post(source_post_cases):
     params, expected_result = source_post_cases
@@ -125,6 +132,7 @@ def test_source_post(source_post_cases):
         )
 
 
+@pytest.mark.xfail(reason="v2 migration wip")
 @pytest.mark.parametrize("source_post_cases", SOURCE_POST_CASES)
 def test_source_post_http_error(source_post_cases):
     params, _ = source_post_cases

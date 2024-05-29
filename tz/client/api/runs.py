@@ -3,25 +3,31 @@ from typing import List
 
 from tz.client.api.base import BaseAPI
 from tz.client.api.constants import CHART_TYPES
-from tz.client.api.schemas import ChartData, Run, RunQueryResult
+from tz.client.api.generated_schema import Run, RunPagination
+from tz.client.api.schemas import ChartData
+from tz.client.api.utils import non_empty
 
 
 class RunAPI(BaseAPI):
     def get(
         self,
-        fullslug: str,
+        owner: str,
+        model_slug: str,
+        model_scenario_slug: str,
+        run_slug: str,
         includes: str | None = None,
         start_datetime: datetime | None = None,
         end_datetime: datetime | None = None,
     ) -> Run:
         params = {
-            "fullslug": fullslug,
             "includes": includes,
             "start_datetime": start_datetime,
             "end_datetime": end_datetime,
         }
 
-        resp = self.client.get(f"/runs/{fullslug}", params=params)
+        resp = self.client.get(
+            f"/runs/{owner}:{model_slug}:{model_scenario_slug}:{run_slug}", params=params
+        )
         resp.raise_for_status()
 
         return Run(**resp.json())
@@ -61,8 +67,8 @@ class RunAPI(BaseAPI):
         self,
         slug: str | None = None,
         model_slug: str | None = None,
-        scenario_slug: str | None = None,
-        owner_id: str | None = None,
+        model_scenario_slug: str | None = None,
+        owner: str | None = None,
         featured: bool | None = None,
         includes: str | None = None,
         public: bool | None = None,
@@ -72,8 +78,8 @@ class RunAPI(BaseAPI):
         params = {
             "slug": slug,
             "model_slug": model_slug,
-            "scenario_slug": scenario_slug,
-            "owner_id": owner_id,
+            "model_scenario_slug": model_scenario_slug,
+            "owner": owner,
             "featured": featured,
             "includes": includes,
             "public": public,
@@ -81,7 +87,10 @@ class RunAPI(BaseAPI):
             "page": page,
         }
 
-        resp = self.client.get("/runs", params=params)
+        resp = self.client.get("/runs", params=non_empty(params))
         resp.raise_for_status()
-
-        return RunQueryResult(**resp.json()).runs
+        r = RunPagination(**resp.json())
+        if r.runs:
+            return r.runs
+        else:
+            return []
