@@ -3,7 +3,9 @@ from typing import List
 
 from tz.client.api.base import BaseAPI
 from tz.client.api.constants import CHART_TYPES
-from tz.client.api.generated_schema import Run, RunPagination
+# fmt: off
+from tz.client.api.generated_schema import (DeleteResponse, Run, RunCreate,
+                                            RunPagination)
 from tz.client.api.schemas import ChartData
 from tz.client.api.utils import non_empty
 
@@ -31,6 +33,18 @@ class RunAPI(BaseAPI):
         resp.raise_for_status()
 
         return Run(**resp.json())
+
+    def create(self, run: RunCreate) -> Run:
+        resp = self.client.post("/runs", json=run.model_dump())
+        resp.raise_for_status()
+        return Run(**resp.json())
+
+    def delete(
+        self, owner: str, model_slug: str, model_scenario_slug: str, slug: str
+    ) -> DeleteResponse:
+        resp = self.client.delete(f"/runs/{owner}:{model_slug}:{model_scenario_slug}:{slug}")
+        resp.raise_for_status()
+        return DeleteResponse(**resp.json())
 
     def get_chart_data(
         self,

@@ -194,6 +194,20 @@ class Run(generated_schema.Run):
         return cls(**run_reponse.model_dump())
 
     @classmethod
+    def delete(
+        cls, owner: str, model_slug: str, model_scenario_slug: str, slug: str
+    ) -> generated_schema.DeleteResponse:
+        result = api.runs.delete(
+            owner=owner, model_slug=slug, model_scenario_slug=model_scenario_slug, slug=slug
+        )
+        return generated_schema.DeleteResponse(**result.model_dump())
+
+    @classmethod
+    def create(cls, run: generated_schema.RunCreate) -> "Run":
+        result = api.runs.create(run)
+        return cls(**result.model_dump())
+
+    @classmethod
     def search(
         cls,
         slug: Optional[str] = None,
@@ -250,16 +264,23 @@ class Run(generated_schema.Run):
         return f"Run: {self.name} (fullslug={self.fullslug})"
 
 
-def _load_model_scenario(self, ctx):
-    owner, model_slug, model_scenario_slug, run_slug = ctx["fullslug"].split(":")
-    r = api.runs.get(
-        owner=owner,
-        model_slug=model_slug,
-        model_scenario_slug=model_scenario_slug,
-        run_slug=run_slug,
-        includes="model_scenario",
-    )
-    return r
+def _load_relationship(for_field):
+    def f(self, ctx):
+        owner, model_slug, model_scenario_slug, run_slug = ctx["fullslug"].split(":")
+        r = api.runs.get(
+            owner=owner,
+            model_slug=model_slug,
+            model_scenario_slug=model_scenario_slug,
+            run_slug=run_slug,
+            includes=for_field,
+        )
+        return r
+
+    return f
 
 
-lazy_load_single_relationship(Run, "ModelScenario", "model_scenario", _load_model_scenario)
+lazy_load_single_relationship(
+    Run, "ModelScenario", "model_scenario", _load_relationship("model_scenario")
+)
+# TODO: Lazy-load the model here as well; (needs to be defined.)
+# lazy_load_single_relationship(Run, "Model", "model", _load_relationship("model"))

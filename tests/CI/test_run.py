@@ -1,6 +1,7 @@
 import pytest
 
 from tz.client import ModelScenario, Run
+from tz.client.api.generated_schema import RunCreate
 
 
 @pytest.fixture
@@ -9,9 +10,41 @@ def run_fixture(username):
     return run_result
 
 
+def test_run_create_and_delete(run_fixture):
+    slug = "test_run_create_and_delete-some-run-slug"
+
+    model_slug = run_fixture.model
+    model_scenario_slug = run_fixture.model_scenario.fullslug
+
+    some_run = RunCreate(
+        slug=slug,
+        public=True,
+        name="name",
+        description="A test model scenario",
+        # A minor hack: Just use the model that we at least succesfully found
+        # above as the one that our scenario depends on. Then we don't have to
+        # make a new one for ourselves.
+        model=model_slug,
+        model_scenario=model_scenario_slug,
+        # Skip the runspec, as that requires a bit more service coordination.
+        skip_build_runspec=True,
+    )
+
+    run = Run.create(some_run)
+    assert run.slug == slug
+
+    response = Run.delete(
+        owner=run.owner,
+        model_slug=run.model,
+        model_scenario_slug=run.model_scenario.slug,
+        slug=run.slug,
+    )
+    assert response.objects_deleted == 1, response.message
+
+
 @pytest.fixture
 def run_fixture_with_chart_data():
-    # TODO:
+    # TODO: Implement!
     run_result = Run.from_fullslug(...)
     return run_result
 
