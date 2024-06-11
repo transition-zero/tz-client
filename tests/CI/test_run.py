@@ -20,7 +20,7 @@ def test_run_create_and_delete(run_fixture):
         slug=slug,
         public=True,
         name="name",
-        description="A test model scenario",
+        description="A test run",
         # A minor hack: Just use the model that we at least succesfully found
         # above as the one that our scenario depends on. Then we don't have to
         # make a new one for ourselves.
