@@ -1,12 +1,35 @@
 import pytest
 
 from tz.client import Model, ModelScenario, Run
+from tz.client.api.generated_schema import ModelScenarioCreate
 
 
 @pytest.fixture
 def scenario(username):
     scenario = ModelScenario.from_fullslug(f"{username}:feo-indonesia:net-zero-2060")
     return scenario
+
+
+def test_model_scenario_create_and_delete(scenario):
+    slug = "test_model_create_and_delete-some-model-scenario-slug"
+    some_model_scenario = ModelScenarioCreate(
+        slug=slug,
+        public=True,
+        name="name",
+        description="A test model scenario",
+        # A minor hack: Just use the model that we at least succesfully found
+        # above as the one that our scenario depends on. Then we don't have to
+        # make a new one for ourselves.
+        model=f"{scenario.model.owner}:{scenario.model.slug}",
+    )
+
+    model_scenario = ModelScenario.create(model_scenario=some_model_scenario)
+    assert model_scenario.slug == slug
+
+    response = ModelScenario.delete(
+        owner=model_scenario.owner, model_slug=scenario.model.slug, slug=model_scenario.slug
+    )
+    assert response.objects_deleted == 1, response.message
 
 
 def test_model_scenario_init(scenario):

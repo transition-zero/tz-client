@@ -48,6 +48,16 @@ class ModelScenario(generated_schema.ModelScenario):
         return c
 
     @classmethod
+    def delete(cls, owner: str, model_slug: str, slug: str) -> generated_schema.DeleteResponse:
+        result = api.model_scenarios.delete(owner=owner, model_slug=slug, slug=slug)
+        return generated_schema.DeleteResponse(**result.model_dump())
+
+    @classmethod
+    def create(cls, model_scenario: generated_schema.ModelScenarioCreate) -> "ModelScenario":
+        result = api.model_scenarios.create(model_scenario)
+        return cls(**result.model_dump())
+
+    @classmethod
     def search(
         cls,
         model_scenario_slug: str | None = None,
