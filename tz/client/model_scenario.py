@@ -2,13 +2,16 @@ from typing import List, Optional
 
 from tz.client import api
 from tz.client.api import generated_schema
-from tz.client.utils import lazy_load_single_relationship
+# fmt: off
+from tz.client.utils import (lazy_load_relationship,
+                             lazy_load_single_relationship)
 
 
 class ModelScenario(generated_schema.ModelScenario):
     # Lazy-loaded
     _model: Optional["Model"] = None  # type: ignore[name-defined] # noqa: F821
     _featured_run: Optional["Run"] = None  # type: ignore[name-defined] # noqa: F821
+    _runs: Optional[list["Run"]] = None  # type: ignore[name-defined] # noqa: F821
 
     @classmethod
     def from_fullslug(cls, fullslug: str) -> "ModelScenario":
@@ -120,6 +123,18 @@ lazy_load_single_relationship(
         model_slug=ctx["model"].split(":")[1],
         model_scenario_slug=self.slug,
         includes="model",
+    ),
+)
+
+lazy_load_relationship(
+    ModelScenario,
+    "Run",
+    "runs",
+    lambda self, ctx: api.model_scenarios.get(
+        owner=self.owner,
+        model_slug=ctx["model"].split(":")[1],
+        model_scenario_slug=self.slug,
+        includes="runs",
     ),
 )
 

@@ -24,7 +24,7 @@ class Node(generated_schema.Node):
 
     """
 
-    _primary_node_alias: Optional[generated_schema.NodeAlias] = None
+    # _primary_node_alias: Optional[generated_schema.NodeAlias] = None
     _children: Optional[list["Node"]] = None
     _parents: Optional[list["Node"]] = None
     # _assets: Optional[AssetCollection] = None
@@ -33,16 +33,8 @@ class Node(generated_schema.Node):
     @classmethod
     def from_slug(cls, slug: str) -> "Node":
         """Initialise Node from `slug` as a positional argument"""
-        api_node = api.nodes.get(slug=slug, includes="aliases")
+        api_node = api.nodes.get(slug=slug, includes="primary_alias")
         node = cls(**api_node.model_dump())
-        if node.aliases:
-            maybe_primary = [
-                alias
-                for alias in node.aliases
-                if isinstance(alias, generated_schema.NodeAlias) and alias.primary
-            ]
-            if len(maybe_primary) == 1:
-                cls._primary_node_alias = maybe_primary[0]
         return node
 
     @classmethod
@@ -76,7 +68,7 @@ class Node(generated_schema.Node):
             name=name,
             threshold=threshold,
             node_type=node_type,
-            includes="node",
+            includes="node,node.primary_alias",
             limit=limit,
             page=page,
         )
@@ -95,8 +87,8 @@ class Node(generated_schema.Node):
 
     def __str__(self) -> str:
         alias_str = (
-            f"primary-alias={self._primary_node_alias.name}"
-            if self._primary_node_alias
+            f"primary-alias={self.primary_alias}"
+            if self.primary_alias
             else "no primary alias found"
         )
         return f"Node: {alias_str} (fullslug={self.fullslug})"

@@ -1,8 +1,9 @@
+<a href="https://www.transitionzero.org/">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/transition-zero/.github/raw/main/profile/img/logo-dark.png">
   <img alt="TransitionZero Logo" width="1000px" src="https://github.com/transition-zero/.github/raw/main/profile/img/logo-light.png">
-  <a href="https://www.transitionzero.org/">
 </picture>
+</a>
 
 
 # TransitionZero Python Client
@@ -96,18 +97,18 @@ from tz.client import Node
 
 The `Node.search` method can be used to search for Nodes.
 ```
-Node.search("Bali")
+Node.search("Indonesia")
 ```
 
 Each search result is an instance of the `Node` object.
 ```
-IDN = Node.search("indonesia")[0]
+IDN = Node.search("Indonesia")[0]
 IDN
 ```
 
-Nodes have an `id` which is unique. Nodes can have many names (or `aliases`), one of which is attached to the node as a primary English name.
+Nodes have an `uuid` which is unique. Nodes can have many names (or `aliases`), one of which is attached to the node as a primary English name.
 ```
-IDN.id, IDN.name_primary_en
+IDN.uuid, IDN.primary_alias
 ```
 
 ### Accessing asset-level data
@@ -151,22 +152,22 @@ from tz.client import Model, Scenario, Run
 
 The `Model` client can be used to search and retrieve model objects.
 ```
-Model.search(model_slug='feo-global-indonesia')
+Model.search(model_slug='feo-indonesia')
 ```
 
 Models can also be retrieved directly by id
 ```
-idn_model = Model.from_id('feo-global-indonesia')
+idn_model = Model.from_slug(owner="feo-core-admin", slug='feo-indonesia')
 ```
 
 Scenarios associated can also be retrieved from the model object.
 ```
-idn_model.scenarios
+idn_model.model_scenarios
 ```
 
 ... as can the runs associated with scenarios
 ```
-run = idn_model.scenarios[0].runs
+run = idn_model.model_scenarios[0].runs
 ```
 
 <!-- ### Simple API calls -->

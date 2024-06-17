@@ -358,8 +358,16 @@ class NodeAliasResourcePatch(PydanticBaseModel):
     node: str | None = Field(None, title="node")
 
 
-class NodeSummary(PydanticBaseModel):
-    representative_nodes: list[str] = Field(..., title="Representative Nodes")
+class NodeSummaryPost(PydanticBaseModel):
+    slugs: list[str] = Field(..., title="Slugs")
+
+
+class NodeSummaryResponse(PydanticBaseModel):
+    representative_nodes: list[str] = Field(
+        ...,
+        description='Slugs of representative nodes. E.g.: ["US-CA", "US-TX", "US-MO"]',
+        title="Representative Nodes",
+    )
     node_counts: dict[str, int] = Field(..., title="Node Counts")
 
 
@@ -649,6 +657,7 @@ class RunCreate(PydanticBaseModel):
     validated: bool | None = Field(False, title="Validated")
     description: str | None = Field(None, title="Description")
     featured: bool | None = Field(False, title="Featured")
+    runtime_estimate_hours: float | None = Field(None, title="Runtime Estimate Hours")
     model: str | None = Field(None, title="model")
     model_scenario: str | None = Field(None, title="model_scenario")
     urls: list[str] | None = Field(None, title="urls")
@@ -674,6 +683,7 @@ class RunResourcePatch(PydanticBaseModel):
     validated: bool | None = Field(None, title="Validated")
     description: str | None = Field(None, title="Description")
     featured: bool | None = Field(None, title="Featured")
+    runtime_estimate_hours: float | None = Field(None, title="Runtime Estimate Hours")
     model_id: str | None = Field(None, title="Model Id")
     model_scenario_id: str | None = Field(None, title="Model Scenario Id")
     owner: str | None = Field(None, title="owner")
@@ -724,6 +734,10 @@ class RunResultsCostCreate(PydanticBaseModel):
     year_part: str = Field(..., title="Year Part")
     day_part: str = Field(..., title="Day Part")
     run: str | None = Field(None, title="run")
+
+
+class RunResultsDownloadResponse(PydanticBaseModel):
+    download_url: str = Field(..., title="Download Url")
 
 
 class RunResultsExtremaCreate(PydanticBaseModel):
@@ -940,7 +954,7 @@ class User(PydanticBaseModel):
     last_password_reset: AwareDatetime | None = Field(None, title="Last Password Reset")
     phone_number: str | None = Field(None, title="Phone Number")
     phone_verified: bool | None = Field(False, title="Phone Verified")
-    picture: str | None = Field(None, title="Picture")
+    picture: str | None = Field("https://www.gravatar.com/avatar", title="Picture")
     updated_at: AwareDatetime | None = Field(None, title="Updated At")
     organisation: str | None = Field(None, title="Organisation")
     job_title: str | None = Field(None, title="Job Title")
@@ -948,6 +962,8 @@ class User(PydanticBaseModel):
     terms_conditions_accepted: bool | None = Field(None, title="Terms Conditions Accepted")
     country: str | None = Field(None, title="Country")
     industry_sector: str | None = Field(None, title="Industry Sector")
+    run_allowance: int | None = Field(None, title="Run Allowance")
+    job_allowance: int | None = Field(None, title="Job Allowance")
     owner: User | str | None = Field(..., title="Owner")
 
 
@@ -966,7 +982,7 @@ class UserCreate(PydanticBaseModel):
     last_password_reset: AwareDatetime | None = Field(None, title="Last Password Reset")
     phone_number: str | None = Field(None, title="Phone Number")
     phone_verified: bool | None = Field(False, title="Phone Verified")
-    picture: str | None = Field(None, title="Picture")
+    picture: str | None = Field("https://www.gravatar.com/avatar", title="Picture")
     updated_at: AwareDatetime | None = Field(None, title="Updated At")
     organisation: str | None = Field(None, title="Organisation")
     job_title: str | None = Field(None, title="Job Title")
@@ -974,6 +990,8 @@ class UserCreate(PydanticBaseModel):
     terms_conditions_accepted: bool | None = Field(None, title="Terms Conditions Accepted")
     country: str | None = Field(None, title="Country")
     industry_sector: str | None = Field(None, title="Industry Sector")
+    run_allowance: int | None = Field(None, title="Run Allowance")
+    job_allowance: int | None = Field(None, title="Job Allowance")
     app_metadata: dict[str, Any] | None = Field(None, title="App Metadata")
     user_metadata: dict[str, Any] | None = Field(None, title="User Metadata")
 
@@ -1011,6 +1029,8 @@ class UserResourcePatch(PydanticBaseModel):
     terms_conditions_accepted: bool | None = Field(None, title="Terms Conditions Accepted")
     country: str | None = Field(None, title="Country")
     industry_sector: str | None = Field(None, title="Industry Sector")
+    run_allowance: int | None = Field(None, title="Run Allowance")
+    job_allowance: int | None = Field(None, title="Job Allowance")
     app_metadata: dict[str, Any] | None = Field(None, title="App Metadata")
     user_metadata: dict[str, Any] | None = Field(None, title="User Metadata")
     owner: str | None = Field(None, title="owner")
@@ -1087,9 +1107,8 @@ class HTTPValidationError(PydanticBaseModel):
 
 
 class MultiResidualCapacityResponse(PydanticBaseModel):
-    model_scenario_slug: str = Field(..., title="Model Scenario Slug")
-    model_scenario_residual_capacities: list[ResidualCapacityTimeseries] = Field(
-        ..., title="Model Scenario Residual Capacities"
+    residual_capacity_data: list[ResidualCapacityTimeseries] = Field(
+        ..., title="Residual Capacity Data"
     )
 
 
@@ -1216,6 +1235,7 @@ class Asset(PydanticBaseModel):
     construction_date: AwareDatetime | None = Field(None, title="Construction Date")
     constructed_before: AwareDatetime | None = Field(None, title="Constructed Before")
     constructed_after: AwareDatetime | None = Field(None, title="Constructed After")
+    owner: str | MinimalUserResponse = Field(..., title="Owner")
     edge: Edge | str | None = Field(None, title="Edge")
     node: Node | str | None = Field(None, title="Node")
     technology: str | Technology | None = Field(None, title="Technology")
@@ -1340,9 +1360,9 @@ class Model(PydanticBaseModel):
     runs: list[Run | str] | None = Field(None, title="Runs")
     urls: list[UrlIndex] | list[str] | None = Field(None, title="Urls")
     featured_scenario: ModelScenario | str | None = Field(None, title="Featured Scenario")
-    node_summary: NodeSummary | None = None
-    stars: int | None = Field(None, title="Stars")
-    views: int | None = Field(None, title="Views")
+    node_summary: NodeSummaryResponse | None = None
+    stars: int | None = Field(0, title="Stars")
+    views: int | None = Field(0, title="Views")
 
 
 class ModelPagination(PydanticBaseModel):
@@ -1391,6 +1411,7 @@ class Node(PydanticBaseModel):
     owner: str | MinimalUserResponse = Field(..., title="Owner")
     node_type: NodeTypeRank | str = Field(..., title="Node Type")
     asset_properties: Asset | str | None = Field(None, title="Asset Properties")
+    primary_alias: str | None = Field(None, title="Primary Alias")
     aliases: list[NodeAlias] | list[str] | None = Field(None, title="Aliases")
     neighbours_out: list[Node] | list[str] | None = Field(None, title="Neighbours Out")
     neighbours_in: list[Node] | list[str] | None = Field(None, title="Neighbours In")
@@ -1536,6 +1557,7 @@ class Run(PydanticBaseModel):
     validated: bool | None = Field(False, title="Validated")
     description: str | None = Field(None, title="Description")
     featured: bool | None = Field(False, title="Featured")
+    runtime_estimate_hours: float | None = Field(None, title="Runtime Estimate Hours")
     fullslug: str | None = Field(..., title="Fullslug")
     owner: str | MinimalUserResponse = Field(..., title="Owner")
     model: str | Model = Field(..., title="Model")
