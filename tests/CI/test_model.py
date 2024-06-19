@@ -1,7 +1,6 @@
 import pytest
 
 from tz.client import Model, ModelScenario
-from tz.client.api.generated_schema import ModelCreate
 
 
 @pytest.fixture()
@@ -9,25 +8,8 @@ def model(username):
     return Model.from_fullslug(f"{username}:feo-indonesia")
 
 
-def test_model_create_and_delete():
-    slug = "test_model_create_and_delete-some-model-slug"
-    some_model = ModelCreate(
-        slug=slug,
-        public=True,
-        name="name",
-        description="A test model",
-        version="test",
-        start_year=2021,
-        end_year=2050,
-        nodes=["GBR"],
-        commodities=["electricity"],
-        technologies=["battery", "coal", "combined-cycle", "photovoltaic"],
-    )
-    model = Model.create(model=some_model)
-    assert model.slug == slug
-
-    response = Model.delete(model.owner, model.slug)
-    assert response.objects_deleted == 1, response.message
+def test_model_create_and_delete(new_model):
+    assert new_model  # We really care about the fixture running
 
 
 def test_model_init(model):
