@@ -1,17 +1,28 @@
 from typing import List
 
 from tz.client.api.base import BaseAPI
-from tz.client.api.generated_schema import Model, ModelPagination
+# fmt: off
+from tz.client.api.generated_schema import (DeleteResponse, Model, ModelCreate,
+                                            ModelPagination)
 from tz.client.api.utils import non_empty
 
 
 class ModelAPI(BaseAPI):
     def get(self, model_slug: str, owner: str, includes: str | None = None) -> Model:
-        print("includes=", includes)
         resp = self.client.get(f"/models/{owner}:{model_slug}", params={"includes": includes})
         resp.raise_for_status()
 
         return Model(**resp.json())
+
+    def create(self, model: ModelCreate) -> Model:
+        resp = self.client.post("/models", json=model.model_dump())
+        resp.raise_for_status()
+        return Model(**resp.json())
+
+    def delete(self, owner: str, slug: str) -> DeleteResponse:
+        resp = self.client.delete(f"/models/{owner}:{slug}")
+        resp.raise_for_status()
+        return DeleteResponse(**resp.json())
 
     def search(
         self,

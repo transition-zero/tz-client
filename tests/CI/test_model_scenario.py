@@ -9,6 +9,10 @@ def scenario(username):
     return scenario
 
 
+def test_model_scenario_create_and_delete(new_model_scenario):
+    assert new_model_scenario  # We really care about the fixture running
+
+
 def test_model_scenario_init(scenario):
     assert isinstance(scenario, ModelScenario)
 
@@ -40,6 +44,11 @@ def test_model_scenario_search_pagination():
 def test_model_scenario_model(scenario):
     assert isinstance(scenario.model, Model)
     assert scenario.model.slug == "feo-indonesia"
+
+
+def test_model_scenario_runs(scenario):
+    assert isinstance(scenario.runs, list)
+    assert isinstance(scenario.runs[0], Run)
 
 
 def test_model_scenario_featured_run(scenario):

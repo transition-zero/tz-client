@@ -33,6 +33,7 @@ from dotenv import load_dotenv
 
 from tz.client.asset import Asset, AssetCollection
 from tz.client.geospatial import Features, Geometry
+from tz.client.job import Job
 from tz.client.model import Model
 from tz.client.model_scenario import ModelScenario
 from tz.client.node import Node
@@ -52,6 +53,7 @@ Model.model_rebuild()
 ModelScenario.model_rebuild()
 Technology.model_rebuild()
 Run.model_rebuild()
+Job.model_rebuild()
 
 try:
     __version__ = version("tz-client")
@@ -72,4 +74,5 @@ __all__ = [
     "Technology",
     "Features",
     "Geometry",
+    "Job",
 ]

@@ -9,9 +9,13 @@ def run_fixture(username):
     return run_result
 
 
+def test_run_create_and_delete(new_run):
+    assert new_run  # We really care about the fixture running
+
+
 @pytest.fixture
 def run_fixture_with_chart_data():
-    # TODO:
+    # TODO: Implement!
     run_result = Run.from_fullslug(...)
     return run_result
 

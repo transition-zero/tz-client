@@ -45,6 +45,16 @@ class Model(generated_schema.Model):
         return cls(**model.model_dump())
 
     @classmethod
+    def delete(cls, owner: str, slug: str) -> generated_schema.DeleteResponse:
+        result = api.models.delete(owner=owner, slug=slug)
+        return generated_schema.DeleteResponse(**result.model_dump())
+
+    @classmethod
+    def create(cls, model: generated_schema.ModelCreate) -> "Model":
+        result = api.models.create(model)
+        return cls(**result.model_dump())
+
+    @classmethod
     def search(
         cls,
         slug: str | None = None,

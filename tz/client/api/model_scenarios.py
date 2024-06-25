@@ -1,6 +1,7 @@
 from tz.client.api.base import BaseAPI
 # fmt: off
-from tz.client.api.generated_schema import (ModelScenario,
+from tz.client.api.generated_schema import (DeleteResponse, ModelScenario,
+                                            ModelScenarioCreate,
                                             ModelScenarioPagination)
 from tz.client.api.utils import non_empty
 
@@ -23,6 +24,16 @@ class ModelScenarioAPI(BaseAPI):
         resp.raise_for_status()
 
         return ModelScenario(**resp.json())
+
+    def create(self, model_scenario: ModelScenarioCreate) -> ModelScenario:
+        resp = self.client.post("/model-scenarios", json=model_scenario.model_dump())
+        resp.raise_for_status()
+        return ModelScenario(**resp.json())
+
+    def delete(self, owner: str, model_slug: str, slug: str) -> DeleteResponse:
+        resp = self.client.delete(f"/model-scenarios/{owner}:{model_slug}:{slug}")
+        resp.raise_for_status()
+        return DeleteResponse(**resp.json())
 
     def search(
         self,

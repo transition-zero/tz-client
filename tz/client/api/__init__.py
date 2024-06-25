@@ -23,6 +23,7 @@
 """
 from tz.client.api.assets import AssetAPI
 from tz.client.api.geospatial import VectorAPI
+from tz.client.api.jobs import JobAPI
 from tz.client.api.model_scenarios import ModelScenarioAPI
 from tz.client.api.models import ModelAPI
 from tz.client.api.node_aliases import NodeAliasAPI
@@ -44,3 +45,4 @@ model_scenarios = ModelScenarioAPI()
 sources = SourceAPI()
 publishers = PublisherAPI()
 technologies = TechnologyAPI()
+jobs = JobAPI()

@@ -8,6 +8,10 @@ def model(username):
     return Model.from_fullslug(f"{username}:feo-indonesia")
 
 
+def test_model_create_and_delete(new_model):
+    assert new_model  # We really care about the fixture running
+
+
 def test_model_init(model):
     assert isinstance(model, Model)
     assert model.slug == "feo-indonesia"
