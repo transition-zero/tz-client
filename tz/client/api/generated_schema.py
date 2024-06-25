@@ -626,6 +626,10 @@ class RecordType(PydanticBaseModel):
     units: str = Field(..., title="Units")
     description: str = Field(..., title="Description")
     aggregating_operation: str = Field(..., title="Aggregating Operation")
+    na_operating_mode: bool | None = Field(False, title="Na Operating Mode")
+    na_commodity: bool | None = Field(False, title="Na Commodity")
+    na_technology: bool | None = Field(False, title="Na Technology")
+    required_nonempty: bool | None = Field(False, title="Required Nonempty")
 
 
 class RecordTypePagination(PydanticBaseModel):
@@ -734,10 +738,6 @@ class RunResultsCostCreate(PydanticBaseModel):
     year_part: str = Field(..., title="Year Part")
     day_part: str = Field(..., title="Day Part")
     run: str | None = Field(None, title="run")
-
-
-class RunResultsDownloadResponse(PydanticBaseModel):
-    download_url: str = Field(..., title="Download Url")
 
 
 class RunResultsExtremaCreate(PydanticBaseModel):
