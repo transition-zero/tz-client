@@ -2,8 +2,6 @@ import pytest
 
 from tz.client import Model, ModelScenario, Run
 
-# from tests.CI.test_model import new_model  # flake8: noqa # noqa: F401
-
 
 @pytest.fixture
 def scenario(username):
