@@ -46,6 +46,11 @@ def test_model_scenario_model(scenario):
     assert scenario.model.slug == "feo-indonesia"
 
 
+def test_model_scenario_runs(scenario):
+    assert isinstance(scenario.runs, list)
+    assert isinstance(scenario.runs[0], Run)
+
+
 def test_model_scenario_featured_run(scenario):
     assert isinstance(scenario.featured_run, Run)
     assert scenario.featured_run.slug == "run1"
